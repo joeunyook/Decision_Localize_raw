@@ -4852,3 +4852,241 @@ saying so.
    the reconciling sentence) or only the reactivity one.
  - Earlier-era claim "hairline vs confidently wrong errors" is contradicted by
    section 6 under P1_v4; grep the draft for any surviving instance.
+
+================================================================================
+SESSION LOG -- 2026-07-31 -- *** ENTIRE PROJECT MIGRATED TO PRIVATE GITHUB
+(joeunyook/Decision_Localize_raw) *** full storage audit; scratch purge clock
+found to be ~10 days not 3 months; repo built, verified and pushed; nothing
+deleted anywhere
+--------------------------------------------------------------------------------
+CONTEXT: no new data collected. The task was to inventory everything belonging
+to this project, wherever it lives, and migrate it to a private GitHub repo so
+that a rebuttal three months out can be served by a single `git clone`. Standing
+constraint for the whole session: DO NOT clean or delete anything, ever. That
+was honoured -- every action below is a read, a copy, or a new file. No file was
+moved, truncated, overwritten or removed, on any filesystem.
+
+--------------------------------------------------------------------------------
+1. STORAGE AUDIT -- WHAT EXISTS AND WHERE
+--------------------------------------------------------------------------------
+Measured 2026-07-31, not carried from notes.
+
+HOME  /users/joeunyook/logit-probe   ~12.4 GB, ~37,500 files, was NOT a git repo
+  ABL_notally_v1/      6.0 GB  5,760 f   (residuals/ alone is 6.0 GB)
+  core_clariden-ln004_118572  5.74 GB    <-- CORE DUMP, not project data
+  P3_postcot/          169 MB  6,480 f
+  BOS_ASSERT/          180 MB    206 f
+  responses/           136 MB  8,133 f
+  ABL_dry_cot_v1/       66 MB  2,430 f
+  steer/                38 MB  4,681 f
+  plots/                24 MB    422 f
+  results/              23 MB  8,649 f
+  *.log                ~30 MB    488 f
+  analysis/            5.1 MB     37 f
+  SMOKE_{distill,bos,pennies}/, P3_smoke/   47 MB, 92 f
+  envs/ 169 KB 33 f | prompts/ 65 KB 46 f | core/ 55 KB 13 f
+  paper sources: AnonymousSubmission2027.tex 113 KB + 10 paper_*.tex
+  DOCUMENTATION.txt 317 KB | SUPPLEMENTARY_ASSEMBLY.md 23 KB | DATA_LOCATIONS.md
+
+OFF-HOME (reached through symlinks in the working tree)
+  residuals   -> /capstor/scratch/cscs/joeunyook/logit-probe/residuals
+                 41 GB, 16,262 files   ** SCRATCH, 30-DAY PURGE **
+  ABL_dry_v1  -> /capstor/scratch/cscs/joeunyook/logit-probe/ABL_dry_v1
+                 13 GB, 9,720 files    ** SCRATCH, 30-DAY PURGE **
+                 (residuals 13 GB | responses 46 MB | results 9.7 MB)
+  archive     -> /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-archive
+                 14 GB, 9,515 files, no purge
+                 dsllama70_broken_tokenizer/residuals 8.7 GB (INVALID DATA)
+                 trust_v1/residuals 4.6 GB (superseded)
+                 answer_parse_bug_2026-07-23/ 44 MB (source of dsqwen7 backfill)
+
+MODEL WEIGHTS
+  /capstor/scratch/cscs/joeunyook/models/Llama-3.3-70B-Instruct  132 GB
+                 ** SCRATCH, PURGE-EXPOSED ** (re-downloadable)
+  HF_HOME=/capstor/store/cscs/swissai/a0107/models/joeunyook/hf_cache
+
+ENVIRONMENT (outside the repo, needed to reproduce)
+  ~/bin/micromamba (21 MB binary)
+  MAMBA_ROOT_PREFIX=/capstor/store/cscs/swissai/a0133/joeunyook/micromamba
+    -- set in ~/.bashrc line 37; backup ~/.bashrc.bak.20260724-032504
+  env name `ftdiag`; recipe ~/FTdiagnosis/setup_env.sh (UNPINNED)
+  rebuild script ~/rebuild_ftdiag.sh + ~/rebuild_ftdiag.log
+
+CSCS QUOTA SNAPSHOT (from `quota`, data dated 2026-07-24)
+  /capstor/store/.../a0133   10.0 T limit, 48.1 G used (0.5%),  63,513/1M files
+  /capstor/store/.../a0107    1.0 T limit, 918.3 G used (89.7%) <-- NEARLY FULL
+  /capstor/scratch/joeunyook 150.0 T limit, 246.5 G used (0.2%)
+  /vast/users/.../joeunyook   50.0 G limit,  11.8 G used (23.6%), 64,098/500k f
+
+--------------------------------------------------------------------------------
+2. THE FINDING THAT CHANGED THE PLAN -- PURGE CLOCK IS ~10 DAYS, NOT 3 MONTHS
+--------------------------------------------------------------------------------
+Scratch purges files untouched for 30 days. Oldest access time under
+scratch/residuals is 2026-07-11 (`find -printf '%A+'`), i.e. 20 days ago, so
+that tree begins purging around 2026-08-10. Newest atime is 2026-07-27, buying
+until ~2026-08-26.
+
+This is the same mechanism that destroyed the ftdiag conda env on 2026-07-24
+(see SESSION LOG -- 2026-07-24). At risk NOW: 41 GB residuals, 13 GB
+ABL_dry_v1, 132 GB llama70 weights. Losing residuals/ means P1 probes cannot be
+re-trained and analysis/posterior_probe.py (Appendix C.2) cannot be re-run;
+every already-computed number survives because the trained outputs are in
+results/.
+
+RECOMMENDED, NOT YET DONE: copy the scratch trees to a0133 store (10 TB, 0.5%
+used, no purge). 55 GB takes it to ~1.2% of quota. This is a copy, not a move.
+
+--------------------------------------------------------------------------------
+3. WHY GITHUB CANNOT HOLD ALL OF IT, AND WHAT THE SPLIT IS
+--------------------------------------------------------------------------------
+GitHub: 100 MB hard per-file limit; warnings past 1 GB repo. Total project data
+is ~80 GB (212 GB counting weights). Verified constraints:
+  - largest single non-residual, non-core file in the tree is UNDER 50 MB, so
+    NO Git LFS is required anywhere;
+  - secret scan over *.py/*.sh/*.sbatch/*.md/*.txt/*.tex returned one hit,
+    DOCUMENTATION.txt:2326, which is prose noting ANTHROPIC_API_KEY was never
+    configured and is still a literal placeholder. No real credential exists in
+    the tree. ~/.secrets is outside the repo root and was never staged.
+
+Considered and REJECTED: trimming "stale" tags and IPD to shrink the repo.
+Measured savings were only 87 MB of 580 MB (IPD non-residual 55 MB; P1_v1/v2/v3,
+P2_v1, base30, TIMING_TEST, BOS_ASSERT_partial together 32 MB). Not worth the
+loss of provenance. Specifically, IPD's home-side JSONs were KEPT because
+analysis/ipd_label_diagnostics.py regenerates the 70.5% clock-only figure that
+justifies dropping IPD from the paper -- discard them and the exclusion can be
+asserted but not reproduced.
+
+FINAL SPLIT
+  GitHub  ~580 MB  code, prompts, all results/responses/steer/plots,
+                   P3_postcot, ablation outputs, paper sources, 488 job logs,
+                   DOCUMENTATION.txt, manifests
+  a0133   ~55 GB   canonical + ablation residuals (recommended destination)
+  re-download      132 GB llama70 weights
+  excluded         5.74 GB core dump; 13.3 GB known-bad/superseded archive
+                   residuals (left in place on store)
+
+--------------------------------------------------------------------------------
+4. MIGRATION MECHANICS -- STEPS ACTUALLY EXECUTED
+--------------------------------------------------------------------------------
+Target: git@github.com:joeunyook/Decision_Localize_raw.git (private).
+Tooling: git 2.43.0. `gh` CLI is NOT installed on Clariden. Auth is SSH via
+~/.ssh/id_ed25519_github, configured in ~/.ssh/config for Host github.com;
+`ssh -T git@github.com` returns "Hi joeunyook!". TCP 443 and HTTPS to github.com
+both reachable from the login node.
+
+Pre-existing remote state: one commit on main, a 23-byte placeholder README.md.
+Verified by shallow clone before touching anything.
+
+ (a) .gitignore written at repo root. Four exclusion classes: the three CSCS
+     symlinks (/residuals, /archive, /ABL_dry_v1); all **/residuals/ trees;
+     core dumps; python/editor cruft. Verified with `git check-ignore` in BOTH
+     directions -- 9 paths that must be ignored are ignored, 6 that must ship
+     are not.
+ (b) git init in place; repo-local identity joeunyook <yookjoeun@gmail.com>.
+     No global git config was created or modified.
+ (c) ABL_dry_v1_snapshot/ created: cp -rn of responses/ and results/ from
+     behind the ABL_dry_v1 scratch symlink. 4,860 files, 47 MB. Rationale: git
+     stores symlinks as links, so a clone would have an empty ABL_dry_v1/ and
+     analysis/ablation_dry.py would be unreproducible. The residuals inside
+     that tree (13 GB) were NOT copied.
+ (d) MANIFESTS/ generated -- one line per excluded file, "<bytes> <path>", for
+     residuals (16,262), ABL_dry_v1 (9,720), archive (9,515). Counts match the
+     independently measured `find | wc -l` exactly. These let a future restore
+     be diffed against what was archived.
+     NOTE the archive manifest carries a warning: archive/archive is a SYMLINK
+     TO ITS OWN PARENT. Any dereferencing copy (cp -aL, tar -h, rsync -L)
+     recurses forever. This trap is also recorded in README.md.
+ (e) README.md written -- full layout, exclusions with exact CSCS paths and
+     sizes, CSCS restore procedure (recreate 3 symlinks, verify against
+     manifests, re-download weights, rebuild env), off-CSCS capability
+     boundary, environment, a per-paper-number regeneration table, and 8 known
+     traps carried over from this file.
+ (f) Commit message: "Full working tree snapshot: code, prompts, analysis
+     outputs, figures, paper sources, session log". Deliberately carries NO
+     tool attribution of any kind.
+ (g) Remote reconciled with `git merge origin/main --allow-unrelated-histories
+     -X ours` rather than a force-push, so the placeholder commit survives in
+     history. Chosen because the no-deletion rule was read as covering remote
+     history too.
+
+--------------------------------------------------------------------------------
+5. RESULT
+--------------------------------------------------------------------------------
+REPO: git@github.com:joeunyook/Decision_Localize_raw.git  (private)
+COMMITS
+  4a33b69  Initial commit                    (pre-existing 23-byte placeholder)
+  6d7afca  Full working tree snapshot: code, prompts, analysis outputs,
+           figures, paper sources, session log
+  2ec3ffe  Merge initial repository placeholder            <-- HEAD
+
+PUSH ATTEMPT 1 -- FAILED.
+  send-pack: unexpected disconnect while reading sideband packet
+  Connection to github.com closed by remote host.
+  fatal: the remote end hung up unexpectedly
+  Cause: idle disconnect while git was still generating the pack; auto-gc had
+  been triggered by the commit and was repacking concurrently. Nothing was
+  corrupted -- the commit was already made locally and the tree stayed clean.
+  (The wrapper script reported exit 0 because git's output was piped to `tail`,
+  which masked the exit code. Wrapper bug, not a second failure.)
+
+PUSH ATTEMPT 2 -- SUCCEEDED, first try.
+  Waited for auto-gc/repack to drain, then pushed with SSH keepalives:
+    GIT_SSH_COMMAND="ssh -o ServerAliveInterval=20 -o ServerAliveCountMax=20
+                         -o TCPKeepAlive=yes"
+    4a33b696..2ec3ffe1  main -> main
+
+FINAL STATE
+  tracked files      39,265
+  packed size        138.80 MiB   (NB: far below the ~580 MB apparent size --
+                                   the 39k near-identical JSONs delta-compress
+                                   extremely well; no Git LFS needed anywhere)
+  largest file       4.7 MB  analysis/reparse_answers_output.json
+                     (GitHub hard limit is 100 MB; nothing came close)
+  uncommitted        0
+
+INDEPENDENT VERIFICATION -- fresh `git clone --no-local` from GitHub, compared
+against the local working tree, NOT against local git objects:
+  files on GitHub          39,265
+  files in local HEAD      39,265
+  name-level diff           0 lines
+  remote tree sha  bb8d6bf6c6505c851e7aa7b320d5ba4caf5d63f6
+  local  tree sha  bb8d6bf6c6505c851e7aa7b320d5ba4caf5d63f6   IDENTICAL
+  => byte-for-byte equality of the entire tracked tree, not merely equal counts.
+
+  Present in clone (spot-checked): README.md, .gitignore,
+    MANIFESTS/residuals.manifest, results/paper_stats/posterior_probe.json,
+    analysis/{probe_train,posterior_probe,steer_defense}.py,
+    core/model_loader.py, envs/bos.py, prompts/bandit_forced.txt,
+    AnonymousSubmission2027.tex, DOCUMENTATION.txt, ABL_dry_v1_snapshot/results,
+    plots/belief_layers/Belief-Action.pdf
+  Absent from clone (as intended): residuals, archive, ABL_dry_v1,
+    core_clariden-ln004_118572, ABL_notally_v1/residuals
+
+NEW FILES CREATED IN THE WORKING TREE BY THIS MIGRATION (nothing else changed):
+  .gitignore
+  README.md
+  MANIFESTS/{residuals,ABL_dry_v1,archive}.manifest
+  ABL_dry_v1_snapshot/{responses,results}   4,860 files, 47 MB
+  .git/                                     324 MB before gc
+
+*** THIS REPO IS PRIVATE AND MUST NEVER BE LINKED FROM THE PAPER. ***
+Commits are authored joeunyook <yookjoeun@gmail.com>; the tree contains
+DOCUMENTATION.txt, cluster paths, account codes and job IDs. It is a recovery
+archive, not an anonymous artifact. The AAAI supplementary code bundle is a
+SEPARATE, anonymized artifact built from scratch.
+
+--------------------------------------------------------------------------------
+6. WHAT A FUTURE SESSION MUST DO
+--------------------------------------------------------------------------------
+ - COPY scratch residuals/ and ABL_dry_v1/ to a0133 store BEFORE ~2026-08-10.
+   This is the only item with a deadline. Nothing else in this entry expires.
+ - Capture the environment while it still exists:
+     micromamba env export -n ftdiag > env_ftdiag.yml ; pip freeze
+   The current env was rebuilt from an unpinned recipe, so a fresh build three
+   months out will NOT reproduce library versions. Not yet done.
+ - DATA_LOCATIONS.md is STALE on one row: it says the micromamba env lives on
+   /capstor/scratch. It was relocated to a0133 store on 2026-07-24 precisely
+   because scratch purged it. README.md carries the correction; the .md itself
+   was deliberately NOT edited (no-modification rule).
+ - The repo is now the working tree itself, so future work is committed in
+   place. Re-run `git add -A` expect ~20 min at this file count on VAST.
