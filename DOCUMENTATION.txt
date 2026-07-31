@@ -5090,3 +5090,96 @@ SEPARATE, anonymized artifact built from scratch.
    was deliberately NOT edited (no-modification rule).
  - The repo is now the working tree itself, so future work is committed in
    place. Re-run `git add -A` expect ~20 min at this file count on VAST.
+
+================================================================================
+SESSION LOG -- 2026-07-31 (part 2) -- *** STATUS BOARD: GITHUB MIGRATION DONE;
+RESIDUAL PRESERVATION RUNNING AS SLURM JOB 2956977 *** read this first on return
+--------------------------------------------------------------------------------
+
+1. GITHUB MIGRATION -- COMPLETE, VERIFIED, NOTHING OUTSTANDING
+--------------------------------------------------------------------------------
+Both repositories are pushed and confirmed byte-identical to local by fresh
+clone (git tree SHA comparison, not just file counts).
+
+  joeunyook/Decision_Localize_raw   PRIVATE. Full recovery archive.
+      HEAD 3780999   39,265 files   138.8 MiB packed   0 uncommitted
+      Excludes: residual activations, model weights, 5.74 GB core dump,
+      superseded archive/ residuals. MANIFESTS/ lists every excluded file.
+      *** NEVER LINK THIS FROM THE PAPER *** -- commits carry the real author
+      identity and the tree contains cluster paths and DOCUMENTATION.txt.
+
+  joeunyook/AAAI_submission         Reviewer-facing supplementary bundle.
+      HEAD 255c520   1,669 files   30 MB
+      Built from scratch, NOT filtered from the raw repo. Commits authored
+      "Anonymous Author <anonymous@example.invalid>". Whole-bundle grep for
+      joeunyook / yookjoeun / capstor / cscs / clariden / swissai / a0133 /
+      a0107 returns ZERO hits, including inside the 1,600 sample JSONs.
+      Contents: envs/ (8 scenarios + oracle), probes/ (P1/P2/P3 + steering),
+      prompts/ (16), prompting.py, demo/ (4 scripts, no GPU, no weights),
+      sample_data/ (2 models x 8 envs x 100 seeds + trained probes),
+      pipeline/ (full drivers), 5 READMEs.
+      demo/04_reproduce_number.py reproduces the main table to rounding.
+      NOTE the repo URL still deanonymizes; ship the ZIP, not the link:
+          zip -r supplementary_code.zip supplementary_code -x '*__pycache__*'
+
+2. RESIDUAL PRESERVATION -- IN PROGRESS AS SLURM JOB 2956977
+--------------------------------------------------------------------------------
+WHY: /capstor/scratch purges files untouched for 30 days. Oldest access time
+under residuals/ was 2026-07-11, so that tree begins purging ~2026-08-10.
+Losing it means Probe 1 cannot be re-trained and analysis/posterior_probe.py
+cannot be re-run. Every already-reported number survives regardless, because
+the trained outputs are committed to GitHub.
+
+  script     ~/logit-probe/preserve_residuals.sbatch
+  job id     2956977   submitted 2026-07-31T09:28:21+02:00   partition normal, 12h wall
+  log        ~/logit-probe/preserve_residuals_2956977.log
+
+  FROM  /capstor/scratch/cscs/joeunyook/logit-probe/{residuals,ABL_dry_v1}
+  TO    /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved/
+        (a0133 = 10 TB, was 0.5% used, NO PURGE POLICY)
+
+  Expected: residuals 41 GB / 16,262 files; ABL_dry_v1 13 GB / 9,720 files.
+  Uses rsync -a (NEVER -L: symlinks must not be dereferenced). COPY ONLY --
+  the scratch source is not modified and nothing is deleted anywhere.
+  Resume-safe: if it is killed or hits the wall, resubmit the same command.
+
+WHAT TO CHECK WHEN YOU RETURN
+  1. squeue -u $USER                  -- still running?
+  2. tail -40 ~/logit-probe/preserve_residuals_2956977.log
+     Look for the final block:
+        "RESULT: SUCCESS -- both trees preserved and verified."
+     The job verifies itself against MANIFESTS/*.manifest (the same manifests
+     committed to the GitHub repo) and prints, per tree:
+        files in manifest / files on scratch / files on store
+        "manifest vs store, differing lines: 0"
+        "STATUS: EXACT MATCH -- every file present at its recorded size"
+     Any nonzero diff count prints the first 10 offending paths, where
+        '<' = in manifest but MISSING from store
+        '>' = extra file on store
+  3. If it says "RESULT: INCOMPLETE", just resubmit; rsync copies only the gap.
+  4. du -sh /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved
+     should end near 54 GB.
+
+  ONLY AFTER a SUCCESS line: the scratch copies may be left to purge. Do not
+  delete them manually -- there is no reason to, and scratch is not short of
+  space (247 GB used of 150 TB).
+
+3. SLURM GOTCHA THAT COST TWO FAILED SUBMISSIONS
+--------------------------------------------------------------------------------
+The login environment sets SBATCH_ACCOUNT=a0107, and Slurm ENVIRONMENT
+VARIABLES OVERRIDE #SBATCH DIRECTIVES IN THE SCRIPT -- only command-line flags
+beat them. a0107 is a dead allocation and does not permit the `normal` QOS, so
+any `sbatch <script>` that relies on an in-script --account=a0133 fails with
+the misleading error:
+      sbatch: error: Batch job submission failed: Invalid qos specification
+
+ALWAYS SUBMIT AS:
+      sbatch --account=a0133 --qos=normal <script>
+
+This affects EVERY sbatch in this repo, not just the preservation job.
+Consider removing SBATCH_ACCOUNT from ~/.bashrc.
+
+RELATED, UNRESOLVED: HF_HOME still points at
+/capstor/store/cscs/swissai/a0107/models/joeunyook/hf_cache -- a dead project's
+storage, 89.7% full. The cached model weights may not be safe there. Not
+addressed this session; check before the next GPU run.
