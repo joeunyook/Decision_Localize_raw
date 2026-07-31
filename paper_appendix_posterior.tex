@@ -1,0 +1,179 @@
+% =============================================================================
+% Appendix -- posterior-probe methodology (formal).  Drafted 2026-07-27.
+% Regenerable: python3 analysis/posterior_probe.py -> results/paper_stats/
+% Cite from Results as Appendix~\ref{app:posterior}.
+% =============================================================================
+
+\section{Appendix A: Decoding the Baseline Posterior}
+\label{app:posterior}
+
+Probe~1 is trained on $\mathrm{sign}(\Delta U_t)$, a binary function of the
+belief rather than the belief itself. This appendix specifies the analysis that
+separates the two, and states precisely what its result licenses.
+
+\subsection{A.1 Setup}
+
+Fix a combination $c=(m,S)$ of model $m$ and scenario $S$. Sessions are indexed
+by seed $s\in\mathcal{S}$, $|\mathcal{S}|=100$, and steps by $t\in\{1,\dots,T\}$,
+$T=10$. For each step define
+
+\begin{align*}
+x_{s,t} &\in \mathbb{R}^{d_m}
+  && \text{final-layer residual, last prompt token,}\\
+y_{s,t} &= p(\theta\mid h_{s,t}) \in \Delta^{K_S-1}
+  && \text{exact posterior, } K_S=|\Theta_S|,\\
+u_{s,t} &= \Delta U_{s,t} \in \mathbb{R}
+  && \text{baseline expected-utility margin.}
+\end{align*}
+
+$y$ is recomputed from the stored history by the environment's own posterior
+map using only records preceding $t$; $u$ is recovered by inverting the
+scenario's oracle link. $K_S=4$ for \textit{Trust Game}, \textit{Machine},
+\textit{Chicken} and $K_S=3$ otherwise. \textit{Bandit} is excluded: its
+hidden parameter is binary, so $y$ is one-dimensional and monotone in $u$, and
+the test of \S A.4 is vacuous there. This leaves $63$ combinations of
+$n=1000$ steps each.
+
+Regressions are fitted \emph{within} a combination only, so posteriors of
+different dimension are never reconciled and no quantity is pooled across
+scenarios.
+
+\subsection{A.2 Estimator}
+
+Multi-output ridge regression, in dual form since $n\ll d_m$. For a training
+index set with centered, scaled design $X\in\mathbb{R}^{n_{\mathrm{tr}}\times d_m}$
+and targets $Y$,
+\[
+\hat A=\bigl(XX^{\!\top}+\lambda I\bigr)^{-1}\!\bigl(Y-\bar y\bigr),
+\qquad
+\hat Y_{\ast}=X_{\ast}X^{\!\top}\hat A+\bar y ,
+\]
+with $\lambda=\operatorname{tr}(XX^{\!\top})/n_{\mathrm{tr}}$, a scale-free
+default so that $\lambda$ is comparable across models of differing width. The
+map $x\mapsto\hat y$ is linear. The penalty is \emph{not} tuned; reported
+values are therefore a lower bound on an optimised probe.
+
+\subsection{A.3 Protocol}
+
+Let $\{\mathcal{F}_1,\dots,\mathcal{F}_{10}\}$ partition $\mathcal{S}$ into ten
+folds \emph{of seeds}. For each fold, with $\mathrm{tr}$ and $\mathrm{te}$ the
+step sets induced by the complementary seed sets:
+
+\begin{enumerate}\itemsep2pt
+\item Compute the mean and scale of $x$ on $\mathrm{tr}$; apply to both sets.
+\item Let $e_1<\dots<e_{21}$ be the empirical quantiles of $\{u_i\}_{i\in\mathrm{tr}}$
+      and $b(\cdot)$ the induced $20$-level bin map.
+\item For each bin $\beta$, set $\bar y_\beta=\operatorname{mean}\{y_i : i\in\mathrm{tr},\,
+      b(u_i)=\beta\}$, falling back to $\bar y_{\mathrm{tr}}$ when
+      $|\{i\in\mathrm{tr}: b(u_i)=\beta\}|<5$.
+\item Replace $y_i \leftarrow y_i-\bar y_{b(u_i)}$ for $i\in\mathrm{tr}\cup\mathrm{te}$.
+\item Fit \S A.2 on $\mathrm{tr}$; predict on $\mathrm{te}$.
+\end{enumerate}
+
+Grouping by seed is required, not cosmetic: the $T$ steps of a session share a
+hidden parameter and a history prefix, so a step-level split would leak session
+identity into every fold.
+
+Three quantities are computed, all on held-out folds: $R^2_{\mathrm{full}}$
+(steps 2--4 omitted), $R^2_{\mathrm{partial}}$ (full protocol), and
+$R^2_{\mathrm{shuf}}$ (full protocol with $y$ permuted across steps, fixing the
+zero point empirically). $R^2$ is evaluated per output coordinate against the
+\emph{training} mean,
+$1-\sum_{\mathrm{te}}(y-\hat y)^2/\sum_{\mathrm{te}}(y-\bar y_{\mathrm{tr}})^2$,
+then averaged over the $K_S$ coordinates --- the out-of-sample convention,
+stricter than scoring against the test mean.
+
+\subsection{A.4 No Leakage, and What a Positive Result Licenses}
+
+\begin{proposition}[Fold independence]
+For every fold, both the ridge coefficients $\hat A$ and the correction map
+$\beta\mapsto\bar y_\beta$ are measurable with respect to the training data
+alone. Test-fold observations enter only through evaluation.
+\end{proposition}
+
+\begin{proof}
+The bin edges in step~2 are quantiles of $\{u_i\}_{i\in\mathrm{tr}}$; the bin
+means in step~3 average $\{y_i\}_{i\in\mathrm{tr}}$; the standardisation in
+step~1 uses training moments; and $\hat A$ in \S A.2 is a function of
+$(X_{\mathrm{tr}},Y_{\mathrm{tr}})$ only. Step~4 applies the already-fitted map
+$b$ and the already-fitted means $\bar y_\beta$ pointwise. No statistic of
+$\mathrm{te}$ appears in any of these. \qedhere
+\end{proof}
+
+Consequently $R^2_{\mathrm{partial}}$ is a genuine held-out quantity, and its
+positivity cannot be produced by the residualisation itself. Substantively:
+
+\begin{quote}
+$R^2_{\mathrm{partial}}>0$ implies $x$ carries information about
+$p(\theta\mid h_t)$ that is not a function of $b(u)$.
+\end{quote}
+
+Two qualifications make this exact. First, the removed component is
+$\mathbb{E}[y\mid b(u)]$, not $\mathbb{E}[y\mid u]$: a binned conditional mean
+absorbs any measurable function of $u$ only up to the resolution of the
+partition, here $20$ quantile levels. Second, the baseline-optimal action is
+$\mathrm{sign}(u)$, and $b$ refines the sign partition except within the single
+bin containing $0$; the removed component therefore subsumes the action label
+outside that bin. Positive $R^2_{\mathrm{partial}}$ is thus posterior
+information beyond the decision margin at $20$-bin resolution, which is the
+claim made in the main text.
+
+The interpretation rests on linearity. A linear map cannot accumulate log
+likelihoods across ten rounds and renormalise them; if a linear readout of $x$
+lands on $p(\theta\mid h_t)$, that computation was already performed by the
+network.
+
+\subsection{A.5 Results}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Scenario} & $K_S$ & $R^2_{\mathrm{full}}$ & $R^2_{\mathrm{partial}}$
+& \textbf{range} & $R^2_{\mathrm{shuf}}$ \\
+\midrule
+Machine        & 4 & 0.915 & 0.568 & 0.463--0.624 & $-0.005$ \\
+Trust Game     & 4 & 0.914 & 0.525 & 0.451--0.581 & $-0.006$ \\
+Chicken        & 4 & 0.830 & 0.470 & 0.329--0.574 & $-0.014$ \\
+Stag Hunt      & 3 & 0.714 & 0.460 & 0.283--0.593 & $-0.013$ \\
+BoS            & 3 & 0.691 & 0.453 & 0.174--0.581 & $-0.018$ \\
+Pennies        & 3 & 0.671 & 0.382 & 0.201--0.493 & $-0.014$ \\
+Monty Hall     & 3 & 0.774 & 0.300 & 0.172--0.478 & $-0.008$ \\
+\midrule
+\textbf{Overall} & & \textbf{0.787} & \textbf{0.451} & 0.172--0.624 & $-0.011$ \\
+\bottomrule
+\end{tabular}
+\caption{Held-out decoding of the baseline posterior from the final-layer
+residual stream. Rows average nine models; \textbf{range} spans the nine
+combination-level values of $R^2_{\mathrm{partial}}$. Seed-grouped
+cross-validation, $1000$ steps per combination.}
+\label{tab:posterior-probe}
+\end{table}
+
+All $63$ combinations are positive on the partial test; the largest shuffled
+value anywhere in the grid is $0.001$. Weakest combinations:
+\model{R1-Qwen} 7B on \textit{BoS} ($0.174$) and \model{Gemma-2} 2B on
+\textit{Monty Hall} ($0.172$). Strongest: \model{Qwen-3.6} 27B and
+\model{Llama-3.3} 70B on \textit{Machine} ($0.624$, $0.616$).
+
+The three reactive scenarios retain $0.382$--$0.460$, comparable to
+\textit{Chicken} ($0.470$) and above \textit{Monty Hall} ($0.300$): the
+posterior over opponent types is represented about as well where the
+belief-to-action mapping fails as where it succeeds. In those scenarios a
+positive partial $R^2$ necessarily means the representation separates
+hypotheses implying the \emph{same} action --- an opponent playing
+\textsc{Tit-for-Tat} after the agent played \textsc{Stag} from one that always
+plays \textsc{Stag} --- a distinction the decision margin cannot express, which
+is why it survives residualisation.
+
+\subsection{A.6 Scope}
+
+We claim a substantial component of the posterior is linearly decodable, not
+that the posterior is recovered: $0.787$ and $0.451$ are substantial, not
+ceiling. Decodability is not use; whether the action selection reads this
+representation is the question the steering intervention addresses. Values are
+final-layer only, under $10$-fold seed-grouped cross-validation rather than the
+leave-one-seed-out protocol used for the reported Probe~1 accuracies, and with
+an untuned penalty.

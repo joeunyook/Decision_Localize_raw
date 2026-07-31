@@ -1,0 +1,276 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "monty",
+    "seed": 6,
+    "T": 10,
+    "hidden_param": "rule=sticky",
+    "act0": "STAY",
+    "act1": "SWITCH",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.8303030303030302,
+      "drift_corr_post": 0.7212121212121211,
+      "mean_delta_pre": -14.57122437953949,
+      "mean_abs_delta_pre": 17.79615294933319,
+      "mean_delta_amp": -2.5112125938758254,
+      "oracle_range": 0.5555216871006345
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5555555555555556,
+      "delta_pre_sem": 16.124642848968506,
+      "delta_pre_by_mapping": [
+        15.06245231628418,
+        17.186833381652832
+      ],
+      "letter_bias": -1.0621905326843262,
+      "delta_post_sem": 28.468719959259033,
+      "delta_amp": 12.344077110290527,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 413,
+      "tail_gap_mean": 6.06822148680687,
+      "tail_gap_std": 4.7667666921110206,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "1. **What does the data tell you about each rule?**\nThere are no completed rounds yet. Therefore, there is no observed data to favor one rule over another.\n\n2. **What is your updated belief about which rule is in play?**\nSince the rule was chosen uniformly at random and no data has been collected, the prior probabilities remain unchanged. Each rule has a probability of $1/3$.\n- $P(\\text{Rule 1}) = 1/3$\n- $P(\\text{Rule 2}) = 1/3$\n- $P(\\text{Rule 3}) = 1/3$\n\n3. **What is the optimal action given that belief?**\nWe calculate the probability of winning for each action (Keep vs. Switch) by marginalizing over the three possible rules:\n- **Probability of winning if I Keep (A):**\n  - Under Rule 1: $1/3$\n  - Under Rule 2: $1$\n  - Under Rule 3: $0$\n  - Total: $(1/3 \\times 1/3) + (1/3 \\times 1) + (1/3 \\times 0) = 1/9 + 3/9 + 0 = 4/9$\n\n- **Probability of winning if I Switch (B):**\n  - Under Rule 1: $2/3$\n  - Under Rule 2: $0$\n  - Under Rule 3: $1$\n  - Total: $(1/3 \\times 2/3) + (1/3 \\times 0) + (1/3 \\times 1) = 2/9 + 0 + 3/9 = 5/9$\n\nSince $5/9 > 4/9$, switching is the mathematically optimal choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.16666666666729166,
+      "delta_pre_sem": -13.937252521514893,
+      "delta_pre_by_mapping": [
+        -14.999521255493164,
+        -12.874983787536621
+      ],
+      "letter_bias": -1.0622687339782715,
+      "delta_post_sem": -22.218526512384415,
+      "delta_amp": -8.281273990869522,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 852,
+      "tail_gap_mean": 2.278031774684787,
+      "tail_gap_std": 6.343821832198607,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have one observation: the player chose to **STAY** and **WON**.\n*   **Rule 1 (Random):** This outcome is possible. The probability of winning by staying is $1/3$.\n*   **Rule 2 (Always Initial):** This outcome is expected. The probability of winning by staying is $1$.\n*   **Rule 3 (Always Remaining):** This outcome is impossible. Under Rule 3, staying always results in a loss.\n\n**2. What is your updated belief about which rule is in play?**\nPrior to the data, each rule had a probability of $1/3$. We use Bayesian updating based on the observation (STAY $\\rightarrow$ WON):\n*   $P(\\text{Data} | \\text{Rule 1}) = 1/3$\n*   $P(\\text{Data} | \\text{Rule 2}) = 1$\n*   $P(\\text{Data} | \\text{Rule 3}) = 0$\n\nThe posterior probabilities are proportional to these values:\n*   $P(\\text{Rule 1} | \\text{Data}) \\propto 1/3 \\times 1/3 = 1/9$\n*   $P(\\text{Rule 2} | \\text{Data}) \\propto 1 \\times 1/3 = 3/9$\n*   $P(\\text{Rule 3} | \\text{Data}) \\propto 0 \\times 1/3 = 0$\n\nNormalizing these, we get:\n*   $P(\\text{Rule 1}) = (1/9) / (4/9) = 1/4$\n*   $P(\\text{Rule 2}) = (3/9) / (4/9) = 3/4$\n*   $P(\\text{Rule 3}) = 0$\n\n**3. What is the optimal action given that belief?**\nWe calculate the expected probability of winning for each action:\n*   **Probability of winning if we STAY (Option A):**\n    $P(\\text{Win} | \\text{Stay}) = P(\\text{Win} | \\text{Stay}, \\text{R1})P(\\text{R1}) + P(\\text{Win} | \\text{Stay}, \\text{R2})P(\\text{R2}) + P(\\text{Win} | \\text{Stay}, \\text{R3})P(\\text{R3})$\n    $P(\\text{Win} | \\text{Stay}) = (1/3 \\times 1/4) + (1 \\times 3/4) + (0 \\times 0) = 1/12 + 9/12 = 10/12 = 5/6 \\approx 83.3\\%$\n\n*   **Probability of winning if we SWITCH (Option B):**\n    $P(\\text{Win} | \\text{Switch}) = P(\\text{Win} | \\text{Switch}, \\text{R1})P(\\text{R1}) + P(\\text{Win} | \\text{Switch}, \\text{R2})P(\\text{R2}) + P(\\text{Win} | \\text{Switch}, \\text{R3})P(\\text{R3})$\n    $P(\\text{Win} | \\text{Switch}) = (2/3 \\times 1/4) + (0 \\times 3/4) + (1 \\times 0) = 2/12 = 1/6 \\approx 16.7\\%$\n\nSince $5/6 > 1/6$, the optimal action is to stay.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.06666666666666668,
+      "delta_pre_sem": -15.781152725219727,
+      "delta_pre_by_mapping": [
+        -14.499825477600098,
+        -17.062479972839355
+      ],
+      "letter_bias": 1.281327247619629,
+      "delta_post_sem": -21.851022362709045,
+      "delta_amp": -6.069869637489319,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 709,
+      "tail_gap_mean": 2.7567714872956275,
+      "tail_gap_std": 5.4475813810540386,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 1,
+        "switch_door": 3
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have two observations:\n- Round 1: Action STAY $\\rightarrow$ WON\n- Round 2: Action SWITCH $\\rightarrow$ LOST\n\nLet's evaluate how these outcomes align with the three possible rules:\n- **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time. The observed data (Stay: Win, Switch: Loss) is possible under this rule, though it is the \"unlikely\" outcome for the switch.\n- **Rule 2 (Always Initial):** Staying always wins; Switching always loses. The observed data (Stay: Win, Switch: Loss) is perfectly consistent with this rule.\n- **Rule 3 (Always Remaining):** Staying always loses; Switching always wins. The observed data (Stay: Win, Switch: Loss) is impossible under this rule.\n\n**2. What is your updated belief about which rule is in play?**\nPrior to the data, each rule had a probability of $1/3$.\n- $P(\\text{Data} | \\text{Rule 1}) = (1/3) \\times (1/3) = 1/9$\n- $P(\\text{Data} | \\text{Rule 2}) = 1 \\times 1 = 1$\n- $P(\\text{Data} | \\text{Rule 3}) = 0 \\times 0 = 0$\n\nUsing Bayesian updating, Rule 3 is eliminated. Rule 2 is significantly more likely than Rule 1 because the observed data is the guaranteed outcome for Rule 2, whereas it is a low-probability outcome for Rule 1.\nThe posterior probability for Rule 2 is $\\frac{1}{1 + 1/9} = \\frac{9}{10}$ (90%), and for Rule 1 is $\\frac{1/9}{1 + 1/9} = \\frac{1}{10}$ (10%).\n\n**3. What is the optimal action given that belief?**\nWe calculate the expected probability of winning for each action:\n- **$P(\\text{Win} | \\text{STAY}) = P(\\text{Rule 1}) \\times (1/3) + P(\\text{Rule 2}) \\times (1) + P(\\text{Rule 3}) \\times (0)$**\n  $P(\\text{Win} | \\text{STAY}) = (0.1 \\times 0.333) + (0.9 \\times 1) + 0 \\approx 0.933$\n- **$P(\\text{Win} | \\text{SWITCH}) = P(\\text{Rule 1}) \\times (2/3) + P(\\text{Rule 2}) \\times (0) + P(\\text{Rule 3}) \\times (1)$**\n  $P(\\text{Win} | \\text{SWITCH}) = (0.1 \\times 0.666) + 0 + 0 \\approx 0.066$\n\nStaying is overwhelmingly the optimal strategy.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.023809523809523815,
+      "delta_pre_sem": -17.655598163604736,
+      "delta_pre_by_mapping": [
+        -17.623714447021484,
+        -17.68748188018799
+      ],
+      "letter_bias": 0.03188371658325195,
+      "delta_post_sem": -21.884501844644547,
+      "delta_amp": -4.22890368103981,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 605,
+      "tail_gap_mean": -1.700095162987709,
+      "tail_gap_std": 4.496116900676011,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 3,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 3 rounds:\n- Round 1: STAY $\\rightarrow$ WON\n- Round 2: SWITCH $\\rightarrow$ LOST\n- Round 3: SWITCH $\\rightarrow$ LOST\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and winning by switching is $2/3$.\n  Likelihood: $P(\\text{Data} | R1) = (1/3) \\times (1/3) \\times (1/3) = 1/27 \\approx 0.037$\n- **Rule 2 (Always Initial):** The probability of winning by staying is $1$ and winning by switching is $0$.\n  Likelihood: $P(\\text{Data} | R2) = 1 \\times 1 \\times 1 = 1.0$\n- **Rule 3 (Always Remaining):** The probability of winning by staying is $0$ and winning by switching is $1$.\n  Likelihood: $P(\\text{Data} | R3) = 0 \\times 0 \\times 0 = 0.0$\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a uniform prior $P(R1) = P(R2) = P(R3) = 1/3$.\nThe posterior probability is proportional to the likelihood:\n- $P(R1 | \\text{Data}) \\propto 1/27$\n- $P(R2 | \\text{Data}) \\propto 1$\n- $P(R3 | \\text{Data}) \\propto 0$\n\nNormalizing these, $P(R2 | \\text{Data}) = \\frac{1}{1 + 1/27} = \\frac{27}{28} \\approx 96.4\\%$.\nThe data strongly suggests that Rule 2 is in play.\n\n**3. What is the optimal action given that belief?**\n- Under Rule 1, switching is better (2/3 win rate).\n- Under Rule 2, staying is better (100% win rate).\n- Under Rule 3, switching is better (100% win rate).\n\nGiven that the probability of Rule 2 is overwhelmingly high ($\\approx 96.4\\%$), the expected value of staying is significantly higher than the expected value of switching.\n\n**4. Final Answer**\nSince the evidence points toward the prize always being behind the initial selection, the optimal move is to keep the original door.\n\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.00813008130081301,
+      "delta_pre_sem": -19.17083191871643,
+      "delta_pre_by_mapping": [
+        -18.591689109802246,
+        -19.749974727630615
+      ],
+      "letter_bias": 0.5791428089141846,
+      "delta_post_sem": -22.00073090195656,
+      "delta_amp": -2.8298989832401276,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 708,
+      "tail_gap_mean": 2.6025098069012165,
+      "tail_gap_std": 6.008394224562777,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 4 rounds:\n- Round 1: STAY $\\rightarrow$ WON\n- Round 2: SWITCH $\\rightarrow$ LOST\n- Round 3: SWITCH $\\rightarrow$ LOST\n- Round 4: STAY $\\rightarrow$ WON\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and by switching is $2/3$. The probability of this specific sequence is $(1/3) \\times (1/3) \\times (1/3) \\times (1/3) = 1/81 \\approx 0.0123$.\n- **Rule 2 (Always Initial):** Staying always wins (prob 1), and switching always loses (prob 1). The probability of this sequence is $1 \\times 1 \\times 1 \\times 1 = 1$.\n- **Rule 3 (Always Remaining):** Staying always loses (prob 0), and switching always wins (prob 1). The probability of this sequence is $0 \\times 0 \\times 0 \\times 0 = 0$.\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a prior probability of $1/3$ for each rule.\n- $P(\\text{Data} | \\text{Rule 1}) = 1/81$\n- $P(\\text{Data} | \\text{Rule 2}) = 1$\n- $P(\\text{Data} | \\text{Rule 3}) = 0$\n\nThe posterior probability for Rule 2 is overwhelmingly high:\n$P(\\text{Rule 2} | \\text{Data}) = \\frac{1 \\cdot (1/3)}{(1 \\cdot 1/3) + (1/81 \\cdot 1/3) + (0 \\cdot 1/3)} = \\frac{1}{1 + 1/81} = \\frac{81}{82} \\approx 98.78\\%$.\nRule 1 has a very low probability ($\\approx 1.22\\%$), and Rule 3 is impossible.\n\n**3. What is the optimal action given that belief?**\n- If Rule 2 is in play, STAY (Option A) wins 100% of the time.\n- If Rule 1 is in play, SWITCH (Option B) wins 66.7% of the time.\n\nExpected value of STAY: $P(\\text{Rule 2}) \\cdot 1 + P(\\text{Rule 1}) \\cdot (1/3) \\approx 0.9878 + 0.0041 = 0.9919$.\nExpected value of SWITCH: $P(\\text{Rule 2}) \\cdot 0 + P(\\text{Rule 1}) \\cdot (2/3) \\approx 0 + 0.0082 = 0.0082$.\n\nThe optimal action is to stay.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.0027322404371584704,
+      "delta_pre_sem": -18.670718669891357,
+      "delta_pre_by_mapping": [
+        -18.15396022796631,
+        -19.187477111816406
+      ],
+      "letter_bias": 0.5167584419250488,
+      "delta_post_sem": -22.354825153946877,
+      "delta_amp": -3.684106484055519,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 374,
+      "tail_gap_mean": -2.838038741648197,
+      "tail_gap_std": 5.188036749205735,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 5 rounds:\n- **STAY**: 3 wins, 0 losses.\n- **SWITCH**: 0 wins, 2 losses.\n\nLet's evaluate how this data aligns with the three possible rules:\n- **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time. The observed data (Stay winning 100% of the time and Switch winning 0%) is unlikely under this rule, though possible.\n- **Rule 2 (Always Initial Selection):** Staying always wins; Switching always loses. The observed data is perfectly consistent with this rule.\n- **Rule 3 (Always Remaining Door):** Switching always wins; Staying always loses. The observed data is impossible under this rule (since we have seen 3 wins by staying and 2 losses by switching).\n\n**2. What is your updated belief about which rule is in play?**\n- Rule 3 is eliminated (probability = 0).\n- Rule 2 is highly probable because the data matches its predictions perfectly.\n- Rule 1 is possible but significantly less likely given the streak of \"Stay\" wins and \"Switch\" losses.\n\nGiven the strong evidence, the belief is heavily weighted toward **Rule 2**.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 2, the prize is always placed behind the initial selection. Therefore, the optimal strategy is to **STAY** (keep the original door).\n\n**4. Final Answer**\nThe initial selection was Door 3. To stay with the initial selection, you choose Option A.\n\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.0009132420091324201,
+      "delta_pre_sem": -19.34223461151123,
+      "delta_pre_by_mapping": [
+        -18.93449115753174,
+        -19.749978065490723
+      ],
+      "letter_bias": 0.4077434539794922,
+      "delta_post_sem": -22.31026940047741,
+      "delta_amp": -2.968034788966179,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 563,
+      "tail_gap_mean": -2.676182744204998,
+      "tail_gap_std": 5.312478429649358,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 3,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 6 rounds:\n- **STAY**: 4 wins, 0 losses.\n- **SWITCH**: 0 wins, 2 losses.\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and by switching is $2/3$. The probability of this specific sequence (4 STAY wins, 2 SWITCH losses) is $(1/3)^4 \\times (1/3)^2 = (1/3)^6 = 1/729$.\n- **Rule 2 (Always Initial):** The probability of winning by staying is $1$ and by switching is $0$. The probability of this sequence is $1^4 \\times 1^2 = 1$.\n- **Rule 3 (Always Remaining):** The probability of winning by staying is $0$ and by switching is $1$. The probability of this sequence is $0^4 \\times 0^2 = 0$.\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a uniform prior $P(R1) = P(R2) = P(R3) = 1/3$.\n- $P(\\text{Data} | R1) = 1/729$\n- $P(\\text{Data} | R2) = 1$\n- $P(\\text{Data} | R3) = 0$\n\nThe posterior probability for Rule 2 is overwhelmingly high:\n$P(R2 | \\text{Data}) = \\frac{1 \\cdot (1/3)}{(1 \\cdot 1/3) + (1/729 \\cdot 1/3) + (0 \\cdot 1/3)} = \\frac{1}{1 + 1/729} = \\frac{729}{730} \\approx 99.86\\%$.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 2, the prize is always behind the initial selection. Therefore, the optimal strategy is to **STAY**. Even if Rule 1 were in play, the current evidence strongly suggests that the \"prize always placed behind the initial selection\" rule is the governing mechanism for this session.\n\n**4. Final Answer**\nThe initial selection is Door 1. To stay with the initial selection, you choose Option A.\n\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.0003046922608165751,
+      "delta_pre_sem": -18.843077421188354,
+      "delta_pre_by_mapping": [
+        -18.498673915863037,
+        -19.187480926513672
+      ],
+      "letter_bias": 0.3444035053253174,
+      "delta_post_sem": -22.264749443158507,
+      "delta_amp": -3.421672021970153,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 548,
+      "tail_gap_mean": -3.064270988292992,
+      "tail_gap_std": 5.083549043282293,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have a history of 7 rounds:\n- **STAY**: 5 wins, 0 losses.\n- **SWITCH**: 0 wins, 2 losses.\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and by switching is $2/3$. The probability of this specific sequence (5 STAY wins, 2 SWITCH losses) is $(1/3)^5 \\times (1/3)^2 = (1/3)^7 \\approx 0.000457$.\n- **Rule 2 (Always Initial):** The probability of winning by staying is $1$ and by switching is $0$. The probability of this sequence is $1^5 \\times 1^2 = 1$.\n- **Rule 3 (Always Remaining):** The probability of winning by staying is $0$ and by switching is $1$. The probability of this sequence is $0^5 \\times 0^2 = 0$.\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a uniform prior $P(R1) = P(R2) = P(R3) = 1/3$.\n- $P(\\text{Data} | R1) = (1/3)^7$\n- $P(\\text{Data} | R2) = 1$\n- $P(\\text{Data} | R3) = 0$\n\nThe posterior probability for Rule 2 is overwhelmingly high:\n$P(R2 | \\text{Data}) = \\frac{1 \\cdot (1/3)}{1 \\cdot (1/3) + (1/3)^7 \\cdot (1/3) + 0 \\cdot (1/3)} \\approx 1$.\nThe data strongly suggests that Rule 2 is in effect.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 2, the prize is always placed behind the initial selection. Therefore, the probability of winning by staying is 100%, and the probability of winning by switching is 0%. To maximize the chance of winning, the optimal action is to keep the original door.\n\n**4. Final Answer**\nThe initial selection is Door 3. To stay with the initial selection, you choose Option A.\n\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.00010159504216194241,
+      "delta_pre_sem": -19.343000411987305,
+      "delta_pre_by_mapping": [
+        -18.904776573181152,
+        -19.781224250793457
+      ],
+      "letter_bias": 0.43822383880615234,
+      "delta_post_sem": -22.03478640317917,
+      "delta_amp": -2.691785991191864,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 572,
+      "tail_gap_mean": -2.0072351285815238,
+      "tail_gap_std": 5.624960231503729,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 3,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have a history of 8 rounds:\n- **STAY**: 5 attempts, 5 wins (100% win rate)\n- **SWITCH**: 3 attempts, 0 wins (0% win rate)\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and by switching is $2/3$. The probability of this specific sequence (5 stay-wins, 3 switch-losses) is $(1/3)^5 \\times (1/3)^3 = (1/3)^8 \\approx 0.00015$.\n- **Rule 2 (Always Initial):** The probability of winning by staying is $1$ and by switching is $0$. The probability of this sequence is $1^5 \\times 1^3 = 1$.\n- **Rule 3 (Always Remaining):** The probability of winning by staying is $0$ and by switching is $1$. The probability of this sequence is $0^5 \\times 0^3 = 0$.\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a prior probability of $1/3$ for each rule.\n- $P(\\text{Data} | \\text{Rule 1}) \\approx 0.00015$\n- $P(\\text{Data} | \\text{Rule 2}) = 1$\n- $P(\\text{Data} | \\text{Rule 3}) = 0$\n\nThe posterior probability for Rule 2 is overwhelmingly high:\n$P(\\text{Rule 2} | \\text{Data}) = \\frac{1 \\cdot (1/3)}{(1 \\cdot 1/3) + (0.00015 \\cdot 1/3) + (0 \\cdot 1/3)} \\approx 0.99985$.\nWe can be almost certain that Rule 2 is in play.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 2, the prize is always placed behind the initial selection. Therefore, the probability of winning if you **STAY** is 100%, and the probability of winning if you **SWITCH** is 0%. The optimal action is to keep the original door.\n\n**4. Final Answer**\nThe initial selection was Door 1. Option A is to keep the original door.\n\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 3.386845492108649e-05,
+      "delta_pre_sem": -19.09302020072937,
+      "delta_pre_by_mapping": [
+        -18.56106662750244,
+        -19.6249737739563
+      ],
+      "letter_bias": 0.5319535732269287,
+      "delta_post_sem": -22.373677670955658,
+      "delta_amp": -3.280657470226288,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 538,
+      "tail_gap_mean": -1.997670431137085,
+      "tail_gap_std": 4.824012816572717,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have a history of 9 rounds:\n- **STAY**: 5 attempts, 5 wins (100% win rate)\n- **SWITCH**: 4 attempts, 0 wins (0% win rate)\n\nLet's evaluate the likelihood of this data under each rule:\n- **Rule 1 (Random):** The probability of winning by staying is $1/3$ and switching is $2/3$. The probability of 5 STAY wins and 4 SWITCH losses is $(1/3)^5 \\times (1/3)^4 = (1/3)^9 \\approx 0.00005$.\n- **Rule 2 (Always Initial):** The probability of winning by staying is $1$ and switching is $0$. The probability of this data is $1^5 \\times 1^4 = 1$.\n- **Rule 3 (Always Remaining):** The probability of winning by staying is $0$ and switching is $1$. The probability of this data is $0^5 \\times 0^4 = 0$.\n\n**2. What is your updated belief about which rule is in play?**\nUsing Bayesian updating, we start with a uniform prior $P(R1)=P(R2)=P(R3)=1/3$.\n- $P(\\text{Data}|R1) = (1/3)^9$\n- $P(\\text{Data}|R2) = 1$\n- $P(\\text{Data}|R3) = 0$\n\nThe posterior probability for Rule 2 is overwhelmingly high:\n$P(R2|\\text{Data}) = \\frac{1 \\cdot 1/3}{(1 \\cdot 1/3) + ((1/3)^9 \\cdot 1/3) + (0 \\cdot 1/3)} \\approx 1$.\nThe data strongly indicates that Rule 2 is in effect.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 2, the prize is always placed behind the initial selection. Therefore, the probability of winning by staying is 100%, and the probability of winning by switching is 0%. To maximize the chance of winning, you should keep your original door.\n\n**4. Final Answer**\nThe initial selection was Door 2. Option A is to keep the original door.\n\nAnswer: A"
+    }
+  ]
+}

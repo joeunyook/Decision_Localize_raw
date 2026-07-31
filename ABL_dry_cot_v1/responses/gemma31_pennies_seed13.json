@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "pennies",
+    "seed": 13,
+    "T": 10,
+    "hidden_param": "opponent=COUNTER",
+    "act0": "TAILS",
+    "act1": "HEADS",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.11515151515151514,
+      "drift_corr_post": 0.49090909090909085,
+      "mean_delta_pre": -3.1093721866607664,
+      "mean_abs_delta_pre": 4.846862077713013,
+      "mean_delta_amp": -9.506756310164928,
+      "oracle_range": 0.9171784163856171
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5,
+      "delta_pre_sem": 1.6874618530273438,
+      "delta_pre_by_mapping": [
+        -7.625009536743164,
+        10.999933242797852
+      ],
+      "letter_bias": -9.312471389770508,
+      "delta_post_sem": 19.062488555908203,
+      "delta_amp": 17.37502670288086,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 450,
+      "tail_gap_mean": -0.5225689202547074,
+      "tail_gap_std": 5.870476422261858,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Observed data analysis**: There are no prior rounds of data. Therefore, no information has been gathered to distinguish between the three possible response functions.\n\n2. **Belief update and probability**:\n   - Since the functions were chosen uniformly at random, the prior probability for each function is $1/3$.\n   - **Function 1**: Selects ACTION_X (near-certainty).\n   - **Function 2**: Selects ACTION_Y (near-certainty).\n   - **Function 3**: Selects randomly on Round 1 (50% X, 50% Y).\n   - Probability counterpart selects ACTION_X = $P(F1) \\cdot P(X|F1) + P(F2) \\cdot P(X|F2) + P(F3) \\cdot P(X|F3)$\n   - Probability $\\approx (1/3 \\cdot 1) + (1/3 \\cdot 0) + (1/3 \\cdot 0.5) = 1/3 + 1/6 = 1/2$.\n   - The probability of the counterpart selecting ACTION_X is 50%, and ACTION_Y is 50%.\n\n3. **Maximizing expected value**:\n   - Expected value of choosing ACTION_X (Option B): $0.5 \\cdot 1 + 0.5 \\cdot 0 = 0.5$.\n   - Expected value of choosing ACTION_Y (Option A): $0.5 \\cdot 1 + 0.5 \\cdot 0 = 0.5$.\n   - Since the expected values are identical, either choice is mathematically equivalent for the first round. However, in these problems, ACTION_X is typically mapped to the first option provided or a default starting point. Given the symmetry, I will select ACTION_X. (Note: The prompt labels the options as TAILS/HEADS, which correspond to ACTION_Y/ACTION_X based on the standard mapping of A/B).\n\n4. **Final Answer**:\n   Answer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.030275691986950463,
+      "delta_pre_sem": -9.374976634979248,
+      "delta_pre_by_mapping": [
+        -13.999972343444824,
+        -4.749980926513672
+      ],
+      "letter_bias": -4.624995708465576,
+      "delta_post_sem": -21.203038811683655,
+      "delta_amp": -11.828062176704407,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 331,
+      "tail_gap_mean": -1.3148955362290144,
+      "tail_gap_std": 4.610455391132064,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze Observed Data:**\n    In Round 1, I chose HEADS (ACTION_X) and the opponent chose TAILS (ACTION_Y).\n    *   **Function 1 (Always X):** Unlikely. The opponent chose Y.\n    *   **Function 2 (Always Y):** Likely. The opponent chose Y.\n    *   **Function 3 (Opposite of previous):** Possible. In Round 1, the opponent chooses randomly. They happened to choose Y.\n\n2.  **Update Beliefs and Calculate Probabilities:**\n    *   **Function 1:** Probability is very low (requires an error in Round 1).\n    *   **Function 2:** High probability. If the opponent is Function 2, they will choose TAILS (ACTION_Y) again this round.\n    *   **Function 3:** High probability. If the opponent is Function 3, they will choose the opposite of my previous action. Since I chose HEADS in Round 1, Function 3 will choose TAILS (ACTION_Y) in Round 2.\n\n    Both the most likely remaining functions (Function 2 and Function 3) predict that the opponent will select TAILS (ACTION_Y) in this round.\n\n3.  **Maximize Expected Value:**\n    Since the probability is heavily weighted toward the opponent choosing TAILS, I maximize my expected value by also choosing TAILS.\n\n4.  **Final Decision:**\n    Option A is choosing TAILS.\n\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.24929755009463486,
+      "delta_pre_sem": -15.531227111816406,
+      "delta_pre_by_mapping": [
+        -14.312479972839355,
+        -16.749974250793457
+      ],
+      "letter_bias": 1.2187471389770508,
+      "delta_post_sem": -21.43743395805359,
+      "delta_amp": -5.906206846237183,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 515,
+      "tail_gap_mean": 1.4907553046941757,
+      "tail_gap_std": 6.106449733400294,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze observed data**\n*   Round 1: You chose HEADS, opponent chose TAILS. (Payoff 0)\n*   Round 2: You chose TAILS, opponent chose TAILS. (Payoff 1)\n*   *Note: The prompt uses ACTION_X/Y in the rules but HEADS/TAILS in the data. I will treat HEADS as ACTION_X and TAILS as ACTION_Y.*\n\n**Step 2: Evaluate response functions**\n*   **Function 1 (Always X/HEADS):** Highly unlikely. The opponent chose TAILS in both observed rounds.\n*   **Function 2 (Always Y/TAILS):** Very likely. The opponent chose TAILS in both rounds regardless of your action.\n*   **Function 3 (Opposite of your previous):** Possible. In Round 1, you chose HEADS; in Round 2, the opponent chose TAILS (the opposite). However, in Round 2, you chose TAILS; if Function 3 were active, the opponent should have chosen HEADS in Round 3. Since we are currently deciding for Round 3, we look at the transition: In Round 2, you chose TAILS, so Function 3 would predict the opponent chooses HEADS now.\n\n**Step 3: Update beliefs and calculate probability**\n*   The data (TAILS, TAILS) strongly supports Function 2.\n*   Function 1 is effectively ruled out.\n*   Function 3 is still possible, but Function 2 is more consistent with the \"Always TAILS\" pattern seen so far.\n*   If Function 2 is active: Opponent chooses TAILS.\n*   If Function 3 is active: Opponent chooses the opposite of your last move (TAILS), which is HEADS.\n*   Given the opponent has chosen TAILS 100% of the time so far, the probability they choose TAILS (ACTION_Y) is significantly higher than the probability they choose HEADS (ACTION_X).\n\n**Step 4: Maximize expected value**\n*   Option A (TAILS) wins if the opponent chooses TAILS.\n*   Option B (HEADS) wins if the opponent chooses HEADS.\n*   Since the evidence strongly points toward Function 2 (Always TAILS), choosing TAILS maximizes the expected payoff.\n\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.02074380898889978,
+      "delta_pre_sem": -2.6874942779541016,
+      "delta_pre_by_mapping": [
+        -2.0000038146972656,
+        -3.3749847412109375
+      ],
+      "letter_bias": 0.6874904632568359,
+      "delta_post_sem": -21.509595289826393,
+      "delta_amp": -18.82210101187229,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 445,
+      "tail_gap_mean": -0.7699124935269356,
+      "tail_gap_std": 4.8027321215866525,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X and ACTION_Y. Based on the data provided, \"HEADS\" corresponds to ACTION_X and \"TAILS\" corresponds to ACTION_Y.\n*   Round 1: You chose HEADS, Opponent chose TAILS. (Payoff 0)\n*   Round 2: You chose TAILS, Opponent chose TAILS. (Payoff 1)\n*   Round 3: You chose HEADS, Opponent chose HEADS. (Payoff 1)\n\nLet's test the functions:\n*   **Function 1 (Always X/HEADS):** Failed in Round 1 and 2.\n*   **Function 2 (Always Y/TAILS):** Failed in Round 3.\n*   **Function 3 (Opposite of your previous move):**\n    *   Round 1: Opponent chose TAILS (Random start).\n    *   Round 2: You chose HEADS in R1 $\\rightarrow$ Opponent chose TAILS. (Matches)\n    *   Round 3: You chose TAILS in R2 $\\rightarrow$ Opponent chose HEADS. (Matches)\n\n**Step 2: Update beliefs and calculate probability**\nThe data is perfectly consistent with Function 3 and inconsistent with Functions 1 and 2 (given the low error rate of 1/10).\n*   Belief: Function 3 is highly probable.\n*   Prediction for Round 4: In Round 3, you chose HEADS. According to Function 3, the opponent will select the action you did NOT select in the previous round.\n*   Therefore, the opponent is expected to select TAILS (ACTION_Y).\n\n**Step 3: Maximize expected value**\nTo receive a point, your selection must match the opponent's selection.\n*   Expected opponent move: TAILS.\n*   Your optimal move: TAILS.\n\n**Step 4: Final Answer**\nOption A is choosing TAILS.\n\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.018278666205320017,
+      "delta_pre_sem": -4.374998092651367,
+      "delta_pre_by_mapping": [
+        -4.875001907348633,
+        -3.8749942779541016
+      ],
+      "letter_bias": -0.5000038146972656,
+      "delta_post_sem": -21.468552857637405,
+      "delta_amp": -17.093554764986038,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 480,
+      "tail_gap_mean": -1.040243984311819,
+      "tail_gap_std": 4.734735780299017,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X and ACTION_Y. Based on the data provided, \"HEADS\" corresponds to ACTION_X and \"TAILS\" corresponds to ACTION_Y.\nThe history is:\nRound 1: You HEADS, Opponent TAILS (Payoff 0)\nRound 2: You TAILS, Opponent TAILS (Payoff 1)\nRound 3: You HEADS, Opponent HEADS (Payoff 1)\nRound 4: You HEADS, Opponent TAILS (Payoff 0)\n\nLet's test the functions:\n- **Function 1 (Always X/HEADS):** Failed. Opponent chose TAILS in rounds 1, 2, and 4.\n- **Function 2 (Always Y/TAILS):** Failed. Opponent chose HEADS in round 3.\n- **Function 3 (Opposite of your previous action):**\n    - Round 1: Random (TAILS)\n    - Round 2: You chose HEADS in R1 $\\rightarrow$ Opponent chooses TAILS. (Matches)\n    - Round 3: You chose TAILS in R2 $\\rightarrow$ Opponent chooses HEADS. (Matches)\n    - Round 4: You chose HEADS in R3 $\\rightarrow$ Opponent chooses TAILS. (Matches)\n\n**Step 2: Updated belief and probability**\nThe data perfectly matches Function 3 (the \"anti-matching\" function). Functions 1 and 2 are virtually impossible given the sequence of outcomes.\nBelief: Function 3 is almost certainly the active function.\nIn Round 4, you chose HEADS. According to Function 3, the counterpart will select the action you did NOT select in the previous round.\nSince you chose HEADS in Round 4, the counterpart is highly likely to choose TAILS in Round 5.\n\n**Step 3: Maximize expected value**\nTo receive a point, you must match the opponent's selection.\nExpected opponent move: TAILS.\nYour optimal move: TAILS.\n\n**Step 4: Final Answer**\nOption A is choosing TAILS.\n\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.02074380898889978,
+      "delta_pre_sem": 2.9375,
+      "delta_pre_by_mapping": [
+        4.124996185302734,
+        1.7500038146972656
+      ],
+      "letter_bias": 1.1874961853027344,
+      "delta_post_sem": -21.84361445903778,
+      "delta_amp": -24.78111445903778,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 483,
+      "tail_gap_mean": -0.3318462178111076,
+      "tail_gap_std": 4.522994697668155,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X (HEADS) and ACTION_Y (TAILS).\nThe history is:\nRound 1: You HEADS, Opponent TAILS (Payoff 0)\nRound 2: You TAILS, Opponent TAILS (Payoff 1)\nRound 3: You HEADS, Opponent HEADS (Payoff 1)\nRound 4: You HEADS, Opponent TAILS (Payoff 0)\nRound 5: You HEADS, Opponent HEADS (Payoff 1)\n\n*   **Function 1 (Always X/HEADS):** Failed in Round 1, 2, and 4. (Highly unlikely)\n*   **Function 2 (Always Y/TAILS):** Failed in Round 3 and 5. (Unlikely)\n*   **Function 3 (Opposite of your previous action):**\n    *   Round 2: You chose HEADS in R1 $\\rightarrow$ Opponent chose TAILS. (Match)\n    *   Round 3: You chose TAILS in R2 $\\rightarrow$ Opponent chose HEADS. (Match)\n    *   Round 4: You chose HEADS in R3 $\\rightarrow$ Opponent chose TAILS. (Match)\n    *   Round 5: You chose HEADS in R4 $\\rightarrow$ Opponent chose HEADS. (Mismatch/Error)\n    Function 3 matches the data perfectly except for Round 5. Given the stated error rate of 1 in 10, this is the most probable function.\n\n**Step 2: Updated belief and probability**\nThe data strongly supports Function 3. Under Function 3, the opponent selects the action you did **not** select in the previous round.\nIn Round 5, you selected HEADS. Therefore, in Round 6, the counterpart is expected to select the opposite: TAILS.\n\n**Step 3: Maximize expected value**\nTo receive a point, you must match the opponent's selection. Since the opponent is predicted to select TAILS (ACTION_Y), you should also select TAILS.\n\n**Step 4: Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.018278666205320017,
+      "delta_pre_sem": -2.562497138977051,
+      "delta_pre_by_mapping": [
+        -2.6250057220458984,
+        -2.499988555908203
+      ],
+      "letter_bias": -0.06250858306884766,
+      "delta_post_sem": -21.519426941871643,
+      "delta_amp": -18.956929802894592,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 572,
+      "tail_gap_mean": -0.5521043060719967,
+      "tail_gap_std": 5.205881023912963,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X (HEADS) and ACTION_Y (TAILS).\nLet's map the history:\nRound 1: You HEADS, Opponent TAILS (Payoff 0)\nRound 2: You TAILS, Opponent TAILS (Payoff 1)\nRound 3: You HEADS, Opponent HEADS (Payoff 1)\nRound 4: You HEADS, Opponent TAILS (Payoff 0)\nRound 5: You HEADS, Opponent HEADS (Payoff 1)\nRound 6: You HEADS, Opponent TAILS (Payoff 0)\n\n**Step 2: Evaluate the Response Functions**\n*   **Function 1 (Always HEADS):** Inconsistent. The opponent chose TAILS in rounds 1, 2, 4, and 6.\n*   **Function 2 (Always TAILS):** Inconsistent. The opponent chose HEADS in rounds 3 and 5.\n*   **Function 3 (Opposite of your previous action):**\n    *   Round 2: You chose HEADS in R1 $\\rightarrow$ Opponent chose TAILS. (Matches)\n    *   Round 3: You chose TAILS in R2 $\\rightarrow$ Opponent chose HEADS. (Matches)\n    *   Round 4: You chose HEADS in R3 $\\rightarrow$ Opponent chose TAILS. (Matches)\n    *   Round 5: You chose HEADS in R4 $\\rightarrow$ Opponent chose TAILS? **Wait**, the data says Opponent chose HEADS. (Mismatch)\n    *   Round 6: You chose HEADS in R5 $\\rightarrow$ Opponent chose TAILS. (Matches)\n\nComparing the functions: Function 1 and 2 are impossible given the data (too many errors). Function 3 matches 4 out of 5 transitions perfectly. Given the stated error rate of 1 in 10, Function 3 is the only plausible candidate.\n\n**Step 3: Determine the current round's probability**\nIn Round 6, you chose HEADS.\nIf the counterpart is following Function 3, they will select the action you did NOT select in the previous round.\nSince you chose HEADS in Round 6, the counterpart is highly likely to choose TAILS in Round 7.\n\n**Step 4: Maximize Expected Value**\nTo receive a point, you must match the opponent's action.\nExpected Opponent Action: TAILS.\nYour optimal move: TAILS (Option A).\n\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.018018535965047672,
+      "delta_pre_sem": -4.874979019165039,
+      "delta_pre_by_mapping": [
+        -4.250003814697266,
+        -5.4999542236328125
+      ],
+      "letter_bias": 0.6249752044677734,
+      "delta_post_sem": -21.296786069869995,
+      "delta_amp": -16.421807050704956,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 581,
+      "tail_gap_mean": -0.4221957391500473,
+      "tail_gap_std": 5.2120452697728386,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X (HEADS) and ACTION_Y (TAILS).\nLet's map the history:\nRound 1: You HEADS, Opponent TAILS (Payoff 0)\nRound 2: You TAILS, Opponent TAILS (Payoff 1)\nRound 3: You HEADS, Opponent HEADS (Payoff 1)\nRound 4: You HEADS, Opponent TAILS (Payoff 0)\nRound 5: You HEADS, Opponent HEADS (Payoff 1)\nRound 6: You HEADS, Opponent TAILS (Payoff 0)\nRound 7: You HEADS, Opponent TAILS (Payoff 0)\n\n**Step 2: Evaluate the Response Functions**\n*   **Function 1 (Always HEADS):** The opponent chose TAILS 4 times. This is highly improbable (error rate is 1/10).\n*   **Function 2 (Always TAILS):** The opponent chose HEADS 3 times. This is also improbable.\n*   **Function 3 (Opposite of your previous move):**\n    *   R2: You chose HEADS in R1 $\\rightarrow$ Opponent chose TAILS. (Match)\n    *   R3: You chose TAILS in R2 $\\rightarrow$ Opponent chose HEADS. (Match)\n    *   R4: You chose HEADS in R3 $\\rightarrow$ Opponent chose TAILS. (Match)\n    *   R5: You chose HEADS in R4 $\\rightarrow$ Opponent chose TAILS? **No**, opponent chose HEADS. (Error)\n    *   R6: You chose HEADS in R5 $\\rightarrow$ Opponent chose TAILS. (Match)\n    *   R7: You chose HEADS in R6 $\\rightarrow$ Opponent chose TAILS. (Match)\n\nFunction 3 matches the data perfectly except for one round (Round 5), which aligns with the stated error rate of approximately 1 in 10.\n\n**Step 3: Determine the current round's probability**\nIn Round 7, you chose HEADS.\nAccording to Function 3, the opponent will select the action you did NOT select in the previous round.\nSince you selected HEADS in Round 7, the opponent is highly likely to select TAILS in Round 8.\n\n**Step 4: Maximize Expected Value**\nTo receive a point, you must match the opponent's selection.\nExpected Opponent Move: TAILS.\nYour optimal move: TAILS (Option A).\n\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.9351969523506648,
+      "delta_pre_sem": -0.3749990463256836,
+      "delta_pre_by_mapping": [
+        0.37499046325683594,
+        -1.1249885559082031
+      ],
+      "letter_bias": 0.7499895095825195,
+      "delta_post_sem": 26.13278293609619,
+      "delta_amp": 26.507781982421875,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 634,
+      "tail_gap_mean": 2.395483149588108,
+      "tail_gap_std": 4.470932847584326,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X (HEADS) and ACTION_Y (TAILS). Let's map the history:\n1. You: H, Opp: T (Payoff 0)\n2. You: T, Opp: T (Payoff 1)\n3. You: H, Opp: H (Payoff 1)\n4. You: H, Opp: T (Payoff 0)\n5. You: H, Opp: H (Payoff 1)\n6. You: H, Opp: T (Payoff 0)\n7. You: H, Opp: T (Payoff 0)\n8. You: T, Opp: H (Payoff 0)\n\n**Step 2: Evaluate the Response Functions**\n*   **Function 1 (Always X/HEADS):** The opponent chose TAILS 5 times. This is highly improbable (error rate is 1/10).\n*   **Function 2 (Always Y/TAILS):** The opponent chose HEADS 3 times. While more likely than Function 1, it still contradicts the \"near-certainty\" of a fixed choice given the sample size.\n*   **Function 3 (Opposite of your previous move):**\n    *   Round 2: You chose H in R1 $\\rightarrow$ Opp chose T (Match)\n    *   Round 3: You chose T in R2 $\\rightarrow$ Opp chose H (Match)\n    *   Round 4: You chose H in R3 $\\rightarrow$ Opp chose T (Match)\n    *   Round 5: You chose H in R4 $\\rightarrow$ Opp chose T (Wait, Opp chose H here. This is an error/deviation).\n    *   Round 6: You chose H in R5 $\\rightarrow$ Opp chose T (Match)\n    *   Round 7: You chose H in R6 $\\rightarrow$ Opp chose T (Match)\n    *   Round 8: You chose H in R7 $\\rightarrow$ Opp chose T (Wait, Opp chose H here. This is an error/deviation).\n\nFunction 3 matches the opponent's behavior in 5 out of 7 transitions (approx 71%). Given the error rate and the total failure of Function 1 and 2 to explain the alternating nature of the data, Function 3 is the most probable.\n\n**Step 3: Calculate expected value for the current round**\nIn Round 8, you chose **TAILS**.\nIf the counterpart is following Function 3, they will select the action you did NOT select in the previous round.\nSince you selected TAILS in Round 8, the counterpart is highly likely to select **HEADS** in Round 9.\n\nTo receive a point, you must match their selection. Therefore, you should choose **HEADS**.\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.018329878533256634,
+      "delta_pre_sem": 4.062487602233887,
+      "delta_pre_by_mapping": [
+        5.874969482421875,
+        2.2500057220458984
+      ],
+      "letter_bias": 1.8124818801879883,
+      "delta_post_sem": -21.078108072280884,
+      "delta_amp": -25.14059567451477,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 583,
+      "tail_gap_mean": 0.26571609973907473,
+      "tail_gap_std": 4.45423333137842,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the observed data**\nThe available actions are ACTION_X (HEADS) and ACTION_Y (TAILS). Let's map the history:\n1. You: H, Opp: T (Payoff 0)\n2. You: T, Opp: T (Payoff 1)\n3. You: H, Opp: H (Payoff 1)\n4. You: H, Opp: T (Payoff 0)\n5. You: H, Opp: H (Payoff 1)\n6. You: H, Opp: T (Payoff 0)\n7. You: H, Opp: T (Payoff 0)\n8. You: T, Opp: H (Payoff 0)\n9. You: H, Opp: H (Payoff 1)\n\n**Step 2: Evaluate the Response Functions**\n*   **Function 1 (Always X/HEADS):** The opponent chose TAILS 5 times. This is highly unlikely given a 1/10 error rate.\n*   **Function 2 (Always Y/TAILS):** The opponent chose HEADS 4 times. This is also unlikely given a 1/10 error rate.\n*   **Function 3 (Opposite of your previous move):**\n    *   R1: You H $\\rightarrow$ R2 Opp T (Match)\n    *   R2: You T $\\rightarrow$ R3 Opp H (Match)\n    *   R3: You H $\\rightarrow$ R4 Opp T (Match)\n    *   R4: You H $\\rightarrow$ R5 Opp H (Error)\n    *   R5: You H $\\rightarrow$ R6 Opp T (Match)\n    *   R6: You H $\\rightarrow$ R7 Opp T (Match)\n    *   R7: You H $\\rightarrow$ R8 Opp H (Match)\n    *   R8: You T $\\rightarrow$ R9 Opp H (Match)\n    \n    Function 3 matches the observed behavior almost perfectly (only 1 error in 8 transitions).\n\n**Step 3: Determine the current round's probability**\nIn Round 9, you chose **HEADS**. \nAccording to Function 3, the counterpart will select the action you did NOT select in the previous round.\nSince you chose HEADS in Round 9, the counterpart is highly likely to choose **TAILS** in Round 10.\n\n**Step 4: Maximize Expected Value**\nTo receive a point, you must match the opponent's selection. Since the opponent is expected to choose TAILS, you should choose TAILS.\n\nAnswer: A"
+    }
+  ]
+}

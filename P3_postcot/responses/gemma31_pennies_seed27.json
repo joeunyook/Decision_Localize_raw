@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "pennies",
+    "seed": 27,
+    "T": 10,
+    "hidden_param": "opponent=ALWAYS_HEADS",
+    "act0": "TAILS",
+    "act1": "HEADS",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": -0.6121212121212121,
+      "drift_corr_post": 0.23636363636363633,
+      "mean_delta_pre": 7.831032419204712,
+      "mean_abs_delta_pre": 9.543527269363404,
+      "mean_delta_amp": 14.967388272285461,
+      "oracle_range": 0.9170424643360477
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5,
+      "delta_pre_sem": 11.68745470046997,
+      "delta_pre_by_mapping": [
+        7.874961853027344,
+        15.499947547912598
+      ],
+      "letter_bias": -3.812492847442627,
+      "delta_post_sem": 27.734342336654663,
+      "delta_amp": 16.046887636184692,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 306,
+      "tail_gap_mean": 1.7725767037272453,
+      "tail_gap_std": 6.690343142702271,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nThe history is currently empty. No rounds have been played, so there is no data to distinguish between the three possible strategies (ALWAYS_HEADS, ALWAYS_TAILS, or COUNTER).\n\n2. **What is your updated belief about their strategy, and how likely are they to choose Heads this round?**\nSince the strategy was chosen equally at random, there is a 1/3 probability for each.\n- If ALWAYS_HEADS: They will likely choose Heads.\n- If ALWAYS_TAILS: They will likely choose Tails.\n- If COUNTER: They choose at random on round 1 (50% Heads, 50% Tails).\nThe total probability they choose Heads is: $(1/3 \\times 1) + (1/3 \\times 0) + (1/3 \\times 0.5) = 1/3 + 1/6 = 1/2$.\nThey are equally likely to choose Heads or Tails.\n\n3. **What is the optimal action given that belief?**\nSince the probability of the opponent choosing Heads is 50% and Tails is 50%, both options (A and B) have an expected value of 0.5 points. In the absence of information, either choice is mathematically equivalent. I will choose Heads.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.6899744811276126,
+      "delta_pre_sem": 18.765433073043823,
+      "delta_pre_by_mapping": [
+        20.7187180519104,
+        16.812148094177246
+      ],
+      "letter_bias": 1.9532849788665771,
+      "delta_post_sem": 26.999977350234985,
+      "delta_amp": 8.234544277191162,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 482,
+      "tail_gap_mean": 2.193901277668774,
+      "tail_gap_std": 4.526314065388533,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nIn Round 1, I played HEADS and the opponent played HEADS.\n- If the strategy is ALWAYS_HEADS, this is the expected outcome.\n- If the strategy is ALWAYS_TAILS, this was a mistake (approx. 10% chance).\n- If the strategy is COUNTER, the opponent chooses randomly in Round 1, so HEADS is a 50% probability.\n\n2. **What is your updated belief about their strategy, and how likely are they to choose Heads this round?**\n- **ALWAYS_HEADS**: Very likely. They played HEADS in R1 and will likely play HEADS in R2.\n- **ALWAYS_TAILS**: Very unlikely. They would have had to make a mistake in R1.\n- **COUNTER**: Possible. Since I played HEADS in R1, a COUNTER strategy will play the opposite (TAILS) in R2.\n\nComparing the probabilities:\n- If ALWAYS_HEADS: Opponent plays HEADS.\n- If COUNTER: Opponent plays TAILS.\n- If ALWAYS_TAILS: Opponent plays TAILS.\n\nGiven the small sample size (1 round), the evidence strongly supports ALWAYS_HEADS or COUNTER. However, since the opponent played HEADS in R1, the probability that they are ALWAYS_HEADS is higher than the probability that they are COUNTER (who only had a 50% chance of playing HEADS in R1).\n\n3. **What is the optimal action given that belief?**\nIf the opponent is ALWAYS_HEADS, I should play HEADS. If the opponent is COUNTER, I should play TAILS (because they will react to my R1 HEADS). \nStatistically, the observation of HEADS in R1 increases the likelihood of ALWAYS_HEADS more than it increases the likelihood of COUNTER. In a game of Matching Pennies against these specific hidden strategies, the most robust move after a match is to assume the \"Always\" strategy until proven otherwise, or to test the \"Counter\" theory. However, the most probable single strategy given the data is ALWAYS_HEADS.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.9691796815472181,
+      "delta_pre_sem": 21.66992163658142,
+      "delta_pre_by_mapping": [
+        22.749969959259033,
+        20.58987331390381
+      ],
+      "letter_bias": 1.0800483226776123,
+      "delta_post_sem": 28.718726634979248,
+      "delta_amp": 7.048804998397827,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 289,
+      "tail_gap_mean": 2.9754216253757475,
+      "tail_gap_std": 4.687174341537157,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nIn the first two rounds, the opponent chose HEADS both times. \n- If the strategy is `ALWAYS_HEADS`, this is expected.\n- If the strategy is `ALWAYS_TAILS`, this is highly unlikely (would require two mistakes in a row).\n- If the strategy is `COUNTER`, the opponent would have played the opposite of my previous move. In Round 1, I played HEADS, so in Round 2, a `COUNTER` strategy would have played TAILS. Since the opponent played HEADS in Round 2, `COUNTER` is very unlikely.\n\n2. **What is your updated belief about their strategy, and how likely are they to choose Heads this round?**\nThe evidence strongly points toward `ALWAYS_HEADS`. While a mistake is possible (1 in 10), the probability that the opponent will choose HEADS is very high, as it is the primary behavior of the most likely strategy and the \"mistake\" behavior of the other two strategies is not supported by the history.\n\n3. **What is the optimal action given that belief?**\nSince I score a point when the choices match, and the opponent is most likely to choose HEADS, the optimal move is to choose HEADS.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.9697243080130495,
+      "delta_pre_sem": -6.874974250793457,
+      "delta_pre_by_mapping": [
+        -6.125001907348633,
+        -7.624946594238281
+      ],
+      "letter_bias": 0.7499723434448242,
+      "delta_post_sem": 26.960918068885803,
+      "delta_amp": 33.83589231967926,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 855,
+      "tail_gap_mean": 2.8512579175829886,
+      "tail_gap_std": 4.225061573961657,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\n*   Round 1: You played HEADS, Opponent played HEADS. (Match)\n*   Round 2: You played HEADS, Opponent played HEADS. (Match)\n*   Round 3: You played TAILS, Opponent played TAILS. (Match)\n\nThe opponent has matched your move in every single round so far. \n- If the strategy were `ALWAYS_HEADS`, they would have failed in Round 3 (they would have played HEADS while you played TAILS).\n- If the strategy were `ALWAYS_TAILS`, they would have failed in Rounds 1 and 2.\n- If the strategy were `COUNTER`, they would have played the opposite of your previous move. In Round 2, you played HEADS in Round 1, so `COUNTER` would play TAILS. In Round 3, you played HEADS in Round 2, so `COUNTER` would play TAILS.\n\nWait, let's re-evaluate `COUNTER`:\n- Round 1: Random. (Result: HEADS)\n- Round 2: You played HEADS in R1 $\\rightarrow$ `COUNTER` plays TAILS. (Actual: HEADS) - *Mismatch*\n- Round 3: You played HEADS in R2 $\\rightarrow$ `COUNTER` plays TAILS. (Actual: TAILS) - *Match*\n\nActually, looking at the history again: the opponent has played exactly what you played in the *current* round every time. This is the opposite of `COUNTER`. However, the available strategies are `ALWAYS_HEADS`, `ALWAYS_TAILS`, and `COUNTER`.\n\nLet's re-examine the data:\nR1: You H, Opp H\nR2: You H, Opp H\nR3: You T, Opp T\n\n- `ALWAYS_HEADS`: Failed R3.\n- `ALWAYS_TAILS`: Failed R1, R2.\n- `COUNTER`: \n    - R2: You played H in R1 $\\rightarrow$ Opp should play T. (Opp played H).\n    - R3: You played H in R2 $\\rightarrow$ Opp should play T. (Opp played T).\n\nThe opponent has played HEADS, HEADS, TAILS.\nIf the strategy is `COUNTER`:\nR2: Opp played H (Wrong, should be T)\nR3: Opp played T (Correct, you played H in R2)\n\nIf the strategy is `ALWAYS_HEADS`:\nR1: H (Correct)\nR2: H (Correct)\nR3: T (Wrong, should be H)\n\nThe opponent has made one \"mistake\" relative to `ALWAYS_HEADS` (R3) and one \"mistake\" relative to `COUNTER` (R2). However, `COUNTER` is more likely because the move in R3 (TAILS) directly corresponds to the opposite of your move in R2 (HEADS).\n\n2. **What is your updated belief about their strategy, and how likely are they to choose Heads this round?**\nThe opponent's move in R3 (TAILS) was the opposite of your move in R2 (HEADS). This is the definition of the `COUNTER` strategy. The move in R2 (HEADS) was a mistake (since you played HEADS in R1). Given the options, `COUNTER` is the most plausible strategy that explains the shift to TAILS in Round 3.\nIf the strategy is `COUNTER`, they will play the opposite of your Round 3 move.\nYour Round 3 move: TAILS.\nOpponent's predicted Round 4 move: HEADS.\n\n3. **What is the optimal action given that belief?**\nTo score a point, you need to match the opponent. If the opponent is predicted to play HEADS, you should play HEADS.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.980866729613371,
+      "delta_pre_sem": 4.249999046325684,
+      "delta_pre_by_mapping": [
+        4.374996185302734,
+        4.125001907348633
+      ],
+      "letter_bias": 0.12499713897705078,
+      "delta_post_sem": 27.859358549118042,
+      "delta_amp": 23.60935950279236,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 487,
+      "tail_gap_mean": 2.3794420462846757,
+      "tail_gap_std": 4.738913737702081,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You HEADS, Opponent HEADS (Match)\n*   Round 2: You HEADS, Opponent HEADS (Match)\n*   Round 3: You TAILS, Opponent TAILS (Match)\n*   Round 4: You TAILS, Opponent HEADS (No match)\n\n**Evaluating the strategies:**\n*   **ALWAYS_HEADS:** Consistent with rounds 1, 2, and 4. Round 3 (Tails) would be the \"occasional mistake\" (1 in 10 chance).\n*   **ALWAYS_TAILS:** Highly unlikely. They chose Heads 3 out of 4 times.\n*   **COUNTER:** In round 2, you played HEADS in round 1; a COUNTER would play TAILS. They played HEADS. In round 3, you played HEADS in round 2; a COUNTER would play TAILS. They played TAILS (Match). In round 4, you played TAILS in round 3; a COUNTER would play HEADS. They played HEADS (Match).\nWhile COUNTER fits the last two rounds perfectly, it failed significantly in round 2.\n\n2. **Updated Belief:**\nThe opponent has chosen HEADS in 75% of the rounds. \n*   If the strategy is **ALWAYS_HEADS**, the probability they choose HEADS this round is ~90%.\n*   If the strategy is **COUNTER**, they will choose the opposite of your last move. Your last move (Round 4) was TAILS, so a COUNTER strategy will choose HEADS with ~90% probability.\n*   If the strategy is **ALWAYS_TAILS**, they would choose HEADS only ~10% of the time (this is very unlikely given the history).\n\nRegardless of whether the opponent is ALWAYS_HEADS or COUNTER, the most likely move for the opponent in Round 5 is HEADS.\n\n3. **Optimal Action:**\nSince the opponent is highly likely to choose HEADS (either because they always do, or because they are countering your previous TAILS), the optimal move to score a point is to choose HEADS.\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.7573721564079064,
+      "delta_pre_sem": 15.312491416931152,
+      "delta_pre_by_mapping": [
+        17.374988555908203,
+        13.249994277954102
+      ],
+      "letter_bias": 2.062497138977051,
+      "delta_post_sem": 28.718728065490723,
+      "delta_amp": 13.40623664855957,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 686,
+      "tail_gap_mean": 2.874122222736478,
+      "tail_gap_std": 4.957114910953811,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You HEADS, Opponent HEADS (Match)\n*   Round 2: You HEADS, Opponent HEADS (Match)\n*   Round 3: You TAILS, Opponent TAILS (Match)\n*   Round 4: You TAILS, Opponent HEADS (No match)\n*   Round 5: You HEADS, Opponent HEADS (Match)\n\n2. **Evaluate the strategies:**\n*   **ALWAYS_HEADS:** This strategy fits well. They chose HEADS in 4/5 rounds. The TAILS in Round 3 would be the \"occasional mistake\" (1 in 10 chance).\n*   **ALWAYS_TAILS:** This is highly unlikely, as they chose HEADS 80% of the time.\n*   **COUNTER:** This strategy chooses the opposite of your previous move.\n    *   Round 2: You played HEADS in R1 $\\rightarrow$ Counter should play TAILS. (Opponent played HEADS) - *Mismatch*\n    *   Round 3: You played HEADS in R2 $\\rightarrow$ Counter should play TAILS. (Opponent played TAILS) - *Match*\n    *   Round 4: You played TAILS in R3 $\\rightarrow$ Counter should play HEADS. (Opponent played HEADS) - *Match*\n    *   Round 5: You played TAILS in R4 $\\rightarrow$ Counter should play HEADS. (Opponent played HEADS) - *Match*\n    While COUNTER matches the last three rounds, it failed in Round 2. However, ALWAYS_HEADS failed in Round 3.\n\n3. **Updated Belief:**\nThe opponent has played HEADS in 4 out of 5 rounds. If the strategy is ALWAYS_HEADS, they are very likely to play HEADS. If the strategy is COUNTER, they will play the opposite of your last move (Round 5 was HEADS, so COUNTER would play TAILS). \nComparing the two:\n*   If ALWAYS_HEADS: Opponent plays HEADS.\n*   If COUNTER: Opponent plays TAILS.\nLooking at the history, the opponent has played HEADS significantly more often. Specifically, in Round 3, you played TAILS and they played TAILS. This is a strong indicator for COUNTER (since you played HEADS in R2) or a mistake for ALWAYS_HEADS. However, in Round 4, you played TAILS and they played HEADS. This is a strong indicator for COUNTER (since you played TAILS in R3) or a match for ALWAYS_HEADS.\nIn Round 5, you played HEADS and they played HEADS. This is a strong indicator for ALWAYS_HEADS or a mistake for COUNTER (since you played TAILS in R4).\n\nThe most consistent pattern is that the opponent is playing HEADS regardless of your move, with one mistake in Round 3.\n\n4. **Optimal Action:**\nSince the probability is highest that the opponent will choose HEADS, the optimal move to score a point is to also choose HEADS.\n\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.98172133379468,
+      "delta_pre_sem": 0.0,
+      "delta_pre_by_mapping": [
+        2.124998092651367,
+        -2.124998092651367
+      ],
+      "letter_bias": 2.124998092651367,
+      "delta_post_sem": 27.359355211257935,
+      "delta_amp": 27.359355211257935,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 485,
+      "tail_gap_mean": 2.747307062149048,
+      "tail_gap_std": 4.979849427053105,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You H, Opponent H (Match)\n*   Round 2: You H, Opponent H (Match)\n*   Round 3: You T, Opponent T (Match)\n*   Round 4: You T, Opponent H (No match)\n*   Round 5: You H, Opponent H (Match)\n*   Round 6: You T, Opponent T (Match)\n\n**Evaluating the strategies:**\n*   **ALWAYS_HEADS:** Failed in Round 3 and Round 6 (Opponent played Tails). This is unlikely as it would require two \"mistakes\" in 6 rounds.\n*   **ALWAYS_TAILS:** Failed in Rounds 1, 2, 4, and 5. Extremely unlikely.\n*   **COUNTER:** This strategy plays the opposite of your previous move.\n    *   R2: You played H in R1 $\\rightarrow$ Opponent should play T. (Opponent played H - Mistake)\n    *   R3: You played H in R2 $\\rightarrow$ Opponent should play T. (Opponent played T - Correct)\n    *   R4: You played T in R3 $\\rightarrow$ Opponent should play H. (Opponent played H - Correct)\n    *   R5: You played T in R4 $\\rightarrow$ Opponent should play H. (Opponent played H - Correct)\n    *   R6: You played H in R5 $\\rightarrow$ Opponent should play T. (Opponent played T - Correct)\n\n2. **Updated Belief:**\nThe opponent's behavior aligns almost perfectly with the **COUNTER** strategy (correct 4 out of 5 predictable rounds). The only anomaly was Round 2, which fits the \"occasional mistake\" description.\n\n3. **Optimal Action:**\nIn Round 6, you played **TAILS**. Since the opponent is following the COUNTER strategy, they will likely choose the opposite of your last move for Round 7.\nOpposite of TAILS = **HEADS**.\nTo score a point, you must match the opponent. Therefore, you should choose **HEADS**.\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.9819814640349523,
+      "delta_pre_sem": 5.187499046325684,
+      "delta_pre_by_mapping": [
+        6.374996185302734,
+        4.000001907348633
+      ],
+      "letter_bias": 1.1874971389770508,
+      "delta_post_sem": 27.5781033039093,
+      "delta_amp": 22.390604257583618,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 537,
+      "tail_gap_mean": 2.9428208619356155,
+      "tail_gap_std": 4.967052982075721,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You H, Opp H (Match)\n*   Round 2: You H, Opp H (Match)\n*   Round 3: You T, Opp T (Match)\n*   Round 4: You T, Opp H (No match)\n*   Round 5: You H, Opp H (Match)\n*   Round 6: You T, Opp T (Match)\n*   Round 7: You T, Opp H (No match)\n\n2. **Evaluate the strategies:**\n*   **ALWAYS_HEADS:** This strategy would have chosen Heads in rounds 3 and 6. The opponent chose Tails in those rounds. While mistakes happen (1/10), two \"Tails\" results in 7 rounds make this unlikely.\n*   **ALWAYS_TAILS:** This strategy would have chosen Tails in rounds 1, 2, 4, 5, and 7. The opponent chose Heads in those rounds. This is extremely unlikely.\n*   **COUNTER:** This strategy chooses the opposite of your previous move.\n    *   R2: You played H in R1 $\\rightarrow$ Opp should play T. (Opp played H - *Mistake*)\n    *   R3: You played H in R2 $\\rightarrow$ Opp should play T. (Opp played T - *Correct*)\n    *   R4: You played T in R3 $\\rightarrow$ Opp should play H. (Opp played H - *Correct*)\n    *   R5: You played T in R4 $\\rightarrow$ Opp should play H. (Opp played H - *Correct*)\n    *   R6: You played H in R5 $\\rightarrow$ Opp should play T. (Opp played T - *Correct*)\n    *   R7: You played T in R6 $\\rightarrow$ Opp should play H. (Opp played H - *Correct*)\n    The COUNTER strategy matches the opponent's behavior perfectly from Round 3 onwards.\n\n3. **Determine the current move:**\n*   The opponent is almost certainly using the **COUNTER** strategy.\n*   In Round 7, you played **TAILS**.\n*   Therefore, in Round 8, the COUNTER strategy will choose the opposite of Tails, which is **HEADS**.\n*   To score a point, you must match the opponent. Since the opponent is likely to play Heads, you should play Heads.\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.06496711165984931,
+      "delta_pre_sem": 9.999999523162842,
+      "delta_pre_by_mapping": [
+        12.999993324279785,
+        7.000005722045898
+      ],
+      "letter_bias": 2.9999938011169434,
+      "delta_post_sem": -21.695257306098938,
+      "delta_amp": -31.69525682926178,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 578,
+      "tail_gap_mean": 0.029994683265686037,
+      "tail_gap_std": 4.423012174231812,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You H, Opp H (Match)\n*   Round 2: You H, Opp H (Match)\n*   Round 3: You T, Opp T (Match)\n*   Round 4: You T, Opp H (No match)\n*   Round 5: You H, Opp H (Match)\n*   Round 6: You T, Opp T (Match)\n*   Round 7: You T, Opp H (No match)\n*   Round 8: You H, Opp H (Match)\n\n**Evaluating the strategies:**\n*   **ALWAYS_HEADS:** Fits well. They chose Heads 6/8 times. The 2 Tails (R3, R6) would be the \"occasional mistakes.\"\n*   **ALWAYS_TAILS:** Highly unlikely. They chose Tails only 2/8 times.\n*   **COUNTER:** Let's check if they played the opposite of your previous move:\n    *   R2: You played H in R1 $\\rightarrow$ Opp played H (Not opposite)\n    *   R3: You played H in R2 $\\rightarrow$ Opp played T (Opposite)\n    *   R4: You played T in R3 $\\rightarrow$ Opp played H (Opposite)\n    *   R5: You played T in R4 $\\rightarrow$ Opp played H (Not opposite)\n    *   R6: You played H in R5 $\\rightarrow$ Opp played T (Opposite)\n    *   R7: You played T in R6 $\\rightarrow$ Opp played H (Opposite)\n    *   R8: You played T in R7 $\\rightarrow$ Opp played H (Opposite)\n    The COUNTER strategy is actually very consistent here, especially in the latter half.\n\n2. **Updated Belief:**\nThe opponent is most likely using the **COUNTER** strategy. In Round 8, you played **HEADS**. If the opponent is using the COUNTER strategy, they will choose the opposite of your previous move for Round 9.\nOpposite of HEADS = **TAILS**.\n\nWhile ALWAYS_HEADS is possible, the COUNTER strategy explains the specific pattern of the last 3 rounds perfectly. If they are COUNTER, they will play Tails. If they are ALWAYS_HEADS, they will play Heads. However, the COUNTER strategy is a strong fit for the sequence of moves.\n\n3. **Optimal Action:**\nIf the opponent is COUNTER, they will play TAILS. To score a point, you must match them. Therefore, you should choose TAILS.\n\n4. **Final Answer:**\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.9820095759958971,
+      "delta_pre_sem": -1.6875,
+      "delta_pre_by_mapping": [
+        -0.5000038146972656,
+        -2.8749961853027344
+      ],
+      "letter_bias": 1.1874961853027344,
+      "delta_post_sem": 27.74995470046997,
+      "delta_amp": 29.43745470046997,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 586,
+      "tail_gap_mean": 2.5533664906024933,
+      "tail_gap_std": 4.954848207051473,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You H, Opp H (Match)\n*   Round 2: You H, Opp H (Match)\n*   Round 3: You T, Opp T (Match)\n*   Round 4: You T, Opp H (No match)\n*   Round 5: You H, Opp H (Match)\n*   Round 6: You T, Opp T (Match)\n*   Round 7: You T, Opp H (No match)\n*   Round 8: You H, Opp H (Match)\n*   Round 9: You T, Opp T (Match)\n\n2. **Evaluate the strategies:**\n*   **ALWAYS_HEADS:** This strategy would have failed in rounds 3, 6, and 9. It is highly unlikely.\n*   **ALWAYS_TAILS:** This strategy would have failed in rounds 1, 2, 4, 5, 7, and 8. It is impossible.\n*   **COUNTER:** This strategy chooses the opposite of your previous move.\n    *   R2: You played H in R1 $\\rightarrow$ Opp should play T. (Opp played H - Mistake)\n    *   R3: You played H in R2 $\\rightarrow$ Opp should play T. (Opp played T - Correct)\n    *   R4: You played T in R3 $\\rightarrow$ Opp should play H. (Opp played H - Correct)\n    *   R5: You played T in R4 $\\rightarrow$ Opp should play H. (Opp played H - Correct)\n    *   R6: You played H in R5 $\\rightarrow$ Opp should play T. (Opp played T - Correct)\n    *   R7: You played T in R6 $\\rightarrow$ Opp should play H. (Opp played H - Correct)\n    *   R8: You played H in R7 $\\rightarrow$ Opp should play T. (Opp played H - Mistake)\n    *   R9: You played H in R8 $\\rightarrow$ Opp should play T. (Opp played T - Correct)\n\nThe opponent's behavior matches the **COUNTER** strategy almost perfectly (7/8 predictions correct after R1), whereas the \"Always\" strategies are completely contradicted by the data.\n\n3. **Determine the optimal action:**\nIn Round 9, you played **TAILS**. Since the opponent is following the COUNTER strategy, they will likely choose the opposite of your last move for Round 10.\nOpponent's likely move: **HEADS**.\nTo score a point, you must match their move. Therefore, you should choose **HEADS**.\n\nAnswer: B"
+    }
+  ]
+}

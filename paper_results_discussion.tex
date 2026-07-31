@@ -1,0 +1,238 @@
+% =============================================================================
+% Results (RQ1-RQ3) + Discussion + Conclusion  -- drafted 2026-07-25
+% Paste into the main .tex, replacing the empty RQ subsections and the missing
+% Discussion/Conclusion.
+%
+% NUMBER PROVENANCE:
+%   [V] = recomputed 2026-07-25 directly from results/P1_v4/{probe,behavior}_by_t.json
+%         (balanced, n-weighted pooling over t) and from P3_postcot/responses/*.json
+%         re-parsed with the current ANSWER_RE. Safe to quote.
+%   [U] = carried from the 2026-07-23 session log, NOT yet re-verified against
+%         disk. Marked inline as VERIFY. Do not submit these without rerunning.
+%   [P] = pending BoS data (job 2894711 / the bos-pre-* sweep).
+%
+% IPD is excluded from the scenario suite per the 2026-07-25 decision: its
+% optimal action is horizon- rather than belief-driven, so it does not measure
+% the same construct as the other scenarios. See the Limitations subsection.
+% =============================================================================
+
+\section{Results}
+
+We organize the results around three questions: whether models act rationally
+at all (RQ1), whether their evidence tracking improves as history accumulates
+(RQ2), and, where they fail, which stage of the decision process produced the
+failure (RQ3). Unless stated otherwise, all numbers are balanced over the two
+baseline-optimal action classes, pooled over decision steps, and computed on
+unambiguous steps only ($|p_{\mathrm{BASELINE}}-0.5|>0.10$).
+
+\subsection{RQ1: Do LLMs Make Rational Decisions?}
+
+Table~\ref{tab:main-results} reports agreement with the baseline-optimal action
+before any generation (Pre-CoT, P2). Two patterns dominate.
+
+\textbf{\textit{Decision quality is governed by scenario structure, not by
+scale alone.}}
+On the pure inference scenarios, the largest models are close to the baseline:
+Gemma-4 31B and Llama-3.3 70B both reach $100$ on \textit{Bandit} and $98$ and
+$92$ on \textit{Monty Hall}, while the smallest models sit near chance on
+\textit{Monty Hall} ($52$ for Gemma-2 2B) despite being far above chance on
+\textit{Bandit} ($92$).\,[V] Scale therefore resolves pure inference. It does
+not resolve the reactive-opponent scenarios: on \textit{Stag Hunt} no model
+exceeds $79$, and the three largest models cluster at $76$, $76$, and $79$ --
+a ceiling roughly $20$ points below their own performance on the inference
+scenarios.\,[V]
+
+\textbf{\textit{The deficit is not explained by the difficulty of the decision
+rule.}}
+A natural alternative account is that models fail wherever the decision
+boundary is a nontrivial expected-utility threshold rather than a posterior
+probability of $0.5$. The data do not support it. Grouping scenarios by
+threshold rather than by structure gives differences that are inconsistent in
+sign across models (threshold $1/2$ minus threshold $2/3$: $+13$, $+4$, $+9$,
+$-13$, $+10$, $+4$, $+10$, $-3$, $-5$ points).\,[V] Models that recover the
+$2/3$ threshold in \textit{Trust Game} and \textit{Machine} still fail in
+\textit{Stag Hunt}, where the same threshold applies.
+
+\subsection{RQ2: Do LLMs Update on Evidence Like Rational Agents?}
+
+We measure evidence tracking as the Spearman rank correlation, within a
+session, between the baseline posterior trajectory and the model's preference
+trajectory over the ten decision steps. Rank correlation is the appropriate
+statistic here because the normative claim is monotone tracking rather than
+linearity, and it is invariant to any monotone rescaling of the model's logit
+range.
+
+Pre-CoT tracking is positive but uneven across families (Bayesian-inference
+scenarios $\rho=0.54$, $n=3600$ sessions; game-theoretic scenarios
+$\rho=0.29$, $n=1800$).\,[V] Models therefore do track accumulating evidence,
+and the tracking is weaker exactly where decision quality is weaker. The
+per-scenario ordering is \textit{Bandit} $0.75$, \textit{Trust Game} $0.51$,
+\textit{Monty Hall} $0.47$, \textit{Machine} $0.45$, \textit{Chicken} $0.30$,
+\textit{Stag Hunt} $0.28$.\,[V]
+
+The more consequential finding concerns what reasoning does to this tracking.
+Chain-of-thought \emph{degrades} evidence tracking in the Bayesian-inference
+scenarios ($\rho=0.54\rightarrow0.31$) while leaving it essentially unchanged
+in the game-theoretic ones ($0.29\rightarrow0.26$).\,[V] The mechanism is
+saturation: post-CoT logit gaps sit near ceiling regardless of how strong the
+evidence actually is. Combined with RQ3 below, this yields a dissociation worth
+stating plainly: \emph{self-generated reasoning improves accuracy while making
+expressed confidence less informative}. Accuracy and calibration move in
+opposite directions, which complicates the common assumption that more
+reasoning yields a better-calibrated decision maker.
+% CAVEAT to state in the text or a footnote: the post-CoT correlation is
+% computed only over sessions with at least three parseable answers, so models
+% that frequently fail to terminate are under-represented in that pool
+% (n=1267 and n=511 sessions vs 3600 and 1800 pre-CoT).
+
+Confidence magnitude grows with accumulated evidence only for the three largest
+models. Averaged over the six scenarios, the mean absolute pre-CoT logit gap
+between step~2 and step~10 rises by $+1.42$ (Qwen-3.6 27B), $+2.12$ (Gemma-4
+31B) and $+1.82$ (Llama-3.3 70B) nats, while every sub-10B model is flat
+($+0.04$ to $+0.24$) and R1-Qwen-7B declines ($-0.35$).\,[V] Accumulating
+evidence therefore sharpens the internal preference only once models are large
+enough, which is the same capability boundary that separates the models that
+map beliefs to actions from those that do not.
+
+\subsection{RQ3: When Decisions Are Wrong, Where Do They Fail?}
+
+\textbf{\textit{Beliefs are present at every scale.}}
+The belief probe (P1) decodes the baseline-optimal action from the residual
+stream at $98$--$100$ balanced accuracy on every Bayesian-inference scenario,
+for every model including the 2B anchor, and at $86$--$97$ on \textit{Stag
+Hunt}.\,[V] Belief formation is, on this suite, essentially solved. It is not
+where models differ.
+
+\textbf{\textit{The failure is localized to the belief-to-action mapping.}}
+Comparing P1 with P2 within the same forward pass isolates the mapping stage.
+For the mid-sized and large models the belief-to-action drop is $4$ points on
+the Bayesian-inference scenarios ($100\rightarrow96$) and $17$ points on the
+reactive-opponent and anti-coordination scenarios ($97\rightarrow80$).\,[V]
+The information required for the correct action is linearly present in the
+representation and is not used by the mechanism that selects the action. The
+gap is directionally consistent: \emph{all nine models} show a larger
+belief-to-action loss in the game-theoretic scenarios than in the
+Bayesian-inference ones, by $7$, $16$, $9$, $24$, $16$, $16$, $9$, $21$, and
+$31$ points respectively.\,[V]
+
+\textbf{\textit{The deficit is not social framing.}}
+Because the game-theoretic scenarios are also the socially framed ones, an
+obvious confound is that instruction tuning installs social priors that
+override the computed belief. The \textit{Trust Game}--\textit{Machine} pair
+was constructed to test exactly this: matched hidden types, matched utilities,
+and outcome trajectories paired by seed, differing only in whether the
+counterparty is described as a person or a machine. On identical evidence the
+three largest models differ by $+5$, $+1$, and $+5$ points between the social
+and mechanical framings.\,[V] Narrative sociality alone produces no
+systematic effect. What distinguishes the failing scenarios is that the
+environment responds to the agent's own previous action, so the decision-relevant
+quantity is a posterior predictive over the opponent's next move rather than a
+posterior over a static parameter.
+
+\textbf{\textit{Reasoning partially repairs the mapping.}}
+Post-CoT agreement (P3) exceeds pre-CoT agreement in most cells, and the repair
+is largest where the pre-CoT mapping was worst: Qwen-3.6 27B moves from $76$ to
+$98$ on \textit{Stag Hunt} and from $83$ to $100$ on \textit{Chicken}.\,[V]
+The repair is not uniform, however: Llama-3.3 70B \emph{declines} from $79$ to
+$71$ on \textit{Stag Hunt} while improving from $69$ to $98$ on
+\textit{Chicken}.\,[V] Reasoning is therefore best described as a second,
+partially independent attempt at the mapping rather than as a reliable
+correction to it.
+
+\textbf{\textit{Reasoning-distilled models fail by not terminating.}}
+The two R1-distilled models frequently fail to produce any parseable final
+answer, and the rate at which they terminate tracks their own pre-CoT mapping
+competence rather than scenario family. R1-Qwen-7B terminates on $51\%$ of
+\textit{Bandit} steps but only $2$--$6\%$ of steps in the reactive-opponent
+scenarios; scaling the distillation to 70B rescues termination on the
+inference scenarios ($91\%$ on \textit{Bandit}) while the reactive-opponent
+scenarios remain largely non-terminating.\,[V] When the belief-to-action
+mapping is broken, chain-of-thought does not act as an independent remedy: it
+has nothing coherent to converge on, and manifests as unproductive looping
+rather than as corrected output.
+
+\section{Discussion}
+
+\textbf{\textit{Localization changes the remedy.}}
+The practical value of separating the stages is that they imply different
+interventions. Because beliefs are linearly decodable at every scale we test,
+prompting strategies aimed at improving inference address a stage that is not
+failing. The stage that fails is the mapping from a represented belief to a
+selected action, and it fails hardest where the correct action depends on a
+posterior predictive over a responsive environment. Interventions that
+externalize the decision rule -- supplying the posterior explicitly, or
+scaffolding the expected-utility comparison -- target the stage the measurements
+implicate; interventions that ask the model to ``think more carefully about the
+evidence'' do not.
+
+\textbf{\textit{Why the reactive scenarios are harder.}}
+In the Bayesian-inference scenarios the optimal action is a monotone function
+of a posterior over a static hidden parameter. In the reactive scenarios the
+agent must additionally condition on its own last action, because the
+opponent's next move depends on it. The belief probe shows that models
+represent the relevant state; what they appear not to do reliably is carry that
+state through the additional conditioning step that the payoff comparison
+requires. This is consistent with the failure surviving both scale and social
+de-framing.
+
+\textbf{\textit{Accuracy is not calibration.}}
+The RQ2 and RQ3 results point in opposite directions and should be reported
+together. Chain-of-thought raises agreement with the optimal action while
+flattening the relationship between expressed confidence and evidence strength.
+For deployed agents that gate actions on model-reported confidence, the
+implication is direct: reasoning traces improve the decision and degrade the
+signal one would use to decide whether to trust it.
+
+\subsection{Limitations}
+
+\textbf{\textit{Committed opponents.}}
+Opponents follow fixed strategies rather than best-responding. The
+game-theoretic scenarios are therefore Bayesian decision problems against
+committed types rather than equilibrium computations. This is what makes an
+exact optimal action available at every step, and it means our claims concern
+best response to a predicted opponent, not equilibrium selection.
+
+\textbf{\textit{A scenario we designed out.}}
+An earlier version of this suite included the Iterated Prisoner's Dilemma. We
+excluded it after establishing that its optimal action is not belief-driven:
+because defection strictly dominates in the stage game under the payoffs used
+($T=5$, $R=3$, $P=1$, $S=0$), the expected-utility difference
+$\mathrm{EU}(D)-\mathrm{EU}(C)=p_c+1\ge1$ for every posterior, so no belief can
+overturn it. Restoring belief relevance requires a finite-horizon continuation
+term, which makes the label a function of the remaining horizon as well as the
+posterior: the same posterior yields opposite optimal actions at different
+steps, and a predictor that sees only the step index and never the history
+reproduces the resulting labels on $70.5\%$ of steps, against a base rate of
+$56.3\%$.\,[V] The corresponding clock-only gain is $+0.0$ points for
+\textit{Stag Hunt} and $+2.5$ points for \textit{Bach or Stravinsky}. Since
+the scenario does not measure the same construct as the rest of the suite, we
+report it separately rather than in the main table. We replaced it with
+\textit{Bach or Stravinsky}, which retains a reactive opponent while
+guaranteeing structurally that the label cannot depend on the horizon: with no
+dominant action, the posterior predictive changes the argmax within the round.
+
+\textbf{\textit{Scope.}}
+All scenarios use a binary action space and a fixed horizon of ten steps.
+Histories are generated by a fixed behavior policy, so our claims concern
+observer-style decision making: whether a model responds rationally to
+provided evidence, not whether its own policy would have generated informative
+evidence.
+
+\section{Conclusion}
+
+We introduced a pipeline that localizes where rational decision making breaks
+down inside an LLM, by pairing sequential decision scenarios that admit exactly
+computable Bayesian-optimal actions with three logit-level checkpoints aligned
+to the stages of the reference procedure. Across nine models from 2B to 70B,
+belief formation is essentially solved: the optimal action is linearly
+decodable from the residual stream at $98$--$100$ accuracy at every scale.
+Decision quality nonetheless varies by more than fifty points across scenarios,
+and the variation is concentrated in a single stage -- the mapping from the
+represented belief to the selected action -- which degrades sharply when the
+environment responds to the agent's own previous action, and which is not
+explained by model scale, by the difficulty of the decision rule, or by social
+framing. Chain-of-thought partially repairs this mapping while simultaneously
+making expressed confidence less informative about the evidence. Progress on
+LLM agents in interactive settings, on this evidence, depends less on better
+inference than on connecting inference the models already perform to the
+actions they take.

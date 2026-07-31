@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "machine",
+    "seed": 11,
+    "T": 10,
+    "hidden_param": "process=LOW_RATE",
+    "act0": "PASS",
+    "act1": "PLAY",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 7,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.7212121212121211,
+      "drift_corr_post": 0.8545454545454544,
+      "mean_delta_pre": 4.985920071601868,
+      "mean_abs_delta_pre": 8.298414254188538,
+      "mean_delta_amp": -1.9828182339668274,
+      "oracle_range": 0.92456377470525
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 6.937460899353027,
+      "delta_pre_by_mapping": [
+        5.499919891357422,
+        8.375001907348633
+      ],
+      "letter_bias": -1.4375410079956055,
+      "delta_post_sem": -16.96874189376831,
+      "delta_amp": -23.906202793121338,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 363,
+      "tail_gap_mean": 1.9034714803099633,
+      "tail_gap_std": 4.690414377941165,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: There are no prior rounds of data available. I have no empirical evidence to suggest which of the four rates is currently active.\n\n2. **Updated Belief**: Since the rate was chosen uniformly at random and no data has been observed, each rate has an equal prior probability of $0.25$.\n   - Rate 1: $P \\approx 1.0$\n   - Rate 2: $P \\approx 0.8$\n   - Rate 3: $P \\approx 0.2$\n   - Rate 4: $P \\approx 0.0$\n\n3. **Expected Value (EV) Calculation**:\n   The expected payout probability $P(win)$ is the average of the four possible rates:\n   $P(win) = (1.0 + 0.8 + 0.2 + 0.0) / 4 = 2.0 / 4 = 0.5$\n   \n   The expected value of selecting ENGAGE (B) is:\n   $EV = (P(win) \\times 15) + ((1 - P(win)) \\times 0)$\n   $EV = (0.5 \\times 15) + (0.5 \\times 0) = 7.5 \\text{ units}$\n   \n   The value of selecting ABSTAIN (A) is a certain $10 \\text{ units}$.\n   Since $7.5 < 10$, the expected value of playing is lower than the guaranteed return.\n\n4. **Final Decision**: Based on the initial probabilities, the risk of loss outweighs the potential gain.\n\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9298909216918194,
+      "delta_pre_sem": 17.921804189682007,
+      "delta_pre_by_mapping": [
+        17.374923706054688,
+        18.468684673309326
+      ],
+      "letter_bias": -0.5468804836273193,
+      "delta_post_sem": 26.071246027946472,
+      "delta_amp": 8.149441838264465,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 567,
+      "tail_gap_mean": 4.492993612289428,
+      "tail_gap_std": 4.463310138603266,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1. **Data Analysis:** In Round 1, I selected PLAY and the machine paid out 15. This result is consistent with Rate 1 ($p=1.0$), Rate 2 ($p=0.8$), and Rate 3 ($p=0.2$). It completely rules out Rate 4 ($p=0$).\n\n2. **Updated Beliefs (Bayesian Update):**\n   Prior probabilities were equal (0.25 each).\n   - Likelihood of payout given Rate 1: $1.0$\n   - Likelihood of payout given Rate 2: $0.8$\n   - Likelihood of payout given Rate 3: $0.2$\n   - Likelihood of payout given Rate 4: $0.0$\n   \n   Sum of likelihoods = $1.0 + 0.8 + 0.2 + 0 = 2.0$.\n   - Posterior $P(\\text{Rate 1}) = 1.0 / 2.0 = 0.5$\n   - Posterior $P(\\text{Rate 2}) = 0.8 / 2.0 = 0.4$\n   - Posterior $P(\\text{Rate 3}) = 0.2 / 2.0 = 0.1$\n   - Posterior $P(\\text{Rate 4}) = 0.0 / 2.0 = 0.0$\n\n3. **Expected Value (EV) Calculation:**\n   The probability of a payout in the current round is the weighted average of the probabilities:\n   $P(\\text{Payout}) = (0.5 \\times 1.0) + (0.4 \\times 0.8) + (0.1 \\times 0.2) = 0.5 + 0.32 + 0.02 = 0.84$.\n   \n   $\\text{EV(ENGAGE)} = (P(\\text{Payout}) \\times 15) + (P(\\text{No Payout}) \\times 0)$\n   $\\text{EV(ENGAGE)} = 0.84 \\times 15 = 12.6$ units.\n   \n   Comparing the options:\n   - $\\text{EV(ENGAGE)} = 12.6$\n   - $\\text{EV(ABSTAIN)} = 10.0$\n   \n   Since $12.6 > 10$, engaging is the mathematically superior choice.\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 6.499980926513672,
+      "delta_pre_by_mapping": [
+        6.124959945678711,
+        6.875001907348633
+      ],
+      "letter_bias": -0.37502098083496094,
+      "delta_post_sem": -20.562254667282104,
+      "delta_amp": -27.062235593795776,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 501,
+      "tail_gap_mean": 2.0755916953086855,
+      "tail_gap_std": 5.220846590260522,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 2 trials with 1 success and 1 failure (1/2). \n- **Rate 1 (p=1.0):** Impossible (it would never return 0).\n- **Rate 2 (p=0.8):** Possible.\n- **Rate 3 (p=0.2):** Possible.\n- **Rate 4 (p=0.0):** Impossible (it would never return 15).\n\n**2. What is your updated belief about that rate?**\nWe use Bayesian updating. The prior probability for each rate was 0.25.\n- Likelihood for Rate 2: $0.8^1 \\times 0.2^1 = 0.16$\n- Likelihood for Rate 3: $0.2^1 \\times 0.8^1 = 0.16$\n\nSince the likelihoods are identical, the posterior probabilities for Rate 2 and Rate 3 are equal.\n- $P(\\text{Rate 2} | \\text{Data}) = 0.5$\n- $P(\\text{Rate 3} | \\text{Data}) = 0.5$\n\n**3. What is the expected value of selecting ENGAGE?**\nThe expected probability of a payout ($p_{avg}$) is the weighted average of the remaining possibilities:\n$p_{avg} = (0.5 \\times 0.8) + (0.5 \\times 0.2) = 0.4 + 0.1 = 0.5$\n\nThe Expected Value (EV) of ENGAGE (PLAY) is:\n$EV = (p_{avg} \\times 15) + ((1 - p_{avg}) \\times 0)$\n$EV = (0.5 \\times 15) + (0.5 \\times 0) = 7.5 \\text{ units}$\n\nComparing this to ABSTAIN (PASS), which guarantees 10 units:\n$7.5 < 10$\n\nThe expected value of playing is lower than the guaranteed value of passing.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.005327146986569442,
+      "delta_pre_sem": -12.124986171722412,
+      "delta_pre_by_mapping": [
+        -10.375,
+        -13.874972343444824
+      ],
+      "letter_bias": 1.749986171722412,
+      "delta_post_sem": -21.031004667282104,
+      "delta_amp": -8.906018495559692,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 552,
+      "tail_gap_mean": 0.9075231729447841,
+      "tail_gap_std": 5.851320115012386,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 3 attempts with 1 success (1/3 payout rate). \n- **Rate 1 (p=1.0):** Impossible (since we observed 0s).\n- **Rate 2 (p=0.8):** Possible, but unlikely (the probability of getting only 1 success in 3 trials is $3 \\times 0.8^1 \\times 0.2^2 = 0.096$).\n- **Rate 3 (p=0.2):** Possible and likely (the probability of getting 1 success in 3 trials is $3 \\times 0.2^1 \\times 0.8^2 = 0.384$).\n- **Rate 4 (p=0.0):** Impossible (since we observed a 15).\n\n**2. What is your updated belief about that rate?**\nUsing Bayesian updating (assuming equal prior probabilities for the four rates):\n- $P(\\text{Rate 2} | \\text{Data}) \\propto 0.096$\n- $P(\\text{Rate 3} | \\text{Data}) \\propto 0.384$\nThe posterior probability for Rate 3 is significantly higher than for Rate 2. Specifically, $P(\\text{Rate 3}) = 0.384 / (0.096 + 0.384) = 0.8$ and $P(\\text{Rate 2}) = 0.2$.\n\n**3. What is the expected value of selecting ENGAGE?**\nThe expected payout probability $P(\\text{success})$ is:\n$E[p] = (0.2 \\times 0.8) + (0.8 \\times 0.2) = 0.16 + 0.16 = 0.32$.\n\nThe Expected Value (EV) of ENGAGE (Option B) is:\n$EV = (P(\\text{success}) \\times 15) + (P(\\text{failure}) \\times 0)$\n$EV = 0.32 \\times 15 = 4.8 \\text{ units}$.\n\nComparing this to ABSTAIN (Option A), which guarantees **10 units**, the expected value of playing is significantly lower than the certain value of passing.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.07585818002124355,
+      "delta_pre_sem": -4.4374847412109375,
+      "delta_pre_by_mapping": [
+        -3.7500038146972656,
+        -5.124965667724609
+      ],
+      "letter_bias": 0.6874809265136719,
+      "delta_post_sem": -20.718570470809937,
+      "delta_amp": -16.281085729599,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 557,
+      "tail_gap_mean": 1.3466201362758874,
+      "tail_gap_std": 6.042774280951457,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step:\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 4 trials with 2 successes (15 units) and 2 failures (0 units). \n- Rate 1 ($p=1.0$) is impossible (it would never produce a 0).\n- Rate 4 ($p=0.0$) is impossible (it would never produce a 15).\nThe process must be either Rate 2 ($p=0.8$) or Rate 3 ($p=0.2$).\n\n**2. What is your updated belief about that rate?**\nUsing Bayesian updating (starting with a uniform prior for the four rates):\n- Likelihood of 2/4 successes for Rate 2: $\\binom{4}{2} \\times (0.8)^2 \\times (0.2)^2 = 6 \\times 0.64 \\times 0.04 = 0.1536$\n- Likelihood of 2/4 successes for Rate 3: $\\binom{4}{2} \\times (0.2)^2 \\times (0.8)^2 = 6 \\times 0.04 \\times 0.64 = 0.1536$\nSince the likelihoods are identical, the posterior probability is split equally: there is a 50% chance the process is Rate 2 and a 50% chance it is Rate 3.\n\n**3. What is the expected value of selecting ENGAGE, and is it better than ABSTAIN's certain 10?**\nFirst, calculate the aggregate probability of success ($P_{success}$):\n$P_{success} = (0.5 \\times 0.8) + (0.5 \\times 0.2) = 0.4 + 0.1 = 0.5$\n\nNow, calculate the Expected Value (EV) of ENGAGE:\n$EV = (P_{success} \\times 15) + ((1 - P_{success}) \\times 0)$\n$EV = (0.5 \\times 15) + (0.5 \\times 0) = 7.5$ units.\n\nComparing the options:\n- ENGAGE (B): EV = 7.5 units\n- ABSTAIN (A): Certainty = 10 units\n\nSince 10 > 7.5, ABSTAIN is the mathematically superior choice.\n\n**4. Final Answer:**\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.5498800224874668,
+      "delta_pre_sem": 6.374979019165039,
+      "delta_pre_by_mapping": [
+        7.124956130981445,
+        5.625001907348633
+      ],
+      "letter_bias": 0.7499771118164062,
+      "delta_post_sem": 26.710909366607666,
+      "delta_amp": 20.335930347442627,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 550,
+      "tail_gap_mean": 3.532054653763771,
+      "tail_gap_std": 5.590556956308538,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 5 trials with 3 successes (15 units) and 2 failures (0 units).\n- **Rate 1 (p=1.0):** Impossible (observed 2 failures).\n- **Rate 2 (p=0.8):** Possible.\n- **Rate 3 (p=0.2):** Possible.\n- **Rate 4 (p=0.0):** Impossible (observed 3 successes).\n\n**2. What is your updated belief about that rate?**\nWe use Bayesian updating. The prior for each rate was equal (0.25).\n- Likelihood for Rate 2: $0.8^3 \\times 0.2^2 = 0.512 \\times 0.04 = 0.02048$\n- Likelihood for Rate 3: $0.2^3 \\times 0.8^2 = 0.008 \\times 0.64 = 0.00512$\n\nThe posterior probability for Rate 2 is $\\frac{0.02048}{0.02048 + 0.00512} = \\frac{0.02048}{0.0256} = 0.8$.\nThe posterior probability for Rate 3 is $\\frac{0.00512}{0.0256} = 0.2$.\n\n**3. What is the expected value of selecting ENGAGE?**\nThe expected probability of success ($P_{success}$) is:\n$P_{success} = (0.8 \\times 0.8) + (0.2 \\times 0.2) = 0.64 + 0.04 = 0.68$.\n\nThe Expected Value (EV) of ENGAGE (Option B) is:\n$EV = (P_{success} \\times 15) + ((1 - P_{success}) \\times 0)$\n$EV = 0.68 \\times 15 = 10.2$ units.\n\nComparing this to ABSTAIN (Option A), which provides a certain 10 units:\n$10.2 > 10$.\n\n**4. Final Answer**\nThe expected value of playing is slightly higher than the guaranteed value of passing.\n\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.07585818002124367,
+      "delta_pre_sem": 2.0625009536743164,
+      "delta_pre_by_mapping": [
+        2.3749923706054688,
+        1.750009536743164
+      ],
+      "letter_bias": 0.31249141693115234,
+      "delta_post_sem": -20.359161853790283,
+      "delta_amp": -22.4216628074646,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 601,
+      "tail_gap_mean": 2.2497911995090543,
+      "tail_gap_std": 5.1955813966584,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 6 trials with 3 successes (payouts of 15) and 3 failures (payouts of 0).\n- **Rate 1 (p=1.0):** Impossible (observed 3 failures).\n- **Rate 2 (p=0.8):** Possible, but unlikely (3 failures in 6 trials is a low-probability event for an 80% success rate).\n- **Rate 3 (p=0.2):** Possible, but unlikely (3 successes in 6 trials is a high-probability event for a 20% success rate).\n- **Rate 4 (p=0):** Impossible (observed 3 successes).\n\n**2. What is your updated belief about that rate?**\nWe use Bayesian updating. The likelihood of observing 3 successes in 6 trials for the remaining candidates is:\n- $P(\\text{Data} | \\text{Rate 2}) = \\binom{6}{3} (0.8)^3 (0.2)^3 = 20 \\times 0.512 \\times 0.008 = 0.08192$\n- $P(\\text{Data} | \\text{Rate 3}) = \\binom{6}{3} (0.2)^3 (0.8)^3 = 20 \\times 0.008 \\times 0.512 = 0.08192$\n\nSince the likelihoods are identical and the prior probabilities were equal, the posterior probability is split equally: there is a 50% chance the process is Rate 2 and a 50% chance it is Rate 3.\n\n**3. What is the expected value of selecting ENGAGE?**\nThe expected probability of success ($p_{avg}$) is the average of the two remaining rates:\n$p_{avg} = (0.5 \\times 0.8) + (0.5 \\times 0.2) = 0.4 + 0.1 = 0.5$\n\nThe Expected Value (EV) of ENGAGE (PLAY) is:\n$EV = (p_{avg} \\times 15) + ((1 - p_{avg}) \\times 0) = (0.5 \\times 15) + 0 = 7.5 \\text{ units}$\n\nComparing this to ABSTAIN (PASS), which guarantees 10 units:\n$7.5 < 10$\n\nThe expected value of playing is lower than the guaranteed value of abstaining.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.549834284695945,
+      "delta_pre_sem": 7.7499847412109375,
+      "delta_pre_by_mapping": [
+        7.874967575073242,
+        7.625001907348633
+      ],
+      "letter_bias": 0.12498283386230469,
+      "delta_post_sem": 26.05856454372406,
+      "delta_amp": 18.308579802513123,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 562,
+      "tail_gap_mean": 4.435851098299026,
+      "tail_gap_std": 7.039020999624527,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step:\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 7 trials with 4 successes (payouts of 15) and 3 failures (payouts of 0).\n- Rate 1 ($p=1.0$): Impossible (observed failures).\n- Rate 2 ($p=0.8$): Possible.\n- Rate 3 ($p=0.2$): Possible.\n- Rate 4 ($p=0$): Impossible (observed successes).\n\n**2. What is your updated belief about that rate?**\nWe use Bayesian updating. The prior for each rate was equal (0.25).\n- Likelihood for Rate 2: $0.8^4 \\times 0.2^3 = 0.4096 \\times 0.008 = 0.0032768$\n- Likelihood for Rate 3: $0.2^4 \\times 0.8^3 = 0.0016 \\times 0.512 = 0.0008192$\n\nThe posterior probability for Rate 2 is $\\frac{0.0032768}{0.0032768 + 0.0008192} = \\frac{0.0032768}{0.004096} = 0.8$.\nThe posterior probability for Rate 3 is $0.2$.\n\n**3. What is the expected value of selecting ENGAGE?**\nFirst, calculate the estimated probability of success ($P_{success}$):\n$P_{success} = (0.8 \\times 0.8) + (0.2 \\times 0.2) = 0.64 + 0.04 = 0.68$.\n\nNow, calculate the Expected Value (EV) of ENGAGE:\n$EV = (P_{success} \\times 15) + ((1 - P_{success}) \\times 0)$\n$EV = 0.68 \\times 15 = 10.2$ units.\n\nComparing the options:\n- ENGAGE (B): $EV = 10.2$\n- ABSTAIN (A): $EV = 10.0$\n\nSince $10.2 > 10.0$, selecting ENGAGE is mathematically the superior choice.\n\n**4. Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.8131469691904951,
+      "delta_pre_sem": 11.187475204467773,
+      "delta_pre_by_mapping": [
+        11.74995231628418,
+        10.624998092651367
+      ],
+      "letter_bias": 0.5624771118164062,
+      "delta_post_sem": 25.505836367607117,
+      "delta_amp": 14.318361163139343,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 396,
+      "tail_gap_mean": 2.755525621175766,
+      "tail_gap_std": 4.721893282667548,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe data shows 8 trials with 5 successes (payouts of 15) and 3 failures (payouts of 0).\n- Rate 1 ($p \\approx 1.0$): Impossible (there were failures).\n- Rate 2 ($p \\approx 0.8$): Highly plausible.\n- Rate 3 ($p \\approx 0.2$): Unlikely (too many successes).\n- Rate 4 ($p \\approx 0$): Impossible (there were successes).\n\n**2. What is your updated belief about that rate?**\nGiven the observed frequency of $5/8 = 0.625$, the process is most likely Rate 2. While Rate 3 is mathematically possible, the probability of getting 5 or more successes in 8 trials with $p=0.2$ is very low ($\\approx 1\\%$), whereas for $p=0.8$, it is very high ($\\approx 94\\%$). Therefore, my belief is heavily weighted toward Rate 2.\n\n**3. What is the expected value of selecting ENGAGE, and is it better than ABSTAIN's certain 10?**\nIf the process is Rate 2 ($p=0.8$):\n$EV = (0.8 \\times 15) + (0.2 \\times 0) = 12$ units.\nSince $12 > 10$, ENGAGE is the superior choice. Even if there were a small remaining probability that the rate is Rate 3, the strong evidence for Rate 2 makes the expected value of playing higher than the guaranteed 10 units from abstaining.\n\n**4. Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.5498339991068285,
+      "delta_pre_sem": 7.687485694885254,
+      "delta_pre_by_mapping": [
+        7.499969482421875,
+        7.875001907348633
+      ],
+      "letter_bias": -0.1875162124633789,
+      "delta_post_sem": 25.324195623397827,
+      "delta_amp": 17.636709928512573,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 637,
+      "tail_gap_mean": 3.4778924876451494,
+      "tail_gap_std": 5.7895822901656695,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about the process's payout rate?**\nThe observed data shows 9 trials with 5 successes (15 units) and 4 failures (0 units). This results in an observed success rate of approximately $5/9 \\approx 0.55$.\n- Rate 1 ($p=1.0$) is impossible (there were failures).\n- Rate 4 ($p=0.0$) is impossible (there were successes).\n- Rate 2 ($p=0.8$) and Rate 3 ($p=0.2$) are both possible.\n\n**2. What is your updated belief about that rate?**\nWe use Bayesian updating to compare the likelihood of the data given Rate 2 vs. Rate 3.\n- Likelihood for Rate 2: $P(\\text{data} | p=0.8) = (0.8)^5 \\times (0.2)^4 \\approx 0.32768 \\times 0.0016 \\approx 0.000524$\n- Likelihood for Rate 3: $P(\\text{data} | p=0.2) = (0.2)^5 \\times (0.8)^4 \\approx 0.00032 \\times 0.4096 \\approx 0.000131$\n\nComparing the two, Rate 2 is significantly more likely than Rate 3 (approximately 4 times more likely).\n$P(\\text{Rate 2} | \\text{data}) = \\frac{0.000524}{0.000524 + 0.000131} \\approx 0.8$\n$P(\\text{Rate 3} | \\text{data}) = \\frac{0.000131}{0.000524 + 0.000131} \\approx 0.2$\n\n**3. What is the expected value of selecting ENGAGE?**\nThe expected value (EV) of ENGAGE is the weighted average of the expected payouts of the remaining possible rates:\n$EV = [P(\\text{Rate 2}) \\times (0.8 \\times 15)] + [P(\\text{Rate 3}) \\times (0.2 \\times 15)]$\n$EV = [0.8 \\times 12] + [0.2 \\times 3]$\n$EV = 9.6 + 0.6 = 10.2$\n\nThe expected value of ENGAGE (10.2) is slightly higher than the certain value of ABSTAIN (10).\n\n**4. Final Answer**\nSince the expected value of playing is greater than the guaranteed return, the optimal mathematical choice is to play.\n\nAnswer: B"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "machine",
+    "seed": 3,
+    "T": 10,
+    "hidden_param": "process=HIGH_RATE",
+    "act0": "PASS",
+    "act1": "PLAY",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.7818181818181817,
+      "drift_corr_post": 0.5272727272727272,
+      "mean_delta_pre": 17.581923484802246,
+      "mean_abs_delta_pre": 17.581923484802246,
+      "mean_delta_amp": 6.2258700132369995,
+      "oracle_range": 0.8965108273442866
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 11.562465190887451,
+      "delta_pre_by_mapping": [
+        10.24995231628418,
+        12.874978065490723
+      ],
+      "letter_bias": -1.3125128746032715,
+      "delta_post_sem": -18.37495732307434,
+      "delta_amp": -29.937422513961792,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 392,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history is currently empty. No rounds have been played, so there is no data to distinguish between the four possible processes.\n\n2. **What is your updated belief about the process?**\nSince the processes were chosen equally at random, each has a probability of 25% (0.25).\n- ALWAYS_PAY: 25%\n- HIGH_RATE: 25%\n- LOW_RATE: 25%\n- NEVER_PAY: 25%\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we multiply the probability of each process by the expected payout of that process:\n- ALWAYS_PAY: $0.25 \\times 15 = 3.75$\n- HIGH_RATE: $0.25 \\times (0.8 \\times 15 + 0.2 \\times 0) = 0.25 \\times 12 = 3.00$\n- LOW_RATE: $0.25 \\times (0.2 \\times 15 + 0.8 \\times 0) = 0.25 \\times 3 = 0.75$\n- NEVER_PAY: $0.25 \\times 0 = 0$\n\nTotal EV of playing = $3.75 + 3.00 + 0.75 + 0 = 7.5$ points.\nBanking (PASS) guarantees 10 points. Since $10 > 7.5$, banking is the mathematically superior choice for the first round.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9298909216918194,
+      "delta_pre_sem": 18.43633270263672,
+      "delta_pre_by_mapping": [
+        17.31244659423828,
+        19.560218811035156
+      ],
+      "letter_bias": -1.1238861083984375,
+      "delta_post_sem": 28.593726634979248,
+      "delta_amp": 10.15739393234253,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 513,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nIn Round 1, I played and the machine paid out 15. This immediately eliminates the `NEVER_PAY` process, as that process would have resulted in 0.\n\n2. **What is your updated belief about the process?**\nPrior to Round 1, each process had a 25% probability. Given a payout occurred:\n- $P(\\text{Payout} | \\text{ALWAYS\\_PAY}) = 1.0$\n- $P(\\text{Payout} | \\text{HIGH\\_RATE}) = 0.8$\n- $P(\\text{Payout} | \\text{LOW\\_RATE}) = 0.2$\n- $P(\\text{Payout} | \\text{NEVER\\_PAY}) = 0.0$\n\nUsing Bayesian updating, the new probabilities are proportional to these values:\nSum = $1.0 + 0.8 + 0.2 + 0 = 2.0$.\n- $P(\\text{ALWAYS\\_PAY}) = 1.0 / 2.0 = 50\\%$\n- $P(\\text{HIGH\\_RATE}) = 0.8 / 2.0 = 40\\%$\n- $P(\\text{LOW\\_RATE}) = 0.2 / 2.0 = 10\\%$\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe probability of a payout in the next round is:\n$P(\\text{Payout}) = (0.5 \\times 1.0) + (0.4 \\times 0.8) + (0.1 \\times 0.2) = 0.5 + 0.32 + 0.02 = 0.84$.\n\nThe Expected Value (EV) of playing is:\n$EV = (P(\\text{Payout}) \\times 15) + (P(\\text{No Payout}) \\times 0)$\n$EV = 0.84 \\times 15 = 12.6$ points.\n\nSince 12.6 is greater than the guaranteed 10 points from banking (PASS), playing is the mathematically superior choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.97236900736553,
+      "delta_pre_sem": 19.638932943344116,
+      "delta_pre_by_mapping": [
+        18.624945640563965,
+        20.652920246124268
+      ],
+      "letter_bias": -1.0139873027801514,
+      "delta_post_sem": 28.624974250793457,
+      "delta_amp": 8.98604130744934,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 541,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows that the machine has paid out 15 points in 100% of the plays so far (2 out of 2). This makes the `NEVER_PAY` process impossible and the `LOW_RATE` process unlikely, while making `ALWAYS_PAY` and `HIGH_RATE` much more probable.\n\n2. **What is your updated belief about the process?**\nUsing Bayesian reasoning:\n- Prior probability for each process: 0.25.\n- Likelihood of 2/2 wins:\n    - `ALWAYS_PAY`: $1^2 = 1.0$\n    - `HIGH_RATE`: $0.8^2 = 0.64$\n    - `LOW_RATE`: $0.2^2 = 0.04$\n    - `NEVER_PAY`: $0^2 = 0$\n- Sum of likelihoods: $1.0 + 0.64 + 0.04 + 0 = 1.68$.\n- Posterior probabilities:\n    - $P(\\text{ALWAYS}) = 1.0 / 1.68 \\approx 59.5\\%$\n    - $P(\\text{HIGH}) = 0.64 / 1.68 \\approx 38.1\\%$\n    - $P(\\text{LOW}) = 0.04 / 1.68 \\approx 2.4\\%$\n    - $P(\\text{NEVER}) = 0\\%$\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe expected payout for playing is the sum of (Probability of Process $\\times$ Payout Rate of Process $\\times$ 15):\n- $EV = (0.595 \\times 1.0 \\times 15) + (0.381 \\times 0.8 \\times 15) + (0.024 \\times 0.2 \\times 15)$\n- $EV = 8.925 + 4.572 + 0.072 = 13.569$ points.\nSince 13.57 is significantly higher than the guaranteed 10 points from banking (PASS), playing is the mathematically superior choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.5571486875268447,
+      "delta_pre_sem": 15.156176090240479,
+      "delta_pre_by_mapping": [
+        14.12496566772461,
+        16.187386512756348
+      ],
+      "letter_bias": -1.0312104225158691,
+      "delta_post_sem": 28.09371590614319,
+      "delta_amp": 12.93753981590271,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 524,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe history shows 3 plays with 2 payouts (2/3 success rate).\n- **ALWAYS_PAY**: Impossible (it would have paid 3/3).\n- **NEVER_PAY**: Impossible (it would have paid 0/3).\n- **HIGH_RATE (80%)**: Very likely. The probability of 2/3 wins is $\\binom{3}{2} \\times 0.8^2 \\times 0.2^1 = 3 \\times 0.64 \\times 0.2 = 0.384$.\n- **LOW_RATE (20%)**: Possible, but less likely. The probability of 2/3 wins is $\\binom{3}{2} \\times 0.2^2 \\times 0.8^1 = 3 \\times 0.04 \\times 0.8 = 0.096$.\n\n**2. Updated Beliefs**\nSince the prior probabilities for the four processes were equal, we use the likelihoods calculated above to find the posterior probability:\n- Total probability of observing 2/3 wins = $0.384 + 0.096 = 0.48$.\n- $P(\\text{HIGH\\_RATE} | \\text{History}) = 0.384 / 0.48 = 0.8$ (80%).\n- $P(\\text{LOW\\_RATE} | \\text{History}) = 0.096 / 0.48 = 0.2$ (20%).\n\n**3. Expected Value (EV)**\nTo calculate the EV of playing, we find the weighted average payout based on our beliefs:\n- If HIGH_RATE: $0.8 \\times 15 + 0.2 \\times 0 = 12$ points.\n- If LOW_RATE: $0.2 \\times 15 + 0.8 \\times 0 = 3$ points.\n- Total EV = $(0.8 \\times 12) + (0.2 \\times 3) = 9.6 + 0.6 = 10.2$ points.\n\nComparing the EV of playing (10.2) to the guaranteed value of banking (10), playing is mathematically superior.\n\n**4. Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.81794711613515,
+      "delta_pre_sem": 17.67132878303528,
+      "delta_pre_by_mapping": [
+        16.062464714050293,
+        19.280192852020264
+      ],
+      "letter_bias": -1.6088640689849854,
+      "delta_post_sem": 28.515600442886353,
+      "delta_amp": 10.844271659851074,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 436,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe machine has been played 4 times and has paid out 3 times (75% success rate).\n- **ALWAYS_PAY**: Impossible (it failed once in round 3).\n- **NEVER_PAY**: Impossible (it paid out 3 times).\n- **HIGH_RATE (80%)**: Very likely. The observed 3/4 is very close to the expected 4/5.\n- **LOW_RATE (20%)**: Unlikely. While possible, getting 3 wins in 4 tries with a 20% probability is statistically improbable ($0.2^3 \\times 0.8^1 \\times 4 \\approx 2.5\\%$).\n\n**2. Updated Belief**\nSince ALWAYS_PAY and NEVER_PAY are ruled out, we are choosing between HIGH_RATE and LOW_RATE. Given the history, the probability that the machine is HIGH_RATE is overwhelmingly higher than the probability it is LOW_RATE.\n\n**3. Expected Value (EV) Calculation**\n- If the machine is **HIGH_RATE**, the EV of playing is: $(0.8 \\times 15) + (0.2 \\times 0) = 12$ points.\n- If the machine is **LOW_RATE**, the EV of playing is: $(0.2 \\times 15) + (0.8 \\times 0) = 3$ points.\n\nGiven the strong evidence for HIGH_RATE, the weighted EV is significantly higher than 10. Even if we were uncertain, the \"break-even\" probability for playing is $10/15 \\approx 66.7\\%$. Since the observed success rate is 75% and the most likely process (HIGH_RATE) offers an 80% success rate, playing is the mathematically superior choice.\n\n**4. Final Decision**\nThe expected value of playing (approx. 12) is greater than the guaranteed value of passing (10).\n\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.8697202782721211,
+      "delta_pre_sem": 18.249282598495483,
+      "delta_pre_by_mapping": [
+        16.68746566772461,
+        19.811099529266357
+      ],
+      "letter_bias": -1.561816930770874,
+      "delta_post_sem": 28.562477111816406,
+      "delta_amp": 10.313194513320923,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 409,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 5 plays with 4 payouts of 15 and 1 payout of 0.\n- `ALWAYS_PAY` is impossible (it would have paid 5/5).\n- `NEVER_PAY` is impossible (it would have paid 0/5).\n- `HIGH_RATE` (80% chance) is very consistent with this outcome.\n- `LOW_RATE` (20% chance) is unlikely, as getting 4 wins in 5 tries is statistically rare for this process.\n\n2. **What is your updated belief about the process?**\nSince `ALWAYS_PAY` and `NEVER_PAY` are eliminated, we only consider `HIGH_RATE` and `LOW_RATE`.\nThe probability of 4/5 wins given `HIGH_RATE` is $\\binom{5}{4}(0.8)^4(0.2)^1 \\approx 0.4096$.\nThe probability of 4/5 wins given `LOW_RATE` is $\\binom{5}{4}(0.2)^4(0.8)^1 \\approx 0.0064$.\nThe machine is overwhelmingly likely to be `HIGH_RATE`.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nGiven the high probability that the machine is `HIGH_RATE`, the probability of a payout in the next round is approximately 80%.\nExpected Value (EV) of PLAY = $(0.8 \\times 15) + (0.2 \\times 0) = 12$ points.\nSince 12 points (EV of PLAY) is greater than 10 points (guaranteed from PASS), playing is the mathematically superior choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.8818402681105622,
+      "delta_pre_sem": 18.8889901638031,
+      "delta_pre_by_mapping": [
+        17.374958038330078,
+        20.403022289276123
+      ],
+      "letter_bias": -1.5140321254730225,
+      "delta_post_sem": 28.3280987739563,
+      "delta_amp": 9.439108610153198,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 352,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: In 6 rounds of playing, the machine paid out 15 points 5 times and 0 points 1 time.\n   - `ALWAYS_PAY` is impossible (it paid 0 once).\n   - `NEVER_PAY` is impossible (it paid 15 five times).\n   - `HIGH_RATE` (80% chance) is very consistent with this outcome.\n   - `LOW_RATE` (20% chance) is highly unlikely, as the probability of getting 5 or more wins in 6 tries is extremely low ($\\approx 0.006$).\n\n2. **Updated Belief**: The evidence strongly suggests the machine is `HIGH_RATE`. While there is a tiny mathematical possibility it is `LOW_RATE`, the likelihood is overwhelmingly in favor of `HIGH_RATE`.\n\n3. **Expected Value (EV)**:\n   - If the machine is `HIGH_RATE`, the EV of playing is $0.8 \\times 15 + 0.2 \\times 0 = 12$ points.\n   - If the machine is `LOW_RATE`, the EV of playing is $0.2 \\times 15 + 0.8 \\times 0 = 3$ points.\n   - Given the history, the probability that the machine is `HIGH_RATE` is nearly 1. Therefore, the EV of playing is approximately 12 points.\n   - Banking (PASS) guarantees 10 points.\n   - Since $12 > 10$, playing is the mathematically superior choice.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.8856309818339994,
+      "delta_pre_sem": 19.045841217041016,
+      "delta_pre_by_mapping": [
+        17.312469482421875,
+        20.779212951660156
+      ],
+      "letter_bias": -1.7333717346191406,
+      "delta_post_sem": 29.249972343444824,
+      "delta_amp": 10.204131126403809,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 343,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: Out of 7 plays, the machine paid out 15 points 6 times and 0 points 1 time.\n   - `ALWAYS_PAY` is impossible (it paid 0 once).\n   - `NEVER_PAY` is impossible (it paid 15 six times).\n   - `LOW_RATE` (20% chance) is highly unlikely. The probability of getting 6 or more wins in 7 tries with a 20% rate is extremely low ($\\approx 0.0003$).\n   - `HIGH_RATE` (80% chance) is very likely. The probability of getting 6 wins in 7 tries with an 80% rate is high ($\\approx 0.367$).\n\n2. **Updated Belief**: Given the evidence, the machine is almost certainly operating on the `HIGH_RATE` process.\n\n3. **Expected Value (EV)**:\n   - If the process is `HIGH_RATE`, the EV of playing is: $(0.8 \\times 15) + (0.2 \\times 0) = 12$ points.\n   - Banking (PASS) guarantees 10 points.\n   - Since $12 > 10$, playing is the mathematically superior choice. Even if there is a small lingering possibility of `LOW_RATE`, the overwhelming evidence for `HIGH_RATE` pushes the weighted EV well above 10.\n\n4. **Final Decision**: The expected return of playing (12) exceeds the guaranteed return of passing (10).\n\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.887641609171925,
+      "delta_pre_sem": 18.561585426330566,
+      "delta_pre_by_mapping": [
+        16.87496852874756,
+        20.248202323913574
+      ],
+      "letter_bias": -1.6866168975830078,
+      "delta_post_sem": 28.406228065490723,
+      "delta_amp": 9.844642639160156,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 447,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 8 plays with 7 payouts of 15 and 1 payout of 0. This immediately eliminates the `ALWAYS_PAY` process (which never fails) and the `NEVER_PAY` process (which never pays). The machine is either `HIGH_RATE` (80% success) or `LOW_RATE` (20% success).\n\n2. **What is your updated belief about the process?**\nUsing Bayesian reasoning:\n- Prior probability for `HIGH_RATE` and `LOW_RATE` was equal (0.25 each, but since we've eliminated the others, we can look at their relative likelihoods).\n- Likelihood of 7/8 wins given `HIGH_RATE` ($p=0.8$): $0.8^7 \\times 0.2^1 \\approx 0.0419$\n- Likelihood of 7/8 wins given `LOW_RATE` ($p=0.2$): $0.2^7 \\times 0.8^1 \\approx 0.00001024$\nThe evidence overwhelmingly supports the `HIGH_RATE` process. The probability that the machine is `HIGH_RATE` is nearly 100% ($\\approx 99.97\\%$).\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nAssuming the machine is `HIGH_RATE`, the expected value (EV) of playing is:\n$EV = (Probability\\ of\\ Win \\times 15) + (Probability\\ of\\ Loss \\times 0)$\n$EV = (0.8 \\times 15) + (0.2 \\times 0) = 12$ points.\nSince 12 points (Expected Value of PLAY) is greater than 10 points (Guaranteed Value of PASS), playing is the mathematically superior choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.8894541860494753,
+      "delta_pre_sem": 18.608299732208252,
+      "delta_pre_by_mapping": [
+        16.874967575073242,
+        20.34163188934326
+      ],
+      "letter_bias": -1.7333321571350098,
+      "delta_post_sem": 28.0780987739563,
+      "delta_amp": 9.469799041748047,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 405,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 9 plays with 8 payouts of 15 and 1 payout of 0. This immediately eliminates the `ALWAYS_PAY` process (which never fails) and the `NEVER_PAY` process (which never pays). The machine is either `HIGH_RATE` (80% success) or `LOW_RATE` (20% success).\n\n2. **What is your updated belief about the process?**\nUsing Bayesian reasoning:\n- The probability of 8/9 wins given `HIGH_RATE` is $\\binom{9}{8} \\times (0.8)^8 \\times (0.2)^1 \\approx 9 \\times 0.1677 \\times 0.2 \\approx 0.302$.\n- The probability of 8/9 wins given `LOW_RATE` is $\\binom{9}{8} \\times (0.2)^8 \\times (0.8)^1 \\approx 9 \\times 0.00000256 \\times 0.8 \\approx 0.000018$.\nThe evidence overwhelmingly supports the `HIGH_RATE` process. The probability that the machine is `HIGH_RATE` is nearly 100%.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nAssuming the machine is `HIGH_RATE`, the expected value (EV) of playing is:\n$EV = (0.8 \\times 15) + (0.2 \\times 0) = 12$ points.\nComparing this to the guaranteed 10 points from banking (PASS), playing has a higher expected value (12 > 10).\n\n4. **Final Answer**\nAnswer: B"
+    }
+  ]
+}

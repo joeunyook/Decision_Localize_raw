@@ -1,0 +1,2473 @@
+
+
+
+
+
+
+
+
+
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai2027}  % DO NOT CHANGE THIS
+% The serif, sans-serif, and monospaced fonts are loaded automatically by
+% aaai2027.sty (newtxtext, helvet, courier). DO NOT add \usepackage{times},
+% \usepackage{helvet}, \usepackage{courier}, or any other font package.
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+%
+% These are recommended to typeset algorithms but not required. See the subsubsection on algorithms. Remove them if you don't have algorithms in your paper.
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+%
+% These are recommended to typeset listings but not required. See the subsubsection on listing. Remove this block if you don't have listings in your paper.
+\usepackage{newfloat}
+\usepackage{listings}
+\DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off} % DO NOT CHANGE THIS
+\lstset{%
+	basicstyle={\footnotesize\ttfamily},% footnotesize acceptable for monospace
+	numbers=left,numberstyle=\footnotesize,xleftmargin=2em,% show line numbers, remove this entire line if you don't want the numbers.
+	aboveskip=0pt,belowskip=0pt,%
+	showstringspaces=false,tabsize=2,breaklines=true}
+\floatstyle{ruled}
+\newfloat{listing}{tb}{lst}{}
+\floatname{listing}{Listing}
+
+%
+% Recommended for better-looking tables
+\usepackage{booktabs}
+
+
+
+
+
+
+
+%CHECK ALLOWED?
+\usepackage{array}
+%SOME ADDED PREAMBLE. MAKE SURE ITS ALLOWED
+\newcommand{\confcell}[1]{{\small\itshape #1}}
+
+\usepackage{amsmath}
+\newcommand{\model}[1]{\textsc{#1}}
+
+\usepackage{amsmath}
+\usepackage{amsfonts} % Defines \mathbb
+
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\modelhead}[2]{%
+  \shortstack[c]{\strut\textbf{#1}\\\strut\textbf{#2}}%
+}
+
+
+
+
+
+
+
+
+% Draft notes only. Set \draftfalse before submission.
+\usepackage{xcolor}
+
+\newif\ifdraft
+\drafttrue
+
+\newcommand{\drafttext}[1]{%
+    \ifdraft
+        {\color{red}#1}%
+    \fi
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+% Keep the \pdfinfo as shown here. There's no need
+% for you to add the /Title and /Author tags.
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+% DISALLOWED PACKAGES
+% \usepackage{authblk} -- This package is specifically forbidden
+% \usepackage{balance} -- This package is specifically forbidden
+% \usepackage{CJK} -- This package is specifically forbidden
+% \usepackage{float} -- This package is specifically forbidden
+% \usepackage{flushend} -- This package is specifically forbidden
+% \usepackage{fullpage} -- This package is specifically forbidden
+% \usepackage{geometry} -- This package is specifically forbidden
+% \usepackage{hyperref} -- This package is specifically forbidden
+% \usepackage{navigator} -- This package is specifically forbidden
+% (or any other package that embeds links such as navigator or hyperref)
+% \usepackage{indentfirst} -- This package is specifically forbidden
+% \usepackage{layout} -- This package is specifically forbidden
+% \usepackage{multicol} -- This package is specifically forbidden
+% \usepackage{nameref} -- This package is specifically forbidden
+% \usepackage{savetrees} -- This package is specifically forbidden
+% \usepackage{setspace} -- This package is specifically forbidden
+% \usepackage{stfloats} -- This package is specifically forbidden
+% \usepackage{tabu} -- This package is specifically forbidden
+% \usepackage{titlesec} -- This package is specifically forbidden
+% \usepackage{tocbibind} -- This package is specifically forbidden
+% \usepackage{ulem} -- This package is specifically forbidden
+% \usepackage{wrapfig} -- This package is specifically forbidden
+% DISALLOWED COMMANDS
+% \nocopyright -- Your paper will not be published if you use this command
+% \addtolength -- This command may not be used
+% \balance -- This command may not be used
+% \baselinestretch -- Your paper will not be published if you use this command
+% \clearpage -- No page breaks of any kind may be used for the final version of your paper
+% \columnsep -- This command may not be used
+% \newpage -- No page breaks of any kind may be used for the final version of your paper
+% \pagebreak -- No page breaks of any kind may be used for the final version of your paper
+% \pagestyle -- This command may not be used
+% \tiny -- This is not an acceptable font size.
+% \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
+% \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
+
+\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+% The file aaai2027.sty is the style file for AAAI Press
+% proceedings, working notes, and technical reports.
+%
+
+% Title
+
+% Your title must be in mixed case, not sentence case.
+% That means all verbs (including short verbs like be, is, using,and go),
+% nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
+% articles, conjunctions, and prepositions are lower case unless they
+% directly follow a colon or long dash
+\title{Localizing LLM Failures in Sequential Decision Making with Bayesian Optimal Baselines}
+\author{
+    %Authors
+    % All authors must be in the same font size and format.
+    Written by AAAI Press Staff\textsuperscript{\rm 1}\thanks{With help from the AAAI Publications Committee.}\\
+    AAAI Style Contributions by Peter Patel Schneider,
+    Sunil Issar,\\
+    J. Scott Penberthy,
+    George Ferguson,
+    Hans Guesgen,
+    Francisco Cruz\equalcontrib\corresponding,
+    Marc Pujol-Gonzalez\equalcontrib\corresponding
+}
+\affiliations{
+    %Afiliations
+    \textsuperscript{\rm 1}Association for the Advancement of Artificial Intelligence\\
+    % If you have multiple authors and multiple affiliations
+    % use superscripts in text and roman font to identify them.
+    % For example,
+
+    % Sunil Issar\textsuperscript{\rm 2},
+    % J. Scott Penberthy\textsuperscript{\rm 3},
+    % George Ferguson\textsuperscript{\rm 4}\corresponding,
+    % Hans Guesgen\textsuperscript{\rm 5}
+    % Note that the comma should be placed after the superscript
+
+    1101 Pennsylvania Ave, NW Suite 300\\
+    Washington, DC 20004 USA\\
+    % email address must be in roman text type, not monospace or sans serif
+    proceedings-questions@aaai.org
+%
+% See more examples next
+}
+
+%Example, Single Author, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\iffalse
+\title{My Publication Title --- Single Author}
+\author {
+    Author Name
+}
+\affiliations{
+    Affiliation\\
+    Affiliation Line 2\\
+    name@example.com
+}
+\fi
+
+\iffalse
+%Example, Multiple Authors, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\title{My Publication Title --- Multiple Authors}
+\author {
+    % Authors
+    First Author Name\textsuperscript{\rm 1,\rm 2}\equalcontrib,
+    Second Author Name\textsuperscript{\rm 2}\equalcontrib,
+    Third Author Name\textsuperscript{\rm 1}\corresponding
+}
+\affiliations {
+    % Affiliations
+    \textsuperscript{\rm 1}Affiliation 1\\
+    \textsuperscript{\rm 2}Affiliation 2\\
+    firstAuthor@affiliation1.com, secondAuthor@affilation2.com, thirdAuthor@affiliation1.com
+}
+\fi
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Large language models (LLMs) are increasingly used for decision supports in various practical settings.
+However, the underlying mechanistic insights remains underexplored as to how they make decisions and update belief over the process beyond just final outcome.
+We introduce an empirical pipeline to analyze LLMs' decision-making process in Bayesian and game-theoretic scenarios.
+
+[Add 1 methodology sentence]
+
+
+We evaluated 9 LLMs on rational decision making across 7 scenarios, where uncertainty about the game environment is inferable from accumulating evidence, and compare them against a Bayesian-optimal baseline. Our findings suggest that LLMs update beliefs like rational Bayesian agents but struggle with game-theoretic decision making. Moreover, we find that all models from 2B to 70B form a linearly decodable belief representation, and that failures in game-theoretic scenarios occur systematically at the belief-to-action mapping stage, unlike in Bayesian inference tasks, where mid-sized models rationally map beliefs to actions.
+
+
+[Note: here mid-sized models as an expression is also a bit confusing, does that mean smaller/bigger models cannot rationally map beliefs to actions?]
+[Certainly have to rewrite the abstract but I meant 27B and 31B for midsized models and 70B for large size, as long as its not small the mapping is relatively fine but in game theoretic scenario even big models sometimes fail]
+\end{abstract}
+
+
+
+\section{Introduction}
+% Content here.
+
+
+
+
+
+\section{Related Work}
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.80\columnwidth]{Figures/Overview.png}
+    \caption{
+    Overview of the mechanistic evaluation pipeline for LLM decision
+    making across nine models and eight scenarios. The three probes examine
+    belief representation, pre-CoT action preference, and post-CoT
+    commitment.
+    }
+    \label{fig:overview}
+\end{figure}
+
+
+\subsection{}
+% Content here.
+
+\subsection{}
+% Content here.
+
+\section{Method}
+
+\subsection{Formulating LLM Decision Making Problems}
+
+We formulate each scenario as a repeated binary decision making task. At
+each step \(t\), the LLM receives a description of the scenario together
+with the accumulated history of its previous actions and observed
+outcomes. These outcomes are generated under a hidden environment
+parameter \(\theta\), which is not revealed to the model but can be
+inferred from the observed history.
+
+The LLM selects an action \(\hat{a}_t\) based on the available evidence.
+For the same scenario and history, our baseline determines the rational
+action \(a_t^\star\). We evaluate the LLM by measuring how consistently
+its decisions agree with \(a_t^\star\) as evidence accumulates. This
+formulation treats the LLM as an empirical decision maker and enables a
+direct comparison with a mathematically grounded rational reference.
+%%%\label{sec:scenarios}    : Add this label to the section introduces the seven scenarios:
+
+\subsection{Baseline Design}
+\label{sec:baseline-design}
+
+We derive the rational reference from Bayesian statistical decision
+theory~\citep{TODO_WALD}. At each step, it uses the accumulated history
+to update its belief about the hidden environment parameter and then
+chooses the action with the highest posterior expected utility.
+
+Given history \(h_t\), the posterior over the hidden parameter is
+\begin{equation}
+    p(\theta \mid h_t)
+    \propto
+    p(\theta)
+    \prod_{s<t}
+    p(o_s \mid a_s,\theta).
+\end{equation}
+The rational action is then
+\begin{equation}
+    a_t^\star
+    =
+    \mathop{\mathrm{arg\,max}}_{a\in\mathcal{A}}
+    \mathrm{E}_{\theta\sim p(\theta\mid h_t)}
+    \left[U_S(a,\theta,h_t)\right].
+\end{equation}
+The likelihood term describes how probable each observed outcome is
+under a candidate hidden parameter, while \(U_S\) captures the
+scenario-specific payoff. Across the eight scenarios in
+Section~\ref{sec:scenarios}, only the hidden parameter space, likelihood
+model, and utility function change.
+
+This baseline assumes that the possible hidden parameters and outcome
+model are known. It therefore excludes ambiguity, also known as
+Knightian uncertainty, from our scope~\citep{TODO_ELLSBERG}, and does not
+incorporate priors that an LLM may have acquired during pretraining.
+Nevertheless, it provides a consistent and mathematically grounded
+reference for evaluating the model's decisions.
+
+\subsection{LLM Mechanistic Checkpoints}
+
+We define three mechanistic checkpoints in the LLM decision process to
+localize where a decision failure occurs. As the
+baseline processes each decision task by observing the history, updating its belief over the hidden environment, and mapping that
+belief to an action through the expected utility margin between the two
+available actions, we choose three probing locations in the LLM
+architecture that provide interpretable access to these stages of the
+decision process.
+
+\textbf{\textit{Probe 1: Belief Representation.}}
+This probe tests whether the baseline's decision state is linearly
+decodable from the model's internal representation. We train an offline
+linear probe on the residual stream at each layer to test whether such a
+representation exists. We also regress the same representation against the
+baseline's full posterior over \(\theta\), from which the decision state is
+computed.
+
+\textbf{\textit{Probe 2: Belief to Action Mapping.}}
+This probe reads the model's action preference immediately before it
+generates a response. Together with Probe 1, it tests whether a represented
+belief is mapped to an action preference that tracks the baseline's expected
+utility margin. A represented belief paired with an action preference
+insensitive to that margin localizes the failure to the mapping rather than
+the belief itself.
+
+\textbf{\textit{Probe 3: Post CoT Commitment.}}
+This probe reads the model's action preference after it completes its own
+chain of thought reasoning. Comparing Probe 3 with Probe 2 isolates the
+effect of self generated reasoning: whether it preserves, corrects, or
+overturns the initial action preference.
+
+\subsection{}
+% Content here.
+
+
+\section{Experimental Setup}
+\label{sec:experimental-setup}
+
+\subsection{Selection of Decision Scenarios}
+\label{sec:decision-scenarios}
+\label{sec:scenarios}
+
+We design eight sequential decision making scenarios that share the same
+Bayesian baseline procedure from Section~\ref{sec:baseline-design}, but
+differ in their hidden parameter space, observation model, and utility
+function. The scenarios belong to two established families in decision
+science: Bayesian inference and game theoretic decision making. We first
+describe their common generative process and the requirements used to
+construct them.
+
+\textbf{\textit{Common generative template.}}
+For each scenario \(S\), a hidden parameter \(\theta\) is sampled uniformly
+from a finite set and held fixed throughout a rollout of \(T=10\) steps.
+At each step \(s\), a fixed behavior policy selects one of the two available
+actions \(a_s\) with equal probability, independently of the evaluated
+model. The environment then samples an outcome \(o_s\) according to the
+scenario-specific observation model.
+
+At step \(t\), the model observes the accumulated history
+\(h_t=((a_1,o_1),\ldots,(a_{t-1},o_{t-1}))\). Because this history is
+generated by the fixed behavior policy rather than by the evaluated model,
+all models receive the same evidence trajectory for a given seed.
+
+\textbf{\textit{Design requirements.}}
+Each scenario has a finite hidden parameter space with a known uniform
+prior, sequential observations that provide evidence about the hidden
+parameter, and a binary action space. The rational action must also be
+analytically computable from the posterior belief and scenario-specific
+utility, with indifference cases identified explicitly. Together, these
+requirements allow model decisions and internal representations to be
+evaluated against the same rational baseline across all scenarios.
+
+\textbf{\textit{Bayesian inference family.}}
+In this family, the hidden parameter is a property of a nonstrategic
+environment and \(P_S(o_s\mid a_s,\theta)\) is a fixed stochastic rule.
+We separate these scenarios into pure inference tasks, whose decision
+boundary is a posterior probability of \(0.5\), and expected utility
+threshold tasks, whose decision boundary depends on the posterior mean of
+a latent rate \(q\). The latter tests whether a model can recover a
+nontrivial expected utility threshold rather than only perform binary
+hypothesis testing.
+
+\begin{itemize}
+    \item \textit{Bandit.}
+    A two-armed Bernoulli bandit in which the identity of the better arm is
+    hidden and inferred from action-dependent rewards.
+
+    \item \textit{Monty Hall.}
+    An altered Monty Hall problem with a hidden biased door placement rule.
+    The model must update away from the standard switching probability when
+    the observed history supports a different rule.
+
+    \item \textit{Trust Game.}
+    A repeated investor-side trust game in which the trustee has a hidden
+    repayment rate \(q\), and investing is optimal only above a nontrivial
+    expected utility threshold.
+
+    \item \textit{Machine.}
+    A nonsocial counterpart to the Trust Game with matched hidden types,
+    utilities, and outcome trajectories, isolating social framing while
+    preserving the underlying inference problem.
+\end{itemize}
+
+\textbf{\textit{Game theoretic family.}}
+In this family, the hidden parameter \(\theta\) is a stationary property
+of the opponent, represented by either a strategy type or an action rate,
+and \(U_S(a,\theta)\) is induced by a payoff matrix over the joint action
+profile. Since the opponent is drawn from a known prior and inferred
+through Bayesian updating, these tasks are Bayesian decision problems
+against fixed opponent policies rather than equilibrium computations.
+The hidden opponent property remains stationary throughout each rollout.
+
+\begin{itemize}
+    \item \textit{Stag Hunt.}
+    A repeated coordination game against a hidden stationary opponent type,
+    including a reactive tit-for-tat strategy.
+
+    \item \textit{Bach or Stravinsky.}
+    A repeated coordination game with conflicting preferences over the two
+    coordination outcomes, against a hidden stationary opponent type that
+    may follow a reactive tit-for-tat strategy.
+
+    \item \textit{Matching Pennies.}
+    A repeated competitive matching game against a hidden stationary
+    opponent type, including a reactive counter strategy that plays the
+    opposite of the agent's previous action.
+
+    \item \textit{Chicken.}
+    A repeated anti-coordination game against an opponent with a hidden
+    stationary yield rate.
+\end{itemize}
+
+Table~\ref{tab:decision-scenarios} summarizes, for each scenario, the
+hidden parameter and observation model, binary action space, utility or
+payoff structure, and rational decision rule.
+
+
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular}{@{}
+    P{0.090\textwidth}
+    @{\hspace{4pt}}P{0.302\textwidth}
+    @{\hspace{4pt}}P{0.090\textwidth}
+    @{\hspace{4pt}}P{0.205\textwidth}
+    @{\hspace{4pt}}P{0.205\textwidth}
+@{}}
+\toprule
+\textbf{Scenario}
+&
+\textbf{Hidden parameter and}\newline
+\textbf{observation model}
+&
+\textbf{Actions}
+&
+\textbf{Utility or payoff}
+&
+\textbf{Rational decision rule}
+\\
+\midrule
+
+\multicolumn{5}{@{}l}{\textit{Bayesian inference family}}\\
+\midrule
+
+Bandit
+&
+The hidden parameter is the identity of the better arm. Rewards are
+Bernoulli with \(p_{\mathrm{good}}=0.7\) and
+\(p_{\mathrm{bad}}=0.3\).
+&
+Arm 1 /\newline Arm 2
+&
+Maximize expected reward.
+&
+Choose the arm whose posterior probability of being better exceeds
+\(0.5\).
+\\
+
+Monty Hall
+&
+\(\theta\in
+\{\texttt{random},\texttt{sticky},\texttt{shifting}\}\).
+The respective probabilities that switching wins are \(2/3\), \(0\),
+and \(1\).
+&
+\textsc{Stay} /\newline \textsc{Switch}
+&
+Maximize the probability of selecting the winning door.
+&
+Choose \textsc{Switch} when its posterior win probability exceeds
+\(0.5\).
+\\
+
+Trust Game
+&
+The hidden repayment rate is
+\(q\in\{\approx 1,0.8,0.2,\approx 0\}\), with repayment outcome
+\(o_s\sim\mathrm{Bernoulli}(q)\).
+&
+\textsc{Invest} /\newline \textsc{Keep}
+&
+Expected monetary return, with \textsc{Keep} yielding \(10\).
+&
+Choose \textsc{Invest} iff
+\(\mathrm{E}[q\mid h_t]>2/3\).
+\\
+
+Machine
+&
+The hidden payout rate is
+\(q\in\{\approx 1,0.8,0.2,\approx 0\}\), with machine payout
+\(o_s\sim\mathrm{Bernoulli}(q)\). Outcomes are paired with the Trust
+Game by seed.
+&
+Risky /\newline Safe
+&
+Same utility structure as the Trust Game.
+&
+Select the risky option iff
+\(\mathrm{E}[q\mid h_t]>2/3\).
+\\
+
+\midrule
+\multicolumn{5}{@{}l}{\textit{Game theoretic family}}\\
+\midrule
+
+Stag Hunt
+&
+The hidden strategy is \textsc{Always Stag}, \textsc{Always Hare}, or
+\textsc{Tit for Tat}. The opponent follows this strategy with noise
+\(\epsilon=0.10\).
+&
+\textsc{Stag} /\newline \textsc{Hare}
+&
+\(4\) for mutual stag, \(2\) for mutual hare, and \(3/0\) for
+mismatch.
+&
+Choose \textsc{Stag} when the posterior probability that the opponent
+plays stag exceeds \(2/3\).
+\\
+
+Bach or\newline Stravinsky
+&
+The hidden strategy is \textsc{Always Bach}, \textsc{Always Stravinsky},
+or \textsc{Tit for Tat}. The opponent follows this strategy with noise
+\(\epsilon=0.10\).
+&
+\textsc{Bach} /\newline \textsc{Stravinsky}
+&
+\(2\) for mutual Bach, \(1\) for mutual Stravinsky, and \(0\) for
+mismatch.
+&
+Choose \textsc{Bach} when the posterior probability that the opponent
+plays Bach exceeds \(1/3\).
+\\
+
+Matching\newline Pennies
+&
+The hidden strategy is \textsc{Always Heads}, \textsc{Always Tails}, or
+\textsc{Counter}. \textsc{Counter} plays the opposite of the agent's
+previous action. The opponent follows its strategy with noise
+\(\epsilon=0.10\).
+&
+\textsc{Heads} /\newline \textsc{Tails}
+&
+\(1\) for a match and \(0\) for a mismatch.
+&
+Choose \textsc{Heads} when the posterior probability that the opponent
+plays heads exceeds \(1/2\).
+\\
+
+Chicken
+&
+The hidden opponent yield rate is
+\(q\in\{0.9,0.7,0.3,0.1\}\), with yield outcome
+\(o_s\sim\mathrm{Bernoulli}(q)\).
+&
+\textsc{Dare} /\newline \textsc{Yield}
+&
+\(4\) for dare against yield, \(0\) for mutual dare, \(3\) for mutual
+yield, and \(1\) for yield against dare.
+&
+Choose \textsc{Dare} iff
+\(\mathrm{E}[q\mid h_t]>0.5\).
+\\
+
+\bottomrule
+\end{tabular}
+\caption{Specification of the eight decision scenarios. All scenarios
+use a uniform prior over the listed hidden parameter values.}
+\label{tab:decision-scenarios}
+\end{table*}
+
+
+
+
+\subsection{Model Selection}
+
+We select models along three axes. \emph{Scale} spans 2B to 70B parameters,
+allowing us to test whether localized failures attenuate with size.
+\emph{Family} covers four model families, reducing the likelihood that a
+result is an artifact of a single training pipeline. We include two
+\emph{reasoning models}, both DeepSeek R1 Distill variants trained to
+produce extended reasoning before answering, to compare their chain of
+thought responses with those of instruction tuned models. 
+The full list of nine models appears in Appendix~\ref{app:models}.
+
+\subsection{Prompts and Decoding}
+
+Prompts for the eight scenarios are generated from the common template in
+Section~\ref{sec:decision-scenarios}. Each specifies its hidden parameter
+space, observation model, binary actions, and payoffs, as detailed in
+Table~\ref{tab:decision-scenarios}. The history \(h_t\) is presented as a
+list of past action and observation pairs, together with a computed tally
+summarizing the same history. We iterated the prompt structure to ensure
+that models neither misread nor fabricated the provided information,
+including the history. This helps ensure that measured failures reflect
+decision making rather than difficulties in interpreting ambiguous
+wording. The full set of prompts is available in
+Appendix~\ref{app:prompts}.
+
+Following their model cards, the R1 Distill reasoning models generate with
+temperature \(0.6\) and top \(p=0.95\), and answer in
+\(\boxed{\texttt{A}}\) or \(\boxed{\texttt{B}}\). All other models decode
+greedily using the same prompts. We take the last matching answer pattern
+rather than the first because models sometimes restate the answer format
+from the prompt before producing their own answer.
+
+
+
+
+
+\subsection{Probing Points: Experimental Instantiation}
+
+This section instantiates the three mechanistic checkpoints introduced in
+Section~\ref{sec:checkpoints}. Probes~1 and~2 read the same forward pass
+and differ only in what is read from it.
+
+\paragraph{Probe 1: Belief Representation.}
+For each decision step, we run a forward pass on the prompt truncated at
+the answer position, generating no tokens. We save the residual stream at
+the final prompt token from every layer
+\(\ell \in \{0,\ldots,L\}\), where layer \(0\) is the token embedding.
+We fit a logistic regression (\(\ell_2\), \(C=0.1\)) at each layer to
+predict the baseline's decision state: which action has the higher
+posterior expected utility.
+
+Cross validation is grouped by seed, so steps from the same history never
+span the training and test sets. We report class balanced accuracy at the
+final layer, measuring how well the scenario's decision state is
+represented internally. We refer to this quantity as Belief (P1).
+
+\paragraph{Probe 2: Belief to Action Mapping.}
+Probe~2 reads the vocabulary logits at the final position of the same
+forward pass. Logits for each action label are aggregated across tokenizer
+variants using log sum exp. Their difference is the model's action
+preference before it generates any tokens. We average this difference over
+the two action label assignments, cancelling any preference for a
+particular letter. We report the balanced agreement between its sign and
+the baseline's action. We refer to this quantity as Pre-CoT (P2).
+
+\paragraph{Probe 3: Post-CoT Commitment.}
+The model then generates its full reasoning response. We locate the step at which the
+model commits to its final answer and read the same logit difference from the
+raw logits before sampling filters are applied. A response with no parseable answer yields no measurement, so this quantity 
+is computed only over responses that terminate. We refer to these quantities
+as Post-CoT (P3).
+
+Probes~1 and~2 use \(100\) seeds with \(T=10\) decision steps each.
+Probe~3 uses the first \(40\) seeds because it requires full generation.
+
+
+\section{Results}
+\label{sec:results}
+
+\begin{table*}[t]
+\centering
+{%
+\small
+\setlength{\tabcolsep}{2pt}
+
+\begin{tabular}{@{}
+    >{\raggedright\arraybackslash}p{0.087\textwidth}
+    >{\raggedright\arraybackslash}p{0.112\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+    >{\centering\arraybackslash}p{0.077\textwidth}
+    >{\centering\arraybackslash}p{0.081\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+    >{\centering\arraybackslash}p{0.077\textwidth}
+    >{\centering\arraybackslash}p{0.076\textwidth}
+@{}}
+\toprule
+
+\textbf{Scenario}
+&
+\textbf{Metric}
+&
+\modelhead{Gemma-2}{2B}
+&
+\modelhead{Llama-3.2}{3B}
+&
+\modelhead{Phi-4-mini}{3.8B}
+&
+\modelhead{Qwen-3.5}{4B}
+&
+\modelhead{\textit{R1-Qwen}}{\textit{7B}}
+&
+\modelhead{Qwen-3.6}{27B}
+&
+\modelhead{Gemma-4}{31B}
+&
+\modelhead{Llama-3.3}{70B}
+&
+\modelhead{\textit{R1-Llama}}{\textit{70B}}
+\\
+\midrule
+
+\multicolumn{11}{@{}l}{
+    \textbf{\textit{
+        Bayesian inference: pure inference from observed outcomes
+    }}
+}
+\\
+
+Bandit
+&
+Belief (P1)
+& 99 & 98 & 99 & 99 & 100 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 92 & 71 & 99 & 97 & 89 & 95 & 100 & 100 & 100
+\\
+&
+Post-CoT (P3)
+& 89 & 83 & 100 & 99 & 92 & 100 & 100 & 92 & 97
+\\
+
+Monty Hall
+&
+Belief (P1)
+& 96 & 98 & 100 & 100 & 99 & 100 & 100 & 99 & 100
+\\
+&
+Pre-CoT (P2)
+& 52 & 68 & 58 & 72 & 59 & 99 & 98 & 92 & 96
+\\
+&
+Post-CoT (P3)
+& 62 & 56 & 75 & 100 & N/A & 100 & 100 & 99 & 100
+\\
+
+\midrule
+\multicolumn{11}{@{}l}{
+    \textbf{\textit{
+        Bayesian inference: expected utility threshold pair
+    }}
+}
+\\
+
+Trust Game
+&
+Belief (P1)
+& 99 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 59 & 73 & 82 & 94 & 56 & 88 & 88 & 89 & 90
+\\
+&
+Post-CoT (P3)
+& 61 & 60 & 86 & 96 & N/A & 100 & 100 & 97 & 100
+\\
+
+Machine
+&
+Belief (P1)
+& 99 & 100 & 99 & 100 & 100 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 74 & 41 & 49 & 90 & 63 & 84 & 87 & 85 & 98
+\\
+&
+Post-CoT (P3)
+& 71 & 51 & 81 & 99 & N/A & 100 & 100 & 96 & 100
+\\
+
+\midrule
+\multicolumn{11}{@{}l}{
+    \textbf{\textit{Game theoretic decision making}}
+}
+\\
+
+Stag Hunt
+&
+Belief (P1)
+& 85 & 87 & 82 & 90 & 92 & 92 & 94 & 95 & 95
+\\
+&
+Pre-CoT (P2)
+& 60 & 50 & 59 & 80 & 51 & 71 & 70 & 74 & 72
+\\
+&
+Post-CoT (P3)
+& 61 & 59 & 72 & 83 & N/A & 98 & 85 & 71 & N/A
+\\
+
+Chicken
+&
+Belief (P1)
+& 97 & 98 & 96 & 98 & 98 & 99 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 66 & 53 & 69 & 50 & 50 & 82 & 100 & 70 & 54
+\\
+&
+Post-CoT (P3)
+& 45 & 59 & 58 & 96 & N/A & 100 & 100 & 98 & N/A
+\\
+
+BoS
+&
+Belief (P1)
+& 87 & 87 & 85 & 90 & 90 & 92 & 95 & 94 & 94
+\\
+&
+Pre-CoT (P2)
+& 50 & 50 & 50 & 72 & 69 & 82 & 85 & 77 & 62
+\\
+&
+Post-CoT (P3)
+& 42 & 50 & 68 & 94 & N/A & 98 & 94 & 82 & N/A
+\\
+
+Pennies
+&
+Belief (P1)
+& 89 & 87 & 85 & 89 & 88 & 92 & 94 & 93 & 92
+\\
+&
+Pre-CoT (P2)
+& 50 & 50 & 50 & 54 & 65 & 75 & 80 & 79 & 74
+\\
+&
+Post-CoT (P3)
+& 46 & 52 & 47 & 94 & N/A & 99 & 98 & 88 & N/A
+\\
+
+\bottomrule
+\end{tabular}
+}
+
+\caption{
+Performance across three mechanistic checkpoints. Belief (P1) reports
+class-balanced linear-probe accuracy, while Pre-CoT (P2) and Post-CoT
+(P3) report class-balanced agreement with the optimal action before and
+after CoT reasoning. Chance is \(50\), and all values are percentages.
+P1 and P2 use all unambiguous decision points from 100 seeds and 10 steps
+per seed; P3 uses 40 seeds and only terminating, parseable responses.
+For the italicized reasoning-distilled models, N/A indicates termination
+below \(30\%\). Because P3 conditions on termination, the remaining
+reasoning-model cells are computed over a self-selected subset of rounds.
+}
+\label{tab:main-results}
+\end{table*}
+
+\paragraph{Result 1: Final Decision Optimality.}
+We examine whether the LLM selects the optimal action as its final
+decision, as prescribed by the Bayesian optimal baseline. The Post-CoT binary answer provides an outcome based measure of final
+commitment, with nonterminating responses recorded as no response
+(\(\mathrm{N/A}\)).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{Figures/Decision_final.png}
+    \caption{Final decisions made by nine models in Bayesian inference and
+    game theoretic scenarios. Bars show the rates of correct decisions,
+    incorrect decisions, and responses with no final answer.}
+    \label{fig:decision-final}
+\end{figure}
+
+Across the seven non-reasoning models, final decision accuracy averages
+\(86.1\%\) in the Bayesian inference scenarios and \(71.6\%\) in the game
+theoretic scenarios. Figure~\ref{fig:decision-final} reports results for
+all models. The smallest models, \model{Gemma-2} 2B and
+\model{Llama-3.2} 3B, perform only moderately above chance in the Bayesian
+inference scenarios and near chance in the game theoretic scenarios,
+whereas \model{Phi-4-mini} 3.8B performs more strongly. The larger
+\model{Qwen-3.6} 27B and \model{Gemma-4} 31B models achieve consistently
+high accuracy across all eight scenarios. Notably, the much smaller
+\model{Qwen-3.5} 4B achieves near-perfect accuracy in the Bayesian
+inference scenarios, whereas \model{Llama-3.3} 70B, despite its
+substantially larger scale, performs slightly worse in the game theoretic
+scenarios than the 27B and 31B models.
+
+The two reasoning models, \model{R1-Qwen} 7B and
+\model{R1-Llama} 70B, exhibit high no-response rates. Their extended
+reasoning often oscillates between candidate actions without reaching a
+final commitment before the maximum token budget. Consequently, they
+produce few incorrect answers but frequently fail to return an answer,
+especially in the game theoretic scenarios. In particular,
+\model{R1-Llama} 70B commits to the correct answer in only \(17\%\) of
+responses in the game theoretic scenarios.
+
+
+
+
+\paragraph{Result 2: Localizing Decision Failures.}
+
+
+Result~1 showed that final decisions are often inaccurate in smaller models
+and degrade further under game theoretic structure. We now use the three
+probing checkpoints to separate belief formation from belief to action
+mapping.
+
+\textbf{\textit{The belief is linearly decodable across all settings.}}
+Across all nine models and eight scenarios, the baseline optimal action is
+linearly decodable from the residual stream with an average balanced
+accuracy of \(95.8\%\). No model and scenario combination falls below
+\(82.1\%\), including the 2B model
+(Table~\ref{tab:main-results}, Belief (P1)). The decoded target is the sign
+of the posterior expected utility gap, showing that the decision relevant
+belief formed from the accumulated history is consistently represented.
+
+The same representation also predicts the baseline's full posterior over
+hidden types with \(R^2=0.79\). It retains \(R^2=0.45\) after
+nonparametrically removing the variation explained by the decision margin,
+against \(R^2=-0.01\) for shuffled targets. The probe therefore recovers
+information about the underlying belief, not only the action implied by
+that belief. The exact construction and held out validation of Probe~1 as a decision relevant belief tracker, including posterior decodability and residualization controls, are provided in Appendix~\ref{app:posterior}.
+
+
+\textbf{\textit{The failure lies in mapping belief to action.}}
+Although the belief is consistently represented, the action preference
+read from the same forward pass often fails to track it
+(Table~\ref{tab:main-results}, Pre-CoT (P2)). As shown in
+Figure~\ref{fig:belief-action-gap}, the decision relevant belief begins to
+form in the early layers and stabilizes by the middle layers. It approaches
+ceiling accuracy in the Bayesian inference scenarios and the nonreactive
+Chicken scenario, while the reactive games stabilize between approximately
+\(85\%\) and \(90\%\). Despite this stable final layer representation,
+accuracy drops when the belief is mapped to the pre-CoT action preference.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{Figures/Belief-Action.png}
+    \caption{Belief formation across network depth and the belief to action gap.
+The left panel shows how Belief (P1) changes as layers progress, grouped
+over the four Bayesian scenarios, Chicken as the nonreactive game, and the
+three opponent reactive game theoretic scenarios. The right panel shows
+the corresponding average Pre-CoT action agreement (P2). Dashed lines
+connect final layer P1 to P2, and labels report the resulting drop in
+percentage points.}
+    \label{fig:belief-action}
+\end{figure}
+
+
+
+Across models, belief decoding reaches \(99.4\%\) in the Bayesian inference
+scenarios, compared with \(82.0\%\) pre-CoT action agreement, a gap of
+\(17.4\) percentage points. In the game theoretic scenarios, belief decoding
+is \(92.3\%\), whereas action agreement is \(66.6\%\), widening the gap to
+\(25.7\) points.
+
+Every model exhibits a substantial belief to action gap under game
+theoretic structure, ranging from \(12.4\) points for
+\model{Gemma-4} 31B to \(33.9\) points for \model{Llama-3.2} 3B.
+
+
+
+\textbf{\textit{The belief to action gap is causal.}}
+This belief to action gap is also causal rather than merely
+correlational. Adding the trained belief direction to the residual stream
+and rereading the action logits corrects \(27.6\%\) of previously
+incorrect decisions in the four Bayesian inference scenarios, compared
+with \(7.8\%\) for random directions matched in norm. Across the four game
+theoretic scenarios, the same intervention corrects only \(2.9\%\),
+compared with \(2.0\%\) for the matched random control, making it
+indistinguishable from a random perturbation. The information required for
+the correct decision is therefore present in the representation but is not
+reliably used to select the action, localizing the failure to the belief to
+action mapping.
+
+Thus, the two failures are qualitatively different: under
+Bayesian inference, the belief is causally coupled to the action but
+underweighted, so amplifying it recovers a substantial fraction of errors. However,
+under game theoretic structure, the action is substantially less sensitive
+to the represented belief, and amplification does not help because there
+is no strongly weighted pathway to amplify.
+
+\paragraph{Result 3: Chain of Thought as a Commitment Amplifier.}
+
+Chain of thought reasoning amplifies an existing belief to action mapping
+but does not create one when the mapping is absent. Across the game
+theoretic scenarios, when Pre-CoT agreement (P2) is between \(65\%\) and
+\(80\%\), reasoning corrects \(66.0\%\) of initial errors while overturning
+only \(6.1\%\) of initially correct decisions, yielding \(81.9\%\)
+effective Post-CoT accuracy. Below \(65\%\), reasoning corrects fewer
+errors (\(47.5\%\)) and overturns \(29.6\%\) of correct decisions, leaving
+effective accuracy at \(56.9\%\). Thus, a usable mapping anchors reasoning
+toward a stable final commitment, whereas a weak mapping allows reasoning
+to drift between actions.
+
+This failure takes two forms. Smaller instruction tuned models usually
+commit to an answer but may amplify the wrong preference:
+\model{Gemma-2} 2B overturns \(59.8\%\) of decisions that were correct
+before reasoning. In contrast, \model{Qwen-3.5} 4B and the two reasoning
+distilled models, \model{R1-Qwen} 7B and \model{R1-Llama} 70B, rarely
+convert a correct preference into an incorrect answer, doing so on only
+\(4.6\%\), \(0.5\%\), and \(0.1\%\) of such decisions, respectively.
+Instead, they fail to terminate on \(28.0\%\), \(95.8\%\), and
+\(81.0\%\), respectively. Their extended reasoning therefore trades
+incorrect commitment for noncommitment when the underlying action mapping
+is unresolved. In short, CoT acts as a commitment amplifier: it stabilizes a usable belief
+to action mapping, but when the mapping is weak, it amplifies either the
+wrong preference or noncommitment rather than repairing it.
+
+
+
+\section{Discussion}
+
+\paragraph{Decision Failure Diagnostics}
+\label{sec:decision-failure-diagnostics}
+
+
+Final decision accuracy alone gives an overly optimistic view of LLM decision making. Mid-sized and large models often reach the correct final answer because chain-of-thought reasoning stabilizes a marginally correct pre-CoT action preference, even when the underlying belief-to-action mapping remains weak. The final answer may therefore reflect a post hoc repair rather than a sound internal decision process. However, this does not mean that belief formation is perfect under game-theoretic structure. As shown in Figure~\ref{fig:belief-action}, the Bayesian scenarios reach a near-ceiling plateau by the middle layers, whereas belief decoding in the opponent-reactive games continues improving through the final layer and remains below ceiling.  Nevertheless, highly decodable beliefs are still mapped to marginal or nearly random action preferences, including in smaller models on nonstrategic Bayesian tasks, localizing the dominant failure to belief use rather than belief formation.
+
+Scale largely improves this mapping in Bayesian settings, but not reliably in game-theoretic decisions. Even larger models can retain strong belief representations while expressing only marginal action preferences and relying on CoT to reach the correct commitment. This dependence is concerning because our tasks provide only two actions, making weak preferences comparatively easy to resolve. We do not directly test larger action spaces, but a system that depends on reasoning to repair marginal preferences is less robust than one with a reliable belief-to-action mapping. Mechanistic evaluation therefore reveals a failure that end-to-end accuracy can conceal.
+
+
+\paragraph{Qualitative Failure Analysis}
+\label{sec:qualitative-analysis}
+
+We qualitatively examine the models' own chain-of-thought responses on decision steps where they fail to select the optimal action. Despite substantial variation in the generated explanations, the failures consistently fall into three recurring types: (i) the model states a plausible belief about the opponent's next action but selects an action that is not a best response to that belief; (ii) the model describes the accumulated evidence correctly but maps it to the wrong opponent type, ignores the posterior update, or effectively reverts to the prior; and (iii) in coordination games, the model is pulled toward the mutually cooperative outcome even when its inferred opponent behavior does not support that action. Post-generation reasoning therefore frequently contains the correct belief without translating it into the appropriate action. Representative examples of all three failure types are provided in Appendix~\ref{app:qualitative-examples}.
+
+
+
+
+
+
+\subsection{Localized Post-Training Signals}
+\label{sec:post-training-signals}
+
+Our localization yields a distinct post-training target for each failure. Across 2B--4B models, game-relevant beliefs remain strongly decodable even when action preferences approach chance, making the belief-to-action mapping a more direct target than increasing model size. When this pathway exists but is underweighted, post-training should strengthen it; when it is absent, the decodable belief can directly supervise a utility-sensitive action mapping that must be learned. Larger models also require this intervention because they often rely on CoT to recover marginal preferences, where reactive games still produce drift, incorrect commitment, and nontermination in reasoning models. Reactive game theoretic decisions further reveal slower belief consolidation across layer depth, without the late layer plateau observed in Bayesian scenarios, providing an additional fine tuning signal for stabilizing belief formation earlier and sustaining it through the final layers. Our failure localization results therefore convert diagnosis into a precise model and scenario specific training objective grounded in low level checkpoints.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\drafttext{Summarize the behavioral results, Bayesian belief updating,
+failure localization, and the difference between Bayesian and game
+theoretic failures.}
+
+\bibliography{references}
+
+
+
+
+\appendix
+
+\section{Probe 1 Construction and Posterior Decodability}
+\label{app:posterior}
+
+This appendix gives the exact construction and held-out validation of Probe~1, establishing that it tracks decision-relevant belief structure rather than only the final binary action. We specify the posterior target, linear estimator, seed-grouped cross-validation, training-only residualization, and statistical controls used to verify posterior decodability without test-set leakage.
+
+For each model \(m\), scenario \(S\), seed \(s\), and decision step \(t\), let \(x_{s,t}\in\mathbb{R}^{d_m}\) be the final-layer residual stream at the final prompt token, \(y_{s,t}=p(\theta\mid h_{s,t})\in\Delta^{K_S-1}\) be the exact baseline posterior over hidden types, and \(u_{s,t}=\Delta U_{s,t}\in\mathbb{R}\) be the baseline expected utility margin. We use \(100\) seeds and \(T=10\) steps for each model and scenario combination. The posterior has \(K_S=4\) dimensions for \textit{Trust Game}, \textit{Machine}, and \textit{Chicken}, and \(K_S=3\) for the other included scenarios. Every regression is fitted separately within one model and scenario combination, so posterior vectors of different dimensions are never combined and no observations are pooled across scenarios. \textit{Bandit} is excluded because its binary posterior is one dimensional and monotonic in \(\Delta U_t\), making the residual analysis below uninformative.
+
+We fit multi-output ridge regression from \(x\) to \(y\). Let \(X\in\mathbb{R}^{n_{\mathrm{tr}}\times d_m}\) denote the centered and scaled training residuals, \(Y\in\mathbb{R}^{n_{\mathrm{tr}}\times K_S}\) the corresponding posterior targets, and \(\bar y_{\mathrm{tr}}\in\mathbb{R}^{K_S}\) their mean. The dual-form estimator is
+\[
+\begin{aligned}
+\widehat A
+&=(XX^\top+\lambda I)^{-1}
+  \left(Y-\mathbf{1}_{\mathrm{tr}}\bar y_{\mathrm{tr}}^\top\right),
+&\lambda
+&=\frac{\operatorname{tr}(XX^\top)}{n_{\mathrm{tr}}},\\
+\widehat Y_{\mathrm{te}}
+&=X_{\mathrm{te}}X^\top\widehat A
+  +\mathbf{1}_{\mathrm{te}}\bar y_{\mathrm{tr}}^\top.
+\end{aligned}
+\]
+The mean and scale of \(X\), the target mean, and the regression coefficients are estimated from the training fold only. The penalty is fixed rather than tuned, and the resulting map from the residual stream to the posterior is linear.
+
+To test whether the representation contains posterior information beyond that implied by the decision margin, we residualize the posterior targets independently within each cross-validation fold. Using the training fold only, we divide \(u=\Delta U\) into \(20\) quantile bins under the bin map \(b(u)\). For each bin \(\beta\), we compute
+\[
+\bar y_\beta=\operatorname{mean}\{y_i:i\in\mathrm{tr},\,b(u_i)=\beta\},
+\qquad
+y_i^{\mathrm{res}}=y_i-\bar y_{b(u_i)}.
+\]
+When a bin contains fewer than five training observations, \(\bar y_\beta\) is replaced by the overall training-target mean. The training-fitted bin boundaries and means are applied unchanged to both training and held-out targets, after which the same linear probe is fitted to \(y^{\mathrm{res}}\). This removes posterior variation explained by the decision margin at \(20\)-bin resolution without using any statistic from the held-out fold.
+
+Evaluation uses \(10\)-fold cross-validation grouped by seed, ensuring that all ten steps from the same decision history remain on the same side of each split. This grouping is preserved during standardization, residualization, probe fitting, and evaluation. For posterior coordinate \(k\), held-out performance is
+\[
+R_k^2
+=
+1-
+\frac{\sum_{i\in\mathrm{te}}
+(y_{i,k}-\widehat y_{i,k})^2}
+{\sum_{i\in\mathrm{te}}
+(y_{i,k}-\bar y_{\mathrm{tr},k})^2}.
+\]
+The training-target mean is used as the baseline predictor, following the out-of-sample definition of \(R^2\). We average \(R_k^2\) over the \(K_S\) posterior coordinates, then over models within each scenario, and finally over scenarios. We report \(R^2_{\mathrm{full}}\) for the original posterior, \(R^2_{\mathrm{partial}}\) after residualizing against the binned decision margin, and \(R^2_{\mathrm{shuf}}\) after applying the same pipeline to posterior targets shuffled across steps within each model and scenario combination.
+
+The full posterior is linearly predictable from the final-layer representation with an overall held-out score of \(R^2_{\mathrm{full}}=0.787\). After removing the posterior variation associated with the binned decision margin, the representation retains \(R^2_{\mathrm{partial}}=0.451\), compared with \(R^2_{\mathrm{shuf}}=-0.011\) for shuffled targets. All \(63\) model and scenario combinations have positive \(R^2_{\mathrm{partial}}\), while the largest shuffled score anywhere in the grid is \(0.001\). The three opponent-reactive scenarios retain \(R^2_{\mathrm{partial}}=0.382\text{--}0.460\), comparable to \textit{Chicken} at \(0.470\) and above \textit{Monty Hall} at \(0.300\). Posterior information therefore remains represented in the settings where the belief to action mapping fails. In the reactive scenarios, this includes distinctions between opponent types that imply the same current action and consequently cannot be expressed by the action label or decision margin alone. Together, these results establish that Probe~1 recovers decision-relevant belief structure beyond the binary action and beyond the decision margin at the tested \(20\)-bin resolution.
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Causal Intervention on the Decoded Decision State}
+\label{app:steering}
+
+We test whether the decision state decoded by Probe~1 is locally sufficient to alter the model's pre-CoT action preference. For each model \(m\) and scenario \(S\), we refit the \(\ell_2\)-regularized Probe~1 classifier (\(C=0.1\)) at the layer \(\ell^\star\) with the highest leave-one-seed-out decoding accuracy. Let \(w\) be its weight vector and \(X^{(\ell^\star)}\) the residual-stream representations at the final prompt token. We define the unit steering direction and its model-specific scale as
+\[
+\widehat w=\frac{w}{\lVert w\rVert_2},
+\qquad
+\sigma_{\mathrm{proj}}
+=
+\operatorname{sd}\!\left(X^{(\ell^\star)}\widehat w\right),
+\]
+with the sign oriented so that a positive projection predicts scenario action \(1\). Scaling by \(\sigma_{\mathrm{proj}}\) expresses intervention strength in units of the model's natural variation along the decoded direction, avoiding comparisons at unmatched representation scales.
+
+For each decision step, we add the intervention at the same layer, token position, and residual-stream site used by the probe:
+\[
+h^{(\ell^\star)}
+\leftarrow
+h^{(\ell^\star)}
++
+\alpha\,\sigma_{\mathrm{proj}}\,
+\varsigma_{s,t}\,v,
+\qquad
+\varsigma_{s,t}
+=
+\begin{cases}
++1 & a^\star_{s,t}=\text{action }1,\\
+-1 & \text{otherwise}.
+\end{cases}
+\]
+The rescue condition uses \(v=\widehat w\), pushing the representation toward the baseline-optimal decision state. We compare it with the anti-signed direction \(v=-\widehat w\) and two isotropic unit random directions of identical norm. We evaluate the complete dose-response \(\alpha\in\{1,2,4,8\}\), rather than selecting a single intervention strength. All conditions for a step use the same tokenized prompt and are evaluated within one batched forward pass.
+
+Action preference is measured using the mapping-averaged semantic logit gap
+\[
+\Delta_{s,t}
+=
+\frac{1}{2}
+\sum_{\pi\in\{0,1\}}
+\sigma(\pi)
+\left(
+z^\pi_{\texttt{B}}-z^\pi_{\texttt{A}}
+\right),
+\qquad
+\sigma(0)=+1,\quad \sigma(1)=-1,
+\]
+where the two mappings exchange which semantic action is assigned to each answer label. Letter-specific preference therefore cancels from \(\Delta_{s,t}\). We analyze \(26{,}334\) unambiguous decisions satisfying
+\(|p^\star_{s,t}-0.5|>0.1\), drawn from \(9\) models, \(8\) scenarios, \(40\) seeds, and \(10\) decision steps.
+
+The intervention reveals a clear split by opponent reactivity. Across the five scenarios with a nonreactive hidden parameter, steering at \(\alpha=4\) corrects \(21.7\%\) of initially incorrect preferences, compared with \(6.4\%\) for norm-matched random directions, a paired difference of \(+15.3\) percentage points with bootstrap interval \([+13.2,+17.7]\). Rescue increases monotonically from \(8.9\%\) to \(30.8\%\) over the four intervention strengths, while the random control remains nearly flat. Reversing the direction also selectively damages previously correct decisions, confirming that the effect is directional rather than general disruption.
+
+In the three opponent-reactive scenarios, rescue remains at the random-control level: \(1.2\%\) versus \(1.7\%\) at \(\alpha=4\), with no increasing dose-response in either sign. Thus, the decoded decision state is causally coupled to the action readout in the nonreactive settings but is not locally accessible to the same linear intervention when decisions require reasoning about a reactive opponent.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Representative CoT Failure Cases}
+\label{app:qualitative-examples}
+
+The following examples illustrate the three qualitative failure types
+identified in Section~\ref{sec:qualitative-analysis}. Prompt context is
+condensed to the information needed to interpret each decision. The model
+wording is preserved, bracketed ellipses mark omitted text, and boldface
+identifies the critical error.
+
+% ================================================================
+% Failure type (i)
+% ================================================================
+
+\begingroup
+\setlength{\fboxsep}{5pt}
+\noindent\fbox{%
+\begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}
+\raggedright
+
+\textbf{Failure type (i): Action contradicts the stated belief}
+
+\model{Llama-3.2} 3B --- \textit{Stag Hunt}
+
+\textit{Prompt context.}
+At round \(10\), the opponent had played \textsc{Hare} in all nine
+previous rounds. The baseline selects \textsc{Hare}, while the model
+selects \textsc{Stag}.
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Model response.}
+
+The history shows that the other hunter has played HARE in 9 out of 9
+rounds. This suggests that the other hunter is likely playing the
+ALWAYS\_HARE strategy.
+
+Since they have played HARE in every round, we can conclude that they are
+almost certainly playing ALWAYS\_HARE. The probability of them hunting
+STAG this round is extremely low, almost 0.
+
+\textbf{Given that the other hunter is almost certainly playing
+ALWAYS\_HARE, the optimal action for you is to hunt STAG.} This is because
+if they are ALWAYS\_HARE, you will get 4 points if they also hunt STAG,
+and 0 points if they hunt HARE. Since the probability of them hunting
+STAG is very low, the expected payoff is 4 points.
+
+\textbf{Answer: B}
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Observed failure.}
+The model correctly predicts that the opponent will almost certainly play
+\textsc{Hare}, but selects \textsc{Stag}, which is not a best response to
+its own stated belief.
+
+\end{minipage}}
+\endgroup
+
+\medskip
+
+% ================================================================
+% Failure type (ii)
+% ================================================================
+
+\begingroup
+\setlength{\fboxsep}{5pt}
+\noindent\fbox{%
+\begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}
+\raggedright
+
+\textbf{Failure type (ii): Accumulated evidence is ignored in the
+posterior update}
+
+\model{Phi-4-mini} 3.8B --- \textit{Chicken}
+
+\textit{Prompt context.}
+At round \(9\), the opponent had yielded in all eight previous rounds.
+The four possible opponent types yield with probabilities \(0.9\),
+\(0.7\), \(0.1\), and \(0.3\). The baseline selects \textsc{Dare}, while
+the model selects \textsc{Yield}.
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Model response.}
+
+The history shows that the opponent has yielded in 8 out of 8 rounds. This
+high frequency of yielding strongly suggests that the opponent is likely
+to be either CAUTIOUS or WARY, as these dispositions have higher
+probabilities of yielding.
+
+Given the history, the most likely dispositions for the opponent are
+CAUTIOUS or WARY. Since the opponent has yielded 8 times, we can estimate
+the probability of each disposition: CAUTIOUS: 9/10; WARY: 7/10;
+RECKLESS: 1/10; BOLD: 3/10.
+
+\textbf{The weighted average likelihood of yielding this round can be
+calculated as follows:}
+\[
+\begin{aligned}
+&\left(\frac{9}{10}\times\frac{1}{4}\right)
+ +\left(\frac{7}{10}\times\frac{1}{4}\right)\\
+&\quad
+ +\left(\frac{1}{10}\times\frac{1}{4}\right)
+ +\left(\frac{3}{10}\times\frac{1}{4}\right)
+ =\frac{1}{2}.
+\end{aligned}
+\]
+
+\textbf{So, there is a 50\% chance that the opponent will yield this
+round.} [\ldots] Both actions have the same expected payoff of 2 points.
+However, since the expected payoff is the same, we should consider the
+risk involved. DARE is riskier because it results in 0 points if the
+opponent dares, while YIELD results in at least 1 point.
+
+\textbf{Final Answer: A}
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Observed failure.}
+The response identifies the opponent types supported by the history, but
+then averages their yield rates using the unchanged uniform prior. The
+eight observed yields therefore do not affect the calculation, producing
+an artificial tie that is resolved through a risk heuristic.
+
+\end{minipage}}
+\endgroup
+
+\medskip
+
+% ================================================================
+% Failure type (iii)
+% ================================================================
+
+\begingroup
+\setlength{\fboxsep}{5pt}
+\noindent\fbox{%
+\begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}
+\raggedright
+
+\textbf{Failure type (iii): The cooperative outcome overrides the
+inferred behavior}
+
+\model{Llama-3.3} 70B --- \textit{Stag Hunt}
+
+\textit{Prompt context.}
+At round \(9\), the opponent had played \textsc{Hare} in six of eight
+previous rounds. The baseline selects \textsc{Hare}, while the model
+selects \textsc{Stag}.
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Model response.}
+
+The history shows that out of 8 rounds, the opponent has played STAG only
+2 times, and both of those times were consecutive. In the first 6 rounds,
+the opponent played HARE every time. [\ldots]
+
+Given the history, if the opponent were following ALWAYS\_HARE, we would
+expect mostly HARE plays with an occasional STAG due to mistakes.
+[\ldots] The initial consistent HARE plays could suggest ALWAYS\_HARE
+with mistakes. [\ldots] There is still a chance they might hunt HARE.
+
+\textbf{Given the uncertainty but the recent mirroring behavior suggesting
+TIT\_FOR\_TAT, the optimal action leans towards hunting STAG.} This is
+because, under TIT\_FOR\_TAT, if you play STAG, the opponent is likely to
+play STAG as well, resulting in a higher payoff of 4 points compared with
+the safer but lower payoff of hunting HARE. The risk of getting 0 points
+is present but seems less likely given the recent behavior.
+
+\textbf{Answer: B}
+
+\par\smallskip
+\hrule
+\smallskip
+
+\textit{Observed failure.}
+Although the response recognizes substantial evidence that the opponent
+will play \textsc{Hare}, the decision is ultimately driven by the
+high-payoff mutual-\textsc{Stag} outcome. The possibility of cooperation
+overrides the action supported by the accumulated evidence.
+
+\end{minipage}}
+\endgroup
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+\paragraph{RQ1: Are Decisions Optimal?}
+\drafttext{Do LLMs select the Bayesian optimal action?}
+
+\paragraph{RQ2: Are Beliefs Updated Rationally?}
+\drafttext{Do LLM beliefs update rationally as evidence accumulates?}
+
+\paragraph{RQ3: Where Do Decisions Fail?}
+\drafttext{Do failures occur in belief representation, belief-to-action
+mapping, or post-CoT response?}
+
+
+\subsection{Behavioral Decision Outcomes}
+\label{sec:behavioral-results}
+
+\paragraph{Decision Optimality.}
+\drafttext{Evaluate whether each model selects the optimal action.}
+
+
+\subsection{LLMs as Bayesian Evidence Updaters}
+\label{sec:bayesian-updating-results}
+
+\paragraph{Rational Evidence Updating.}
+\drafttext{Evaluate whether model beliefs track the Bayesian posterior as
+history accumulates.}
+
+
+\subsection{Localizing Decision Failures}
+\label{sec:failure-localization-results}
+
+\paragraph{Belief Existence.}
+\drafttext{The correct belief may be fully present even when the decision
+is entirely unresponsive to it.}
+
+\textbf{Layer-by-layer development.}
+\drafttext{Bayesian beliefs form from the middle layers. Game theoretic
+beliefs are weaker but continue increasing toward the final layer.}
+
+\paragraph{Belief-to-Action Mapping.}
+\drafttext{Test whether the represented belief is correctly mapped to the
+action preference.}
+
+\paragraph{Post-CoT Response.}
+\drafttext{Compare the action preference before and after chain-of-thought
+reasoning.}
+
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Bayesian and Game Theoretic Failure Modes}
+\label{sec:bayesian-game-discussion}
+
+\paragraph{Bayesian Decisions.}
+\drafttext{The belief is connected to the action but underweighted.
+Amplifying it along its own direction corrects \(31.6\%\) of errors. This
+suggests a gain problem that may be recoverable through post training.}
+
+\paragraph{Game Theoretic Decisions.}
+\drafttext{The belief is present and graded, but the action is not a
+function of it. Belief amplification produces no improvement.}
+
+\textbf{Causal belief steering and salvageability.}
+\drafttext{Discuss which failures are causally steerable and therefore
+salvageable.}
+
+
+\subsection{CoT Response in Reasoning Models}
+\label{sec:cot-discussion}
+
+\paragraph{When the Belief-to-Action Mapping Exists.}
+\drafttext{Chain-of-thought reasoning provides additional assurance or
+correction.}
+
+\paragraph{When the Belief-to-Action Mapping Is Missing.}
+\drafttext{Reasoning may oscillate between actions without resolving the
+decision.}
+
+
+\subsection{Post-Training Signals}
+\label{sec:post-training-discussion}
+
+\paragraph{Bayesian Decisions.}
+\drafttext{Strengthen the existing connection between belief and action.}
+
+\paragraph{Game Theoretic Decisions.}
+\drafttext{Train a utility-sensitive mapping from represented beliefs to
+actions.}
+
+
+\subsection{Necessity of Failure Localization}
+\label{sec:localization-discussion}
+
+\drafttext{Explain why outcome accuracy alone cannot distinguish failures
+in belief formation, belief-to-action mapping, and post-CoT reasoning.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{RQ1 : Do LLMs make rational decisions?}
+
+ We compare each decision against the Bayesian-optimal action.
+ 
+\subsection{RQ2 : Do LLMs update on evidence like rational agents?}
+As history accumulates, does their inference / confidence improve in Bayesian and game-theoretic scenarios?
+
+\subsection{RQ3: When decisions are wrong, where do they fail?}
+ We probe at the logit level in 3 different location to locate the failure: in belief formation, in the belief-to-action mapping, post CoT
+
+
+
+
+
+
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{2pt}
+
+\begin{tabular}{@{}
+    >{\raggedright\arraybackslash}p{0.090\textwidth}
+    >{\raggedright\arraybackslash}p{0.135\textwidth}
+    *{8}{>{\centering\arraybackslash}p{0.080\textwidth}}
+@{}}
+\toprule
+
+\textbf{Scenario}
+&
+\textbf{Metric}
+&
+\shortstack[c]{\textbf{Gemma-2}\\\textbf{2B}}
+&
+\shortstack[c]{\textbf{Llama-3.2}\\\textbf{3B}}
+&
+\shortstack[c]{\textbf{Phi-4-mini}\\\textbf{3.8B}}
+&
+\shortstack[c]{\textbf{Qwen-3.5}\\\textbf{4B}}
+&
+\shortstack[c]{\textbf{\textit{R1-Qwen}}\\\textbf{\textit{7B}}}
+&
+\shortstack[c]{\textbf{Qwen-3.6}\\\textbf{27B}}
+&
+\shortstack[c]{\textbf{Gemma-4}\\\textbf{31B}}
+&
+\shortstack[c]{\textbf{Llama-3.3}\\\textbf{70B}}
+\\
+\midrule
+
+\multicolumn{10}{@{}l}{
+    \textbf{\textit{Bayesian inference: pure inference from observed outcomes}}
+}
+\\
+\midrule
+
+Bandit
+&
+Belief (P1)
+& 100 & 99 & 100 & 99 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 92 & 71 & 99 & 97 & 89 & 95 & 100 & 100
+\\
+&
+Post-CoT (P3)
+& 86 & 83 & 88 & 99 & 88 & 100 & 100 & 92
+\\
+
+\addlinespace[2pt]
+
+Monty Hall
+&
+Belief (P1)
+& 99 & 98 & 100 & 100 & 99 & 100 & 100 & 99
+\\
+&
+Pre-CoT (P2)
+& 52 & 68 & 58 & 72 & 59 & 99 & 98 & 92
+\\
+&
+Post-CoT (P3)
+& 64 & 56 & 82 & 100 & 97 & 100 & 100 & 97
+\\
+
+\midrule
+\multicolumn{10}{@{}l}{
+    \textbf{\textit{Bayesian inference: expected utility threshold pair}}
+}
+\\
+\midrule
+
+Trust Game
+&
+Belief (P1)
+& 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 59 & 73 & 82 & 94 & 56 & 88 & 88 & 89
+\\
+&
+Post-CoT (P3)
+& 63 & 60 & 84 & 96 & 91$^{\dagger}$ & 100 & 100 & 97
+\\
+
+\addlinespace[2pt]
+
+Machine
+&
+Belief (P1)
+& 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 74 & 41 & 49 & 90 & 63 & 84 & 87 & 85
+\\
+&
+Post-CoT (P3)
+& 83 & 51 & 79 & 99 & 97$^{\dagger}$ & 100 & 100 & 96
+\\
+
+\midrule
+\multicolumn{10}{@{}l}{
+    \textbf{\textit{Game theoretic decision making}}
+}
+\\
+\midrule
+
+IPD
+&
+Belief (P1)
+& 95 & 91 & 94 & 95 & 94 & 95 & 97 & 96
+\\
+&
+Pre-CoT (P2)
+& 50 & 60 & 60 & 64 & 50 & 63 & 68 & 66
+\\
+&
+Post-CoT (P3)
+& 52 & 58 & 70 & 65 & 60$^{\dagger}$ & 100 & 94 & 81
+\\
+
+\addlinespace[2pt]
+
+Stag Hunt
+&
+Belief (P1)
+& 94 & 88 & 91 & 92 & 95 & 94 & 98 & 95
+\\
+&
+Pre-CoT (P2)
+& 60 & 50 & 59 & 80 & 51 & 71 & 70 & 74
+\\
+&
+Post-CoT (P3)
+& 61 & 59 & 70 & 83 & 75$^{\dagger}$ & 98 & 85 & 71
+\\
+
+\addlinespace[2pt]
+
+Chicken
+&
+Belief (P1)
+& 99 & 98 & 99 & 98 & 99 & 100 & 100 & 100
+\\
+&
+Pre-CoT (P2)
+& 66 & 53 & 69 & 50 & 50 & 82 & 100 & 70
+\\
+&
+Post-CoT (P3)
+& 45 & 59 & 60 & 96 & 86$^{\dagger}$ & 100 & 100 & 98
+\\
+
+\bottomrule
+\end{tabular}
+
+\caption{
+\textbf{Belief representations remain accurate while decision quality
+diverges.}
+Belief (P1) is balanced linear-probe accuracy for decoding the
+Bayesian-optimal action from the residual stream. Pre-CoT (P2) and
+Post-CoT (P3) report agreement with the optimal action before and after
+chain-of-thought reasoning, respectively. P1 and P2 are evaluated over all
+decision points from 100 seeds and 10 steps per seed, whereas P3 is
+evaluated over valid terminated responses. All values are percentages.
+A dagger indicates fewer than 50 valid P3 responses for R1-Qwen-7B due to
+repetition-loop failures. The italicized R1-Qwen-7B model is
+reasoning-distilled and is not included in the standard-model scale sweep.
+}
+\label{tab:main-results}
+\end{table*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Discussion}
+% Content here.
+
+\section{Ablations}
+
+\section{Conclusion}
+% Content here.
+
+\bibliography{references}
+
+\end{document}
+
+
+% Uncomment the following to link to your code, datasets, an extended version or similar.
+% You must keep this block between (not within) the abstract and the main body of the paper.
+% Make sure that you do not de-anonymize yourself with these links.
+% \begin{links}
+%     \link{Code}{https://aaai.org/example/code}
+%     \link{Datasets}{https://aaai.org/example/datasets}
+%     \link{Extended version}{https://aaai.org/example/extended-version}
+% \end{links}
+
+\section{Preparing an Anonymous Submission}
+
+This document details the formatting requirements for anonymous submissions. The requirements are the same as for camera ready papers but with a few notable differences:
+
+\begin{itemize}
+    \item Anonymous submissions must not include the author names and affiliations. Write ``Anonymous Submission'' as the ``sole author'' and leave the affiliations empty.
+    \item The PDF document's metadata should be cleared with a metadata-cleaning tool before submitting it. This is to prevent leaked information from revealing your identity.
+    \item References must be anonymized whenever the reader can infer that they are to the authors' previous work.
+    \item AAAI's copyright notice should not be included as a footer in the first page.
+    \item You do not need to provide any copyright transfer form at this stage.
+    \item Depending on the conference, you may be required to include a reproducibility checklist or prepare it separately. Check the conference's instructions in their website.
+    \item Similarly, depending on the conference you may be allowed to submit a supplementary technical appendix after the references, or you may be allowed to submit it as a separate document, or you may not be allowed to submit a technical appendix at all.
+\end{itemize}
+
+You can remove the copyright notice and ensure that your names aren't shown by including \texttt{submission} option when loading the \texttt{aaai2027} package:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2027}
+\end{verbatim}\end{scriptsize}\end{quote}
+
+The remainder of this document contains the original camera-ready instructions. Any contradiction of the above points ought to be ignored while preparing anonymous submissions.
+
+\section{Camera-Ready Guidelines}
+
+Congratulations on having a paper selected for inclusion in an AAAI Press proceedings or technical report! This document details the requirements necessary to get your accepted paper published using PDF\LaTeX{}. If you are using Microsoft Word, instructions are provided in a different document. AAAI Press does not support any other formatting software.
+
+The instructions herein are provided as a general guide for experienced \LaTeX{} users. If you do not know how to use \LaTeX{}, please obtain assistance locally. AAAI cannot provide you with support and the accompanying style files are \textbf{not} guaranteed to work. If the results you obtain are not in accordance with the specifications you received, you must correct your source file to achieve the correct result.
+
+These instructions are generic. Consequently, they do not include specific dates, page charges, and so forth. Please consult your specific written conference instructions for details regarding your submission. Please review the entire document for specific instructions that might apply to your particular situation. All authors must comply with the following:
+
+\begin{itemize}
+\item You must use the 2027 AAAI Press \LaTeX{} style file and the aaai2027.bst bibliography style files, which are located in the 2027 AAAI Author Kit (aaai2027.sty, aaai2027.bst).
+\item You must complete, sign, and return by the deadline the AAAI copyright form (unless directed by AAAI Press to use the AAAI Distribution License instead).
+\item You must read and format your paper source and PDF according to the formatting instructions for authors.
+\item You must submit your electronic files and abstract using our electronic submission form \textbf{on time.}
+\item You must pay any required page or formatting charges to AAAI Press so that they are received by the deadline.
+\item You must check your paper before submitting it, ensuring that it compiles without error, and complies with the guidelines found in the AAAI Author Kit.
+\end{itemize}
+
+\section{Copyright}
+All papers submitted for publication by AAAI Press must be accompanied by a valid signed copyright form. They must also contain the AAAI copyright notice at the bottom of the first page of the paper. There are no exceptions to these requirements. If you fail to provide us with a signed copyright form or disable the copyright notice, we will be unable to publish your paper. There are \textbf{no exceptions} to this policy. You will find a PDF version of the AAAI copyright form in the AAAI AuthorKit. Please see the specific instructions for your conference for submission details.
+
+\section{Formatting Requirements in Brief}
+We need source and PDF files that can be used in a variety of ways and can be output on a variety of devices. The design and appearance of the paper is strictly governed by the aaai style file (aaai2027.sty).
+\textbf{You must not make any changes to the aaai style file, nor use any commands, packages, style files, or macros within your own paper that alter that design, including, but not limited to spacing, floats, margins, fonts, font size, and appearance.} AAAI imposes requirements on your source and PDF files that must be followed. Most of these requirements are based on our efforts to standardize conference manuscript properties and layout. All papers submitted to AAAI for publication will be recompiled for standardization purposes. Consequently, every paper submission must comply with the following requirements:
+
+\begin{itemize}
+\item Your .tex file must compile in PDF\LaTeX{} --- (you may not include .ps or .eps figure files.)
+\item All fonts must be embedded in the PDF file --- including your figures.
+\item Modifications to the style file, whether directly or via commands in your document may not ever be made, most especially when made in an effort to avoid extra page charges or make your paper fit in a specific number of pages.
+\item No type 3 fonts may be used (even in illustrations).
+\item You may not alter the spacing above and below captions, figures, headings, and subheadings.
+\item You may not alter the font sizes of text elements, footnotes, heading elements, captions, or title information (for references and mathematics, please see the limited exceptions provided herein).
+\item You may not alter the line spacing of text.
+\item Your title must follow Title Case capitalization rules (not sentence case).
+\item \LaTeX{} documents must use the Times-like serif text font provided automatically by the aaai2027 style file. You may not use Computer Modern or Palatino for the text of your paper, and you must not load \texttt{times} or any other text-font package in your preamble---the style file manages the text font automatically.
+\item Your source must not require use of fonts for non-Roman alphabets within the text itself. If your paper includes symbols in other languages (such as, but not limited to, Arabic, Chinese, Hebrew, Japanese, Thai, Russian and other Cyrillic languages), you must restrict their use to bit-mapped figures. Fonts that require non-English language support (CID and Identity-H) must be converted to outlines or removed from the document (even if they are in a graphics file embedded in the document).
+\item Two-column format in AAAI style is required for all papers.
+\item The paper size for final submission must be US letter without exception.
+\item The source file must exactly match the PDF.
+\item The document margins may not be exceeded (no content should overflow into the margins or gutter).
+\item The number of pages and the file size must be as specified for your event.
+\item No document may be password protected.
+\item Neither the PDFs nor the source may contain any embedded links or bookmarks (no hyperref or navigator packages).
+\item Your source and PDF must not have any page numbers, footers, or headers (no pagestyle commands).
+\item Your PDF must conform to PDF version 1.5 or higher.
+\item Your \LaTeX{} sources archive must not contain unnecessary files (figures, extra .tex files, etc.).
+\item Your graphics must be sized appropriately outside of \LaTeX{} (do not use the ``clip" or ``trim'' command) .
+\end{itemize}
+
+If you do not follow these requirements, your paper will be returned to you to correct the deficiencies.
+
+\section{What Files to Submit}
+You must submit the following items to ensure that your paper is published:
+\begin{itemize}
+\item A fully-compliant PDF file.
+\item Your \LaTeX{} source file submitted as a \textbf{single} .tex file (do not use the ``input" command to include sections of your paper --- every section must be in the single source file). (The only allowable exception is .bib file, which should be included separately).
+\item The bibliography (.bib) file(s).
+\item Your source must compile on our system, which includes only standard \LaTeX{} 2020 TeXLive support files.
+\item Only the graphics files used in compiling paper.
+\item The \LaTeX{}-generated files (e.g. .aux,  .bbl file, PDF, etc.).
+\end{itemize}
+
+Your \LaTeX{} source will be reviewed and recompiled on our system (if it does not compile, your paper will be returned to you). \textbf{Do not submit your source in multiple text files.} Your single \LaTeX{} source file must include all your text, your bibliography (formatted using aaai2027.bst), and any custom macros.
+
+Your files should work without any supporting files (other than the program itself) on any computer with a standard \LaTeX{} distribution.
+
+\textbf{Do not send files that are not actually used in the paper.} Avoid including any files not needed for compiling your paper, including, for example, this instructions file, unused graphics files, style files, additional material sent for the purpose of the paper review, intermediate build files and so forth.
+
+\textbf{Obsolete style files.} The commands for some common packages (such as some used for algorithms), may have changed. Please be certain that you are not compiling your paper using old or obsolete style files.
+
+\textbf{Final Archive.} Place your source files in a single archive which should be compressed using .zip. The final file size may not exceed 10 MB.
+Name your source file with the last (family) name of the first author, even if that is not you.
+
+
+\section{Using \LaTeX{} to Format Your Paper}
+
+The latest version of the AAAI style file is available on AAAI's website. Download this file and place it in the \TeX\ search path. Placing it in the same directory as the paper should also work. You must download the latest version of the complete AAAI Author Kit so that you will have the latest instruction set and style file.
+
+\subsection{Document Preamble}
+
+In the \LaTeX{} source for your paper, you \textbf{must} place the following lines as shown in the example in this subsection. Add or subtract author and address lines as necessary, and uncomment the portions that apply to you. In most instances, this is all you need to do to format your paper correctly. The aaai2027 style file automatically loads all required text fonts (\texttt{newtxtext} for serif, \texttt{helvet} for sans-serif, \texttt{courier} for monospaced); do not add \textbackslash usepackage\{times\}, \textbackslash usepackage\{helvet\}, \textbackslash usepackage\{courier\}, or any other font package, as doing so will conflict with the style.
+
+Leave the setcounter for section number depth commented out and set at 0 unless you want to add section numbers to your paper. If you do add section numbers, you must uncomment this line and change the number to 1 (for section numbers), or 2 (for section and subsection numbers). The style file will not work properly with numbering of subsubsections, so do not use a number higher than 2.
+
+\subsubsection{The Following Must Appear in Your Preamble}
+\begin{quote}
+\begin{scriptsize}\begin{verbatim}
+\documentclass[letterpaper]{article}
+% DO NOT CHANGE THIS
+\usepackage{aaai2027} % DO NOT CHANGE THIS
+\usepackage[hyphens]{url} % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm} % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS
+\usepackage{caption}  % DO NOT CHANGE THIS
+\frenchspacing % DO NOT CHANGE THIS
+%
+% Keep the \pdfinfo as shown here. There's no need
+% for you to add the /Title and /Author tags.
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+\end{verbatim}\end{scriptsize}
+\end{quote}
+
+\subsection{Preparing Your Paper}
+
+After the preamble above, you should prepare your paper as follows:
+\begin{quote}
+\begin{scriptsize}\begin{verbatim}
+\begin{document}
+\maketitle
+\begin{abstract}
+%...
+\end{abstract}\end{verbatim}\end{scriptsize}
+\end{quote}
+
+\noindent If you want to add links to the paper's code, dataset(s), and extended version or similar this is the place to add them, within a \emph{links} environment:
+\begin{quote}%
+\begin{scriptsize}\begin{verbatim}
+\begin{links}
+  \link{Code}{https://aaai.org/example/guidelines}
+  \link{Datasets}{https://aaai.org/example/datasets}
+  \link{Extended version}{https://aaai.org/example}
+\end{links}\end{verbatim}\end{scriptsize}
+\end{quote}
+\noindent Make sure that you do not de-anonymize yourself with these links if you are preparing an anonymous submission.
+
+\noindent You should then continue with the body of your paper. Your paper must conclude with the references, which should be inserted as follows:
+\begin{quote}
+\begin{scriptsize}\begin{verbatim}
+% References and End of Paper
+% These lines must be placed at the end of your paper
+\bibliography{Bibliography-File}
+\end{document}
+\end{verbatim}\end{scriptsize}
+\end{quote}
+
+\subsection{Commands and Packages That May Not Be Used}
+\begin{table*}[t]
+\centering
+
+\begin{tabular}{llll}
+  \toprule
+  \textbackslash abovecaption &
+  \textbackslash abovedisplay &
+  \textbackslash addevensidemargin &
+  \textbackslash addsidemargin \\
+  \textbackslash addtolength &
+  \textbackslash baselinestretch &
+  \textbackslash belowcaption &
+  \textbackslash belowdisplay \\
+  \textbackslash break &
+  \textbackslash clearpage &
+  \textbackslash clip &
+  \textbackslash columnsep \\
+  \textbackslash float &
+  \textbackslash linespread &
+  \textbackslash newpage &
+  \textbackslash pagebreak \\
+  \textbackslash setlength &
+  \textbackslash textheight &
+  \textbackslash tiny &
+  \textbackslash topmargin \\
+  \textbackslash trim &
+  \textbackslash vskip\{- &
+  \textbackslash vspace\{- \\
+  \bottomrule
+\end{tabular}
+\caption{Commands that must not be used}
+\label{table1}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{llll}
+  \toprule
+    authblk & babel & balance & cjk \\
+    epsf & epsfig & euler & float \\
+    fullpage & geometry & graphics & hyperref \\
+    layout & lmodern & navigator & pdfcomment \\
+    pgfplots & psfig & pstricks & t1enc \\
+    times & titlesec & tocbibind & ulem \\
+  \bottomrule
+\end{tabular}
+\caption{LaTeX style packages that must not be used.}
+\label{table2}
+\end{table}
+
+There are a number of packages, commands, scripts, and macros that are incompatible with aaai2027.sty. The common ones are listed in tables \ref{table1} and \ref{table2}. Generally, if a command, package, script, or macro alters float spacings, margins, fonts, sizing, linespacing, or the presentation of the references and citations, it is unacceptable. Note that negative vskip and vspace may not be used except in certain rare occurrences, and may never be used around tables, figures, captions, sections, subsections, subsubsections, or references.
+
+
+\subsection{Page Breaks}
+For your final camera ready copy, you must not use any page break commands. References must flow directly after the text without breaks. Note that some conferences require references to be on a separate page during the review process. AAAI Press, however, does not require this condition for the final paper.
+
+
+\subsection{Paper Size, Margins, and Column Width}
+Papers must be formatted to print in two-column format on 8.5 x 11 inch US letter-sized paper. The margins must be exactly as follows:
+\begin{itemize}
+\item Top margin: 1.25 inches (first page), .75 inches (others)
+\item Left margin: .75 inches
+\item Right margin: .75 inches
+\item Bottom margin: 1.25 inches
+\end{itemize}
+
+
+The default paper size in most installations of \LaTeX{} is A4. However, because we require that your electronic paper be formatted in US letter size, the aaai2027.sty style file enforces US letter page size automatically. Please note that using any other package to alter page size (such as, but not limited to the Geometry package) will result in your final paper being returned to you for correction.
+
+
+\subsubsection{Column Width and Margins.}
+To ensure maximum readability, your paper must include two columns. Each column should be 3.3 inches wide (slightly more than 3.25 inches), with a .375 inch (.952 cm) gutter of white space between the two columns. The aaai2027.sty file will automatically create these columns for you.
+
+\subsection{Overlength Papers}
+If your paper is too long and you resort to formatting tricks to make it fit, it is quite likely that it will be returned to you. The best way to retain readability if the paper is overlength is to cut text, figures, or tables. There are a few acceptable ways to reduce paper size that don't affect readability. First, turn on \textbackslash frenchspacing, which will reduce the space after periods. Next, move all your figures and tables to the top of the page. Consider removing less important portions of a figure. If you use \textbackslash centering instead of \textbackslash begin\{center\} in your figure environment, you can also buy some space. For mathematical environments, you may reduce fontsize {\bf but not below 6.5 point}.
+
+
+Commands that alter page layout are forbidden. These include \textbackslash columnsep,  \textbackslash float, \textbackslash topmargin, \textbackslash topskip, \textbackslash textheight, \textbackslash textwidth, \textbackslash oddsidemargin, and \textbackslash evensizemargin (this list is not exhaustive). If you alter page layout, you will be required to pay the page fee. Other commands that are questionable and may cause your paper to be rejected include \textbackslash parindent, and \textbackslash parskip. Commands that alter the space between sections are forbidden. The title sec package is not allowed. Regardless of the above, if your paper is obviously ``squeezed" it is not going to to be accepted. Options for reducing the length of a paper include reducing the size of your graphics, cutting text, or paying the extra page charge (if it is offered).
+
+
+\subsection{Type Font and Size}
+Your paper must be formatted using the Times-like serif text font provided automatically by the aaai2027 style file (\texttt{newtxtext}). We will not accept papers formatted using Computer Modern or Palatino or some other text typeface. Do not load \texttt{times}, \texttt{helvet}, \texttt{courier}, or any other font package in your preamble; the style file loads all three automatically. Sans-serif text, when used, is Helvetica (\texttt{helvet}); monospaced text is Courier (\texttt{courier}). Use Symbol, Lucida, or Computer Modern for \textit{mathematics only.}
+
+Do not use type 3 fonts for any portion of your paper, including graphics. Type 3 bitmapped fonts are designed for fixed resolution printers. Most print at 300 dpi even if the printer resolution is 1200 dpi or higher. They also often cause high resolution imagesetter devices to crash. Consequently, AAAI will not accept electronic files containing obsolete type 3 fonts. Files containing those fonts (even in graphics) will be rejected. (Authors using blackboard symbols must avoid packages that use type 3 fonts.)
+
+Fortunately, the aaai2027 style file --- which loads \texttt{newtxtext}, \texttt{helvet}, and \texttt{courier} --- embeds Type~1 outlines automatically under PDF\LaTeX{}. Computer Modern used for mathematics is also fine: current TeX Live and MiKTeX distributions include cm-super and Latin Modern Type~1 fonts by default, so no manual font installation is required.
+
+If you are unsure whether your paper contains Type~3 fonts, open the PDF in a viewer such as Adobe Acrobat Reader and inspect the font list (File $>$ Properties $>$ Fonts). Each embedded font should be listed as ``Type~1,'' ``TrueType,'' or ``OpenType'' --- not ``Type~3.'' The same inspection applies to embedded figures: export them from your illustration tool as PDF or high-resolution PNG/JPEG rather than EPS or PostScript.
+
+The default size for your type must be ten-point with twelve-point leading (line spacing). Start all pages (except the first) directly under the top margin. (See the next section for instructions on formatting the title page.) Indent ten points when beginning a new paragraph, unless the paragraph begins directly below a heading or subheading.
+
+\subsubsection{Nonroman Fonts.}
+If your paper includes symbols in other languages (such as, but not limited to, Arabic, Chinese, Hebrew, Japanese, Thai, Russian and other Cyrillic languages), you must restrict their use to bit-mapped figures.
+
+\subsection{Title and Authors}
+Your title must appear centered over both text columns in sixteen-point bold type (twenty-four point leading). The title must be written in Title Case according to the Chicago Manual of Style rules. The rules are a bit involved, but in general verbs (including short verbs like be, is, using, and go), nouns, adverbs, adjectives, and pronouns should be capitalized, (including both words in hyphenated terms), while articles, conjunctions, and prepositions are lower case unless they directly follow a colon or long dash. You can use the online tool \url{https://titlecaseconverter.com/} to double-check the proper capitalization (select the "Chicago" style and mark the "Show explanations" checkbox).
+
+Author's names should appear below the title of the paper, centered in twelve-point type (with fifteen point leading), along with affiliation(s) and complete address(es) (including electronic mail address if available) in nine-point roman type (the twelve point leading). You should begin the two-column format when you come to the abstract.
+
+\subsubsection{Formatting Author Information.}
+Author information has to be set according to the following specification depending if you have one or more than one affiliation. You may not use a table nor may you employ the \texttt{authorblk.sty} package. For one or several authors from the same institution, please separate them with commas and write all affiliation directly below (one affiliation per line) using the macros \textbackslash author and \textbackslash affiliations:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+\author{
+    Author 1, ..., Author n\\
+}
+\affiliations {
+    Address line\\
+    ... \\
+    Address line\\
+}
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+\noindent For authors from multiple institutions, use \textbackslash textsuperscript \{\textbackslash rm x\} to link authors to their affiliations. Ensure there are no spaces between the author name and the superscript. The comma should be placed after the superscript.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+\author{
+    AuthorOne\equalcontrib\textsuperscript{\rm 1,\rm 2},
+    AuthorTwo\equalcontrib\textsuperscript{\rm 2},
+    AuthorThree\textsuperscript{\rm 3},\\
+    AuthorFour\textsuperscript{\rm 4},\\
+    AuthorFive\textsuperscript{\rm 5}
+}
+\affiliations {
+    \textsuperscript{\rm 1}AffiliationOne,\\
+    \textsuperscript{\rm 2}AffiliationTwo,\\
+    \textsuperscript{\rm 3}AffiliationThree,\\
+    \textsuperscript{\rm 4}AffiliationFour,\\
+    \textsuperscript{\rm 5}AffiliationFive\\
+    \{email, email\}@affiliation.com,
+    email@affiliation.com,
+    email@affiliation.com,
+    email@affiliation.com
+}
+\end{verbatim}\end{scriptsize}\end{quote}
+
+You can indicate that some authors contributed equally using the \textbackslash equalcontrib command. This will add a marker after the author names and a footnote on the first page.
+
+Similarly, you can mark author(s) as corresponding author(s) with the \textbackslash corresponding command within the \textbackslash author environment.
+
+Note that you may want to  break the author list for better visualization. You can achieve this using a simple line break (\textbackslash  \textbackslash).
+
+\subsection{\LaTeX{} Copyright Notice}
+If you use aaai2027.sty in camera-ready mode the copyright notice is inserted automatically and may not be disabled. In submission mode the copyright disclaimer is automatically suppressed.
+
+\subsection{Credits}
+Any credits to a sponsoring agency should appear in the acknowledgments section, unless the agency requires different placement. If it is necessary to include this information on the front page, use
+\textbackslash thanks in either the \textbackslash author or \textbackslash title commands.
+For example:
+\begin{quote}
+\begin{small}
+\textbackslash title\{Very Important Results in AI\textbackslash thanks\{This work is
+ supported by everybody.\}\}
+\end{small}
+\end{quote}
+Multiple \textbackslash thanks commands can be given. Each will result in a separate footnote indication in the author or title with the corresponding text at the bottom of the first column of the document. Note that the \textbackslash thanks command is fragile. You will need to use \textbackslash protect.
+
+Please do not include \textbackslash pubnote commands in your document.
+
+\subsection{Abstract}
+Follow the example commands in this document for creation of your abstract. The command \textbackslash begin\{abstract\} will automatically indent the text block. Please do not indent it further. {Do not include references in your abstract!}
+
+\subsection{Page Numbers}
+
+Do not print any page numbers on your paper. The use of \textbackslash pagestyle is forbidden.
+
+\subsection{Text}
+The main body of the paper must be formatted in black, ten-point Times Roman with twelve-point leading (line spacing). You may not reduce font size or the linespacing. Commands that alter font size or line spacing (including, but not limited to baselinestretch, baselineshift, linespread, and others) are expressly forbidden. In addition, you may not use color in the text.
+
+\subsection{Citations}
+Citations within the text should include the author's last name and year, for example (Newell 1980). Append lower-case letters to the year in cases of ambiguity. Multiple authors should be treated as follows: (Feigenbaum and Engelmore 1988) or (Ford, Hayes, and Glymour 1992). In the case of four or more authors, list only the first author, followed by et al. (Ford et al. 1997).
+
+\subsection{Extracts}
+Long quotations and extracts should be indented ten points from the left and right margins.
+
+\begin{quote}
+This is an example of an extract or quotation. Note the indent on both sides. Quotation marks are not necessary if you offset the text in a block like this, and properly identify and cite the quotation in the text.
+
+\end{quote}
+
+\subsection{Footnotes}
+Use footnotes judiciously, taking into account that they interrupt the reading of the text. When required, they should be consecutively numbered throughout with superscript Arabic numbers. Footnotes should appear at the bottom of the page, separated from the text by a blank line space and a thin, half-point rule.
+
+\subsection{Headings and Sections}
+When necessary, headings should be used to separate major sections of your paper. Remember, you are writing a short paper, not a lengthy book! An overabundance of headings will tend to make your paper look more like an outline than a paper. The aaai2027.sty package will create headings for you. Do not alter their size nor their spacing above or below.
+
+\subsubsection{Section Numbers.}
+The use of section numbers in AAAI Press papers is optional. To use section numbers in \LaTeX{}, uncomment the setcounter line in your document preamble and change the 0 to a 1. Section numbers should not be used in short poster papers and/or extended abstracts.
+
+\subsubsection{Section Headings.}
+Sections must appear in the following order:
+\begin{enumerate}
+\item Main content sections
+\item Content Appendices (optional).  These appendices are considered part of the main paper, count towards page limits and and are subject to the same formatting and review requirements.
+\item Ethical Statement (optional, unnumbered)
+\item Acknowledgments (optional, unnumbered)
+\item References (unnumbered)
+\item Supplementary Material / Technical Appendices (only if permitted by the conference). Policies regarding supplementary material vary across conferences: some require technical appendices to be submitted as separate documents, some permit them at submission time but do not publish them in the proceedings, and others do not allow them at all. Consult the conference website for the applicable instructions.
+\end{enumerate}
+
+\subsubsection{Content Appendices.}
+Content appendices must appear after the main content. If your main sections are numbered, appendix sections must use letters instead of arabic numerals. In \LaTeX{} you can use the \texttt{\textbackslash appendix} command to achieve this effect and then use \texttt{\textbackslash section\{Heading\}} normally for your appendix sections.
+
+\subsubsection{Ethical Statement.}
+You can write a statement about the potential ethical impact of your work, including its broad societal implications, both positive and negative. If included, such statement must be written in an unnumbered section titled \emph{Ethical Statement}.
+
+\subsubsection{Acknowledgments.}
+The acknowledgments section, if included, appears right before the references and is headed ``Acknowledgments". It must not be numbered even if other sections are (use \texttt{\textbackslash section*\{Acknowledgments\}} in \LaTeX{}). This section includes acknowledgments of help from associates and colleagues, credits to sponsoring agencies, financial support, and permission to publish. Please acknowledge other contributors, grant support, and so forth, in this section. Do not put acknowledgments in a footnote on the first page. If your grant agency requires acknowledgment of the grant on page 1, limit the footnote to the required statement, and put the remaining acknowledgments at the back. Please try to limit acknowledgments to no more than three sentences.
+
+\subsubsection{References.}
+The references section should be labeled ``References" and must appear at the very end of the paper (don't end the paper with references, and then put a figure by itself on the last page). A sample list of references is given later on in these instructions. Please use a consistent format for references. Poorly prepared or sloppy references reflect badly on the quality of your paper and your research. Please prepare complete and accurate citations.
+
+\subsection{Illustrations and Figures}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\columnwidth]{Figures/figure1} % Reduce the figure size so that it is slightly narrower than the column. Don't use precise values for figure width.This setup will avoid overfull boxes.
+\caption{Using the trim and clip commands produces fragile layers that can result in disasters (like this one from an actual paper) when the color space is corrected or the PDF combined with others for the final proceedings. Crop your figures properly in a graphics program -- not in LaTeX.}
+\label{fig1}
+\end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/figure2} % Reduce the figure size so that it is slightly narrower than the column.
+\caption{Adjusting the bounding box instead of actually removing the unwanted data resulted multiple layers in this paper. It also needlessly increased the PDF size. In this case, the size of the unwanted layer doubled the paper's size, and produced the following surprising results in final production. Crop your figures properly in a graphics program. Don't just alter the bounding box.}
+\label{fig2}
+\end{figure*}
+
+% Using the \centering command instead of \begin{center} ... \end{center} will save space
+% Positioning your figure at the top of the page will save space and make the paper more readable
+% Using 0.95\columnwidth in conjunction with the
+
+
+Your paper must compile in PDF\LaTeX{}. Consequently, all your figures must be .jpg, .png, or .pdf. You may not use the .gif (the resolution is too low), .ps, or .eps file format for your figures.
+
+Figures, drawings, tables, and photographs should be placed throughout the paper on the page (or the subsequent page) where they are first discussed. Do not group them together at the end of the paper. If placed at the top of the paper, illustrations may run across both columns. Figures must not invade the top, bottom, or side margin areas. Figures must be inserted using the \textbackslash usepackage\{graphicx\}. Number figures sequentially, for example, figure 1, and so on. Do not use minipage to group figures.
+
+If you normally create your figures using pgfplots, note that pgfplots itself must not be used in your paper source (see Table~\ref{table2}). Pre-generate your figures externally, export them as PDF files, and import them with \textbackslash includegraphics. Bounding and trim boxes created by pgfplots are fragile and tend to create issues.
+
+When you include your figures, you must crop them \textbf{outside} of \LaTeX{}. The command \textbackslash includegraphics*[clip=true, viewport 0 0 10 10]{...} might result in a PDF that looks great, but the image is not really cropped, so \textbf{this is forbidden}. The full image can reappear (and obscure whatever it is overlapping) when page numbers are applied or color space is standardized. Figures \ref{fig1}, and \ref{fig2} display some unwanted results that often occur.
+
+All figures must be in .jpg, .png, or .pdf format before submission. Pre-convert any EPS or PostScript illustrations using tools such as \texttt{epstopdf} (for EPS to PDF) or \texttt{ps2pdf} (for PostScript to PDF) outside of \LaTeX{}, and verify the resulting PDF for correct bounding boxes.
+
+\subsubsection {Figure Captions.}The illustration number and caption must appear \textit{under} the illustration. Labels and other text with the actual illustration must be at least nine-point type. However, the font and size of figure captions must be 10 point roman. Do not make them smaller, bold, or italic. (Individual words may be italicized if the context requires differentiation.)
+
+\subsection{Tables}
+
+Tables should be presented in 10 point roman type. If necessary, they may be altered to 9 point type. You must not use \texttt{\textbackslash resizebox} or other commands that resize the entire table to make it smaller, because you can't control the final font size this way.
+If your table is too large you can use \texttt{\textbackslash setlength\{\textbackslash tabcolsep\}\{1mm\}} to compress the columns a bit or you can adapt the content (e.g.: reduce the decimal precision when presenting numbers, use shortened column titles, make some column double-line to get it narrower). (Note: \texttt{\textbackslash setlength\{\textbackslash tabcolsep\}} is a permitted exception to the general \texttt{\textbackslash setlength} ban in Table~\ref{table1}.)
+
+Tables that do not fit in a single column must be placed across double columns. If your table won't fit within the margins even when spanning both columns and using the above techniques, you must split it in two separate tables.
+
+\subsubsection {Table Captions.} The number and caption for your table must appear \textit{under} (not above) the table.  Additionally, the font and size of table captions must be 10 point roman and must be placed beneath the figure. Do not make them smaller, bold, or italic. (Individual words may be italicized if the context requires differentiation.)
+
+
+
+\subsubsection{Low-Resolution Bitmaps.}
+You may not use low-resolution (such as 72 dpi) screen-dumps and GIF files---these files contain so few pixels that they are always blurry, and illegible when printed. If they are color, they will become an indecipherable mess when converted to black and white. This is always the case with gif files, which should never be used. The resolution of screen dumps can be increased by reducing the print size of the original file while retaining the same number of pixels. You can also enlarge files by manipulating them in software such as PhotoShop. Your figures should be 300 dpi when incorporated into your document.
+
+\subsubsection{\LaTeX{} Overflow.}
+\LaTeX{} users please beware: \LaTeX{} will sometimes put portions of the figure or table or an equation in the margin. If this happens, you need to make the figure or table span both columns. If absolutely necessary, you may reduce the figure, or reformat the equation, or reconfigure the table.{ \bf Check your log file!} You must fix any overflow into the margin (that means no overfull boxes in \LaTeX{}). \textbf{Nothing is permitted to intrude into the margin or gutter.}
+
+
+\subsubsection{Using Color.}
+Use of color should be limited to figures and minor text details (it is ok to colorize one word, but not an entire sentence). It must be WCAG 2.0 compliant. (That is, the contrast ratio must be greater than 4.5:1 no matter the font size.) It may never be used for any portion of the text of your paper. The archival version of your paper may be printed in grayscale. The web version should be readable by persons with disabilities. Consequently, because conversion to grayscale can cause undesirable effects (red changes to black, yellow can disappear, and so forth), we strongly suggest you test the figures in your document when converted to grayscale. Also, you should be mindful of readers who may happen to have trouble distinguishing colors. Hence, your paper must be decipherable without using color for distinction.
+
+\subsubsection{Drawings.}
+We suggest you use computer drawing software (such as Adobe Illustrator or, (if unavoidable), the drawing tools in Microsoft Word) to create your illustrations. Do not use Microsoft Publisher. These illustrations will look best if all line widths are uniform (half- to two-point in size), and you do not create labels over shaded areas. Shading should be 133 lines per inch if possible. Use Times Roman or Helvetica for all figure call-outs. \textbf{Do not use hairline width lines} --- be sure that the stroke width of all lines is at least .5 pt. Zero point lines will print on a laser printer, but will completely disappear on the high-resolution devices used by our printers.
+
+\subsubsection{Photographs and Images.}
+Photographs and other images should be in grayscale (color photographs will not reproduce well; for example, red tones will reproduce as black, yellow may turn to white, and so forth) and set to a minimum of 300 dpi. Do not prescreen images.
+
+\subsubsection{Resizing Graphics.}
+Resize your graphics \textbf{before} you include them with LaTeX. You may \textbf{not} use trim or clip options as part of your \textbackslash includegraphics command. Resize the media box of your PDF using a graphics program instead.
+
+\subsubsection{Fonts in Your Illustrations.}
+You must embed all fonts in your graphics before including them in your LaTeX document.
+
+\subsubsection{Algorithms.}
+Algorithms and/or programs are a special kind of figures. Like all illustrations, they should appear floated to the top (preferably) or bottom of the page. However, their caption should appear in the header, left-justified and enclosed between horizontal lines, as shown in Algorithm~\ref{alg:algorithm}. The algorithm body should be terminated with another horizontal line. It is up to the authors to decide whether to show line numbers or not, how to format comments, etc.
+
+In \LaTeX{} algorithms may be typeset using the {\tt algorithm} and {\tt algorithmic} packages, but you can also use one of the many other packages for the task.
+
+\begin{algorithm}[tb]
+\caption{Example algorithm}
+\label{alg:algorithm}
+\textbf{Input}: Your algorithm's input\\
+\textbf{Parameter}: Optional list of parameters\\
+\textbf{Output}: Your algorithm's output
+\begin{algorithmic}[1] %[1] enables line numbers
+\STATE Let $t=0$.
+\WHILE{condition}
+\STATE Do some action.
+\IF {conditional}
+\STATE Perform task A.
+\ELSE
+\STATE Perform task B.
+\ENDIF
+\ENDWHILE
+\STATE \textbf{return} solution
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Listings.}
+Listings are much like algorithms and programs. They should also appear floated to the top (preferably) or bottom of the page. Listing captions should appear in the header, left-justified and enclosed between horizontal lines as shown in Listing~\ref{lst:listing}. Terminate the body with another horizontal line and avoid any background color. Line numbers, if included, must appear within the text column.
+
+\begin{listing}[tb]%
+\caption{Example listing {\tt quicksort.hs}}%
+\label{lst:listing}%
+\begin{lstlisting}[language=Haskell]
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
+	where
+		lesser  = filter (< p) xs
+		greater = filter (>= p) xs
+\end{lstlisting}
+\end{listing}
+
+\subsection{References}
+The AAAI style includes a set of definitions for use in formatting references with BibTeX. These definitions make the bibliography style fairly close to the ones  specified in the Reference Examples appendix below. To use these definitions, you also need the BibTeX style file ``aaai2027.bst," available in the AAAI Author Kit on the AAAI web site. Then, at the end of your paper but before \textbackslash end{document}, you need to put the following lines:
+
+\begin{quote}
+\begin{small}
+\textbackslash bibliography\{bibfile1,bibfile2,...\}
+\end{small}
+\end{quote}
+
+Please note that the aaai2027.sty class already sets the bibliographystyle for you, so you do not have to place any \textbackslash bibliographystyle command in the document yourselves. The aaai2027.sty file is incompatible with the hyperref and navigator packages. If you use either, your references will be garbled and your paper will be returned to you.
+
+References may be the same size as surrounding text.
+However, in this section (only), you may reduce the size to {\em \textbackslash small} (9pt) if your paper exceeds the allowable number of pages. Making it any smaller than 9 point with 10 point linespacing, however, is not allowed.
+
+The list of files in the \textbackslash bibliography command should be the names of your BibTeX source files (that is, the .bib files referenced in your paper).
+
+The following commands are available for your use in citing references:
+\begin{quote}
+{\em \textbackslash cite:} Cites the given reference(s) with a full citation. This appears as ``(Author Year)'' for one reference, or ``(Author Year; Author Year)'' for multiple references.\smallskip\\
+{\em \textbackslash shortcite:} Cites the given reference(s) with just the year. This appears as ``(Year)'' for one reference, or ``(Year; Year)'' for multiple references.\smallskip\\
+{\em \textbackslash citeauthor:} Cites the given reference(s) with just the author name(s) and no parentheses.\smallskip\\
+{\em \textbackslash citeyear:} Cites the given reference(s) with just the date(s) and no parentheses.
+\end{quote}
+You may also use any of the \emph{natbib} citation commands.
+
+
+\section{Proofreading Your PDF}
+Please check all the pages of your PDF file. The most commonly forgotten element is the acknowledgments --- especially the correct grant number. Authors also commonly forget to add the metadata to the source, use the wrong reference style file, or don't follow the capitalization rules or comma placement for their author-title information properly. A final common problem is text (especially equations) that runs into the margin. You will need to fix these common errors before submitting your file.
+
+\section{Improperly Formatted Files }
+In the past, AAAI has corrected improperly formatted files submitted by the authors. Unfortunately, this has become an increasingly burdensome expense that we can no longer absorb). Consequently, if your file is improperly formatted, it will be returned to you for correction.
+
+\section{Naming Your Electronic File}
+We require that you name your \LaTeX{} source file with the last name (family name) of the first author so that it can easily be differentiated from other submissions. Complete file-naming instructions will be provided to you in the submission instructions.
+
+\section{Submitting Your Electronic Files to AAAI}
+Instructions on paper submittal will be provided to you in your acceptance letter.
+
+\section{Inquiries}
+If you have any questions about the preparation or submission of your paper as instructed in this document, please contact AAAI Press at the address given below. If you have technical questions about implementation of the aaai style file, please contact an expert at your site. We do not provide technical support for \LaTeX{} or any other software package. To avoid problems, please keep your paper simple, and do not incorporate complicated macros and style files.
+
+\begin{quote}
+\noindent AAAI Press\\
+1101 Pennsylvania Ave, NW Suite 300\\
+Washington, DC 20004 USA\\
+\textit{Telephone:} 1-202-360-4062\\
+\textit{E-mail:} See the submission instructions for your particular conference or event.
+\end{quote}
+
+\section{Additional Resources}
+\LaTeX{} is a difficult program to master. If you encounter issues producing correct PDF output, please consult your TeX distribution documentation (TeX Live or MiKTeX) and ensure you are using an up-to-date PDF\LaTeX{} workflow. Most compilation and font issues can be resolved by updating your distribution and avoiding deprecated packages.
+
+\appendix
+\section{Reference Examples}
+\label{sec:reference_examples}
+
+Formatted bibliographies should look like the following examples. You should use BibTeX to generate the references. Missing fields are unacceptable when compiling references, and usually indicate that you are using the wrong type of entry (BibTeX class).
+
+\paragraph{Book with multiple authors} Use the \texttt{@book} class.\\[.2em]
+\nocite{em:86}
+%%BIBENTRY-BEGIN:em:86|.%%
+Engelmore, R.; and Morgan, A., eds. 1986.
+\newblock \emph{Blackboard Systems}.
+\newblock Reading, Mass.: Addison-Wesley.
+%%BIBENTRY-END:em:86%%
+
+\paragraph{Journal and magazine articles} Use the \texttt{@article} class.\\[.2em]
+\nocite{r:80}
+%%BIBENTRY-BEGIN:r:80|.\\[.2em]%%
+Robinson, A.~L. 1980.
+\newblock New Ways to Make Microcircuits Smaller.
+\newblock \emph{Science}, 208(4447): 1019--1022.\\[.2em]
+%%BIBENTRY-END:r:80%%
+\nocite{hcr:83}
+%%BIBENTRY-BEGIN:hcr:83|.%%
+Hasling, D.~W.; Clancey, W.~J.; and Rennels, G. 1984.
+\newblock Strategic explanations for a diagnostic consultation system.
+\newblock \emph{International Journal of Man-Machine Studies}, 20(1): 3--19.
+%%BIBENTRY-END:hcr:83%%
+
+\paragraph{Proceedings paper published by a society, press or publisher} Use the \texttt{@inproceedings} class. You may abbreviate the \emph{booktitle} field, but make sure that the conference edition is clear.\\[.2em]
+\nocite{c:84}
+%%BIBENTRY-BEGIN:c:84|.\\[.2em]%%
+Clancey, W.~J. 1984.
+\newblock {Classification Problem Solving}.
+\newblock In \emph{Proceedings of the Fourth National Conference on Artificial
+  Intelligence}, 45--54. Menlo Park, Calif.: AAAI Press.\\[.2em]
+%%BIBENTRY-END:c:84%%
+\nocite{c:83}
+%%BIBENTRY-BEGIN:c:83|.%%
+Clancey, W.~J. 1983.
+\newblock {Communication, Simulation, and Intelligent Agents: Implications of
+  Personal Intelligent Machines for Medical Education}.
+\newblock In \emph{Proceedings of the Eighth International Joint Conference on
+  Artificial Intelligence {(IJCAI-83)}}, 556--560. Menlo Park, Calif: {IJCAI
+  Organization}.
+%%BIBENTRY-END:c:83%%
+
+\paragraph{University technical report} Use the \texttt{@techreport} class.\\[.2em]
+\nocite{r:86}
+%%BIBENTRY-BEGIN:r:86|.%%
+Rice, J. 1986.
+\newblock {Poligon: A System for Parallel Problem Solving}.
+\newblock Technical Report KSL-86-19, Dept.\ of Computer Science, Stanford
+  Univ.
+%%BIBENTRY-END:r:86%%
+
+\paragraph{Dissertation or thesis} Use the \texttt{@phdthesis} class.\\[.2em]
+\nocite{c:79}
+%%BIBENTRY-BEGIN:c:79|.%%
+Clancey, W.~J. 1979.
+\newblock \emph{{Transfer of Rule-Based Expertise through a Tutorial
+  Dialogue}}.
+\newblock {Ph.D.} diss., Dept.\ of Computer Science, Stanford Univ., Stanford,
+  Calif.
+%%BIBENTRY-END:c:79%%
+
+\paragraph{Forthcoming publication} Use the \texttt{@misc} class with a \texttt{note="Forthcoming"} annotation.
+\begin{quote}
+\begin{footnotesize}
+\begin{verbatim}
+@misc(key,
+  [...]
+  note="Forthcoming",
+)
+\end{verbatim}
+\end{footnotesize}
+\end{quote}
+\nocite{c:21}
+%%BIBENTRY-BEGIN:c:21|.%%
+Clancey, W.~J. 2021.
+\newblock {The Engineering of Qualitative Models}.
+\newblock Forthcoming.
+%%BIBENTRY-END:c:21%%
+
+\paragraph{ArXiv paper} Fetch the BibTeX entry from the ``Export Bibtex Citation" link in the arXiv website. Notice it uses the \texttt{@misc} class instead of the \texttt{@article} one, and that it includes the \texttt{eprint} and \texttt{archivePrefix} keys.
+\begin{quote}
+\begin{footnotesize}
+\begin{verbatim}
+@misc(key,
+  [...]
+  eprint="xxxx.yyyy",
+  archivePrefix="arXiv",
+)
+\end{verbatim}
+\end{footnotesize}
+\end{quote}
+\nocite{c:22}
+%%BIBENTRY-BEGIN:c:22|.%%
+Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones, L.; Gomez, A.~N.;
+  Kaiser, L.; and Polosukhin, I. 2023.
+\newblock Attention Is All You Need.
+\newblock arXiv:1706.03762.
+%%BIBENTRY-END:c:22%%
+
+\paragraph{Website or online resource} Use the \texttt{@misc} class. Add the url in the \texttt{howpublished} field and the date of access in the \texttt{note} field:
+\begin{quote}
+\begin{footnotesize}
+\begin{verbatim}
+@misc(key,
+  [...]
+  howpublished="\url{http://...}",
+  note="Accessed: YYYY-mm-dd",
+)
+\end{verbatim}
+\end{footnotesize}
+\end{quote}
+\nocite{c:23}
+%%BIBENTRY-BEGIN:c:23|.%%
+{NASA}. 2015.
+\newblock Pluto: The 'Other' Red Planet.
+\newblock \url{https://www.nasa.gov/nh/pluto-the-other-red-planet}.
+\newblock Accessed: 2018-12-06.
+%%BIBENTRY-END:c:23%%
+
+\section*{Acknowledgments}
+AAAI is especially grateful to Peter Patel Schneider for his work in implementing the original aaai.sty file, liberally using the ideas of other style hackers, including Barbara Beeton. We also acknowledge with thanks the work of George Ferguson for his guide to using the style and BibTeX files --- which has been incorporated into this document --- and Hans Guesgen, who provided several timely modifications, as well as the many others who have, from time to time, sent in suggestions on improvements to the AAAI style. We are especially grateful to Francisco Cruz, Marc Pujol-Gonzalez, and Mico Loretan for the improvements to the Bib\TeX{} and \LaTeX{} files made in 2020.
+
+The preparation of the \LaTeX{} and Bib\TeX{} files that implement these instructions was supported by Schlumberger Palo Alto Research, AT\&T Bell Laboratories, Morgan Kaufmann Publishers, The Live Oak Press, LLC, and AAAI Press. Bibliography style changes were added by Sunil Issar. \verb+\+pubnote was added by J. Scott Penberthy. George Ferguson added support for printing the AAAI copyright slug. Additional changes to aaai2027.sty and aaai2027.bst have been made by Francisco Cruz, Marc Pujol-Gonzalez, and Mico Loretan.
+
+\bigskip
+\noindent Thank you for reading these instructions carefully. We look forward to receiving your electronic files!
+
+\bibliography{aaai2027}
+
+% Check whether the conference requires a reproducibility checklist to be included in the paper.
+% If so, you can uncomment the following line and ajust the path to include it.
+% \input{ReproducibilityChecklist.tex}
+
+\end{document}

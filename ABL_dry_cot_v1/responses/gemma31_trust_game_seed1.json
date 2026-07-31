@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "trust_game",
+    "seed": 1,
+    "T": 10,
+    "hidden_param": "trustee=RECIPROCATOR",
+    "act0": "KEEP",
+    "act1": "INVEST",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": -0.006060606060606061,
+      "drift_corr_post": 0.32121212121212117,
+      "mean_delta_pre": 17.815586280822753,
+      "mean_abs_delta_pre": 17.815586280822753,
+      "mean_delta_amp": 4.4832250595092775,
+      "oracle_range": 0.9144712520750279
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 9.749985694885254,
+      "delta_pre_by_mapping": [
+        10.624969482421875,
+        8.875001907348633
+      ],
+      "letter_bias": 0.8749837875366211,
+      "delta_post_sem": -21.273375988006592,
+      "delta_amp": -31.023361682891846,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 431,
+      "tail_gap_mean": 2.3201398299634457,
+      "tail_gap_std": 5.85205933946503,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: There are no prior rounds of data available. I have no empirical evidence to suggest which of the four rates is currently active.\n\n2. **Updated Belief**: Since the rate was chosen uniformly at random and no data has been observed, each rate has an equal probability of $0.25$.\n   - Rate 1: $P = 0.25$ (Return = 15)\n   - Rate 2: $P = 0.25$ (Return = 15 with 80% prob, 0 with 20% prob)\n   - Rate 3: $P = 0.25$ (Return = 15 with 20% prob, 0 with 80% prob)\n   - Rate 4: $P = 0.25$ (Return = 0)\n\n3. **Expected Value (EV) Calculation**:\n   The expected return for selecting TRANSFER (B) is the average of the expected returns of the four possible rates:\n   - EV(Rate 1) = $15 \\times 1.0 = 15$\n   - EV(Rate 2) = $15 \\times 0.8 = 12$\n   - EV(Rate 3) = $15 \\times 0.2 = 3$\n   - EV(Rate 4) = $15 \\times 0.0 = 0$\n   \n   Total EV = $(15 + 12 + 3 + 0) / 4 = 30 / 4 = 7.5$ units.\n   \n   Comparing the options:\n   - RETAIN (A): 10 units (certain)\n   - TRANSFER (B): 7.5 units (expected)\n\n   Since $10 > 7.5$, RETAIN is the mathematically superior choice for the first round.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9298909216918194,
+      "delta_pre_sem": 17.40618896484375,
+      "delta_pre_by_mapping": [
+        17.374967575073242,
+        17.437410354614258
+      ],
+      "letter_bias": -0.031221389770507812,
+      "delta_post_sem": 27.132763743400574,
+      "delta_amp": 9.726574778556824,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 621,
+      "tail_gap_mean": 5.681965898275376,
+      "tail_gap_std": 4.850886604773356,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1. **What does the data tell you about the counterpart process's return rate?**\n   In Round 1, I chose to invest and received 15 units back. This outcome is possible under Rate 1 (100% probability), Rate 2 (80% probability), and Rate 3 (20% probability). It is impossible under Rate 4 (0% probability). Therefore, Rate 4 is eliminated.\n\n2. **What is your updated belief about its return rate?**\n   Using Bayesian updating:\n   - Prior probabilities: $P(R1)=0.25, P(R2)=0.25, P(R3)=0.25, P(R4)=0.25$.\n   - Likelihood of observing a return of 15: $P(15|R1)=1.0, P(15|R2)=0.8, P(15|R3)=0.2, P(15|R4)=0$.\n   - Sum of (Prior $\\times$ Likelihood) = $(0.25 \\times 1) + (0.25 \\times 0.8) + (0.25 \\times 0.2) + (0.25 \\times 0) = 0.25 + 0.2 + 0.05 = 0.5$.\n   - Posterior probabilities:\n     - $P(R1|data) = 0.25 / 0.5 = 0.5$\n     - $P(R2|data) = 0.2 / 0.5 = 0.4$\n     - $P(R3|data) = 0.05 / 0.5 = 0.1$\n     - $P(R4|data) = 0$\n\n3. **What is the expected value of selecting TRANSFER, and is it better than RETAIN's certain 10?**\n   The return if the process \"succeeds\" is 15 units. The probability of success is the sum of the posterior probabilities multiplied by their respective return rates:\n   $P(Success) = (0.5 \\times 1.0) + (0.4 \\times 0.8) + (0.1 \\times 0.2) = 0.5 + 0.32 + 0.02 = 0.84$.\n   Expected Value (EV) of TRANSFER = $0.84 \\times 15 + 0.16 \\times 0 = 12.6$ units.\n   Since $12.6 > 10$, TRANSFER (INVEST) is the mathematically superior choice.\n\n4. **Final Answer:**\n   Answer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.97236900736553,
+      "delta_pre_sem": 19.42173743247986,
+      "delta_pre_by_mapping": [
+        19.46872043609619,
+        19.374754428863525
+      ],
+      "letter_bias": 0.04698300361633301,
+      "delta_post_sem": 27.0312157869339,
+      "delta_amp": 7.6094783544540405,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 537,
+      "tail_gap_mean": 4.683234919309616,
+      "tail_gap_std": 5.416750238122103,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1. **What does the data tell you about the counterpart process's return rate?**\n   The data shows that in 2 out of 2 previous attempts, the counterpart returned 15 units. This eliminates Rate 4 (which returns 0 every time). It makes Rate 1 (100% probability) and Rate 2 (80% probability) highly likely, while Rate 3 (20% probability) is significantly less likely.\n\n2. **What is your updated belief about its return rate?**\n   Using Bayesian updating:\n   - Prior probability for each rate: $0.25$\n   - Likelihood of 2/2 returns:\n     - Rate 1: $1.0^2 = 1.0$\n     - Rate 2: $0.8^2 = 0.64$\n     - Rate 3: $0.2^2 = 0.04$\n     - Rate 4: $0.0^2 = 0$\n   - Sum of likelihoods: $1.0 + 0.64 + 0.04 = 1.68$\n   - Posterior probabilities:\n     - Rate 1: $1.0 / 1.68 \\approx 59.5\\%$\n     - Rate 2: $0.64 / 1.68 \\approx 38.1\\%$\n     - Rate 3: $0.04 / 1.68 \\approx 2.4\\%$\n\n3. **What is the expected value of selecting TRANSFER, and is it better than RETAIN's certain 10?**\n   The expected return for a TRANSFER is the sum of (Probability of Rate $\\times$ Probability of Return for that Rate $\\times$ Return Amount):\n   - $EV = (0.595 \\times 1.0 \\times 15) + (0.381 \\times 0.8 \\times 15) + (0.024 \\times 0.2 \\times 15)$\n   - $EV = 8.925 + 4.572 + 0.072 = 13.569$\n   Since $13.569 > 10$, the expected value of transferring is higher than the guaranteed value of retaining.\n\n4. **Final Answer:**\n   Answer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.9804365771883589,
+      "delta_pre_sem": 19.296839475631714,
+      "delta_pre_by_mapping": [
+        19.49996519088745,
+        19.093713760375977
+      ],
+      "letter_bias": 0.2031257152557373,
+      "delta_post_sem": 26.902328610420227,
+      "delta_amp": 7.605489134788513,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 510,
+      "tail_gap_mean": 3.645194592475891,
+      "tail_gap_std": 5.707361682891856,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1. **What does the data tell you about the counterpart process's return rate?**\n   In the first three rounds, I chose to INVEST and received 15 units back every single time. This means the outcome was a \"success\" (15 units) in 3 out of 3 trials.\n\n2. **What is your updated belief about its return rate?**\n   We evaluate the likelihood of this sequence (SSS) for each possible rate:\n   - Rate 1 ($p=1.0$): $1.0^3 = 1.0$ (Very likely)\n   - Rate 2 ($p=0.8$): $0.8^3 = 0.512$ (Likely)\n   - Rate 3 ($p=0.2$): $0.2^3 = 0.008$ (Unlikely)\n   - Rate 4 ($p=0$): $0^3 = 0$ (Impossible)\n   \n   The data strongly suggests the process is either Rate 1 or Rate 2. Even if we consider the prior uniform distribution, the probability that the rate is either Rate 1 or Rate 2 is overwhelmingly high compared to Rate 3 or 4.\n\n3. **What is the expected value of selecting TRANSFER, and is it better than RETAIN's certain 10?**\n   The payoff for a successful TRANSFER is 15, and for a failure is 0.\n   - If Rate 1: $EV = 15$\n   - If Rate 2: $EV = 0.8(15) + 0.2(0) = 12$\n   - If Rate 3: $EV = 0.2(15) + 0.8(0) = 3$\n   \n   Given that the observed data has effectively ruled out Rate 4 and made Rate 3 highly improbable, the weighted expected value is significantly higher than 10. Even in the \"worst-case\" likely scenario (Rate 2), the expected value (12) is greater than the guaranteed return of RETAIN (10).\n\n4. **Final Answer:**\n   Since the expected value of investing is higher than the certain value of retaining, the optimal choice is to invest.\n\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.983737854268472,
+      "delta_pre_sem": 19.265594244003296,
+      "delta_pre_by_mapping": [
+        19.749967575073242,
+        18.78122091293335
+      ],
+      "letter_bias": 0.4843733310699463,
+      "delta_post_sem": 27.81248116493225,
+      "delta_amp": 8.546886920928955,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 371,
+      "tail_gap_mean": 2.8717846417427064,
+      "tail_gap_std": 4.849063444441242,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1. **Data Analysis:** In the first 4 rounds, I chose to INVEST and received 15 units back every single time. The success rate is 4/4 (100%).\n2. **Updated Beliefs:** \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is highly unlikely ($0.2^4 = 0.0016$).\n   - Rate 2 (80% probability) is possible ($0.8^4 \\approx 0.41$).\n   - Rate 1 (100% probability) is very likely ($1.0^4 = 1.0$).\n   Given the data, the probability that the process is either Rate 1 or Rate 2 is extremely high.\n3. **Expected Value (EV) Calculation:**\n   - If I RETAIN, the payoff is exactly **10**.\n   - If I TRANSFER, the payoff is either 15 or 0.\n   - Even if we conservatively assume the process is Rate 2 (the lower of the two likely options), the EV is $15 \\times 0.8 + 0 \\times 0.2 = 12$.\n   - Since the probability of Rate 1 is even higher than Rate 2, the actual EV is likely between 12 and 15.\n   - Since $12 > 10$, TRANSFER (INVEST) is the mathematically superior choice.\n\n4. **Final Decision:** The evidence strongly suggests a high return rate, making the risk of losing 10 units far outweighed by the high probability of gaining 15 units.\n\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.9858359567742635,
+      "delta_pre_sem": 19.078101634979248,
+      "delta_pre_by_mapping": [
+        19.593714714050293,
+        18.562488555908203
+      ],
+      "letter_bias": 0.5156130790710449,
+      "delta_post_sem": 26.60544776916504,
+      "delta_amp": 7.527346134185791,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 327,
+      "tail_gap_mean": 3.0936494094133375,
+      "tail_gap_std": 4.727791314614164,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: In the previous 5 rounds, every single investment was repaid with 15 units. The success rate is 5/5 (100%).\n\n2. **Updated Belief**: \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is highly unlikely ($0.2^5 = 0.00032$).\n   - Rate 2 (80% probability) is possible ($0.8^5 \\approx 0.327$).\n   - Rate 1 (100% probability) is very likely ($1.0^5 = 1.0$).\n   Given the data, the probability that the process is Rate 1 or Rate 2 is extremely high.\n\n3. **Expected Value (EV)**:\n   - If the process is Rate 1, EV = 15.\n   - If the process is Rate 2, EV = $15 \\times 0.8 = 12$.\n   - Even if we consider the possibility of Rate 3, the overwhelming evidence of 5 consecutive successes suggests the return probability is significantly higher than 0.66 (the break-even point where $15 \\times P = 10$).\n   - Since the expected return (likely between 12 and 15) is greater than the guaranteed 10 from RETAIN, TRANSFER is the mathematically superior choice.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.9874013952527525,
+      "delta_pre_sem": 19.031227827072144,
+      "delta_pre_by_mapping": [
+        19.74996519088745,
+        18.312490463256836
+      ],
+      "letter_bias": 0.7187373638153076,
+      "delta_post_sem": 26.773418068885803,
+      "delta_amp": 7.74219024181366,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 323,
+      "tail_gap_mean": 3.6232567603886126,
+      "tail_gap_std": 4.781892669973114,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: In the previous 6 rounds, every single investment was repaid with 15 units. The success rate is 6/6 (100%).\n\n2. **Updated Belief**: \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is highly unlikely ($0.2^6 \\approx 0.000064$).\n   - Rate 2 (80% probability) is possible ($0.8^6 \\approx 0.262$).\n   - Rate 1 (100% probability) is the most likely explanation ($1.0^6 = 1$).\n   Given the data, there is a very high probability that the process is Rate 1 or Rate 2.\n\n3. **Expected Value (EV)**:\n   - If Rate 1: EV = 15\n   - If Rate 2: EV = $15 \\times 0.8 = 12$\n   - Even if we consider the possibility of Rate 3, the overwhelming evidence of 6 consecutive successes suggests the probability of return is significantly higher than 66.7% (the break-even point where $15 \\times P = 10$).\n   - Since the expected return (likely $\\ge 12$) is greater than the certain return of RETAIN (10), TRANSFER is the mathematically superior choice.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.9886193878914686,
+      "delta_pre_sem": 18.437483310699463,
+      "delta_pre_by_mapping": [
+        18.937469482421875,
+        17.93749713897705
+      ],
+      "letter_bias": 0.4999861717224121,
+      "delta_post_sem": 27.437474131584167,
+      "delta_amp": 8.999990820884705,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 343,
+      "tail_gap_mean": 2.267728125154972,
+      "tail_gap_std": 5.1942264580408875,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: In the 7 prior rounds, every single investment was repaid with 15 units. The success rate is 7/7 (100%).\n\n2. **Updated Belief**: \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is extremely unlikely ($0.2^7 \\approx 0.0000128$).\n   - Rate 2 (80% probability) is possible ($0.8^7 \\approx 0.2097$).\n   - Rate 1 (100% probability) is highly likely ($1.0^7 = 1$).\n   Given the data, the probability that the process is Rate 1 or Rate 2 is overwhelmingly high.\n\n3. **Expected Value (EV)**:\n   - If Rate 1: EV = 15\n   - If Rate 2: EV = $15 \\times 0.8 = 12$\n   - If Rate 3: EV = $15 \\times 0.2 = 3$\n   Since the evidence strongly points toward Rate 1 or Rate 2, the expected value of transferring is significantly higher than 12. Even in the \"worst\" plausible scenario (Rate 2), the EV of 12 is greater than the certain 10 provided by RETAIN.\n\n4. **Conclusion**: The risk of a 0 return is statistically low compared to the high probability of receiving 15, making the investment the optimal choice.\n\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.9895761063637866,
+      "delta_pre_sem": 18.218730449676514,
+      "delta_pre_by_mapping": [
+        18.687463760375977,
+        17.74999713897705
+      ],
+      "letter_bias": 0.4687333106994629,
+      "delta_post_sem": 26.675761342048645,
+      "delta_amp": 8.457030892372131,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 345,
+      "tail_gap_mean": 3.362953467220068,
+      "tail_gap_std": 4.7623970806092215,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: In the 8 prior rounds, you selected TRANSFER (INVEST) 8 times, and the counterpart process returned 15 units every single time. The success rate is 100% (8/8).\n\n2. **Updated Belief**: \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is extremely unlikely ($0.2^8 \\approx 0.00000256$).\n   - Rate 2 (80% probability) is possible ($0.8^8 \\approx 0.167$).\n   - Rate 1 (100% probability) is the most likely explanation ($1.0^8 = 1$).\n   Given the data, there is a very high probability that the process is Rate 1 or Rate 2.\n\n3. **Expected Value (EV)**:\n   - If the process is Rate 1, EV = 15.\n   - If the process is Rate 2, EV = $15 \\times 0.8 = 12$.\n   - Even if we consider the possibility of Rate 3, the overwhelming evidence of 8 consecutive successes suggests the probability of return is significantly higher than 66.6% (the break-even point where $15 \\times P = 10$).\n   - Since the expected return (likely $\\ge 12$) is greater than the certain return of RETAIN (10), TRANSFER is the mathematically superior choice.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.9903294320962713,
+      "delta_pre_sem": 18.2499737739563,
+      "delta_pre_by_mapping": [
+        18.374956130981445,
+        18.124991416931152
+      ],
+      "letter_bias": 0.12498235702514648,
+      "delta_post_sem": 27.8905987739563,
+      "delta_amp": 9.640625,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 336,
+      "tail_gap_mean": 3.212812315300107,
+      "tail_gap_std": 6.474288177144493,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: In the previous 9 rounds, the counterpart process returned 15 units every single time you invested. The success rate is 9/9 (100%).\n\n2. **Updated Belief**: \n   - Rate 4 (0% probability) is impossible.\n   - Rate 3 (20% probability) is extremely unlikely ($0.2^9 \\approx 0.0000005$).\n   - Rate 2 (80% probability) is possible ($0.8^9 \\approx 0.134$).\n   - Rate 1 (100% probability) is the most likely explanation ($1.0^9 = 1$).\n   Given the data, there is an overwhelming probability that the process is Rate 1 or Rate 2.\n\n3. **Expected Value (EV)**:\n   - If the process is Rate 1, EV = 15.\n   - If the process is Rate 2, EV = $15 \\times 0.8 = 12$.\n   - Even if we consider the possibility of Rate 2, the expected return (at least 12) is higher than the guaranteed return of RETAIN (10). Since the evidence strongly points toward a return rate of 80% or 100%, the risk of receiving 0 is low enough that the mathematical expectation favors investing.\n\n4. **Final Decision**: The expected value of investing (B) is significantly higher than the certain value of keeping (A).\n\nAnswer: B"
+    }
+  ]
+}

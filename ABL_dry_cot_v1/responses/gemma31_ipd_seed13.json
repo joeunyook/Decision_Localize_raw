@@ -1,0 +1,256 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "ipd",
+    "seed": 13,
+    "T": 10,
+    "hidden_param": "opponent=TIT_FOR_TAT",
+    "act0": "DEFECT",
+    "act1": "COOPERATE",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.2,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.7454545454545454,
+      "drift_corr_post": 0.5393939393939393,
+      "mean_delta_pre": -8.599985694885254,
+      "mean_abs_delta_pre": 8.599985694885254,
+      "mean_delta_amp": -8.571055936813355,
+      "oracle_range": 0.9451306640631435
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.9985719267115775,
+      "delta_pre_sem": -6.499980926513672,
+      "delta_pre_by_mapping": [
+        -3.375009536743164,
+        -9.62495231628418
+      ],
+      "letter_bias": 3.124971389770508,
+      "delta_post_sem": -20.48423743247986,
+      "delta_amp": -13.984256505966187,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 513,
+      "tail_gap_mean": 0.32933161050081255,
+      "tail_gap_std": 6.4075731429913905,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 9
+      },
+      "cot_text": "1. **Data Analysis**: There are no prior rounds of data. I am starting with the initial probability distribution.\n\n2. **Updated Belief**: Since no data has been observed, each of the three functions is equally likely (probability 1/3 each).\n   - Function 1: Always X\n   - Function 2: Always Y\n   - Function 3: Mimics previous move (starts with X)\n\n3. **Optimal Action**:\n   - If I choose **ACTION_Y (A)**:\n     - Against F1: 5 points\n     - Against F2: 1 point\n     - Against F3: 5 points (since F3 starts with X)\n     - Expected value this round: $(5 + 1 + 5) / 3 = 3.67$\n   - If I choose **ACTION_X (B)**:\n     - Against F1: 3 points\n     - Against F2: 0 points\n     - Against F3: 3 points (since F3 starts with X)\n     - Expected value this round: $(3 + 0 + 3) / 3 = 2.0$\n\n   **Long-term consideration**:\n   If the counterpart is Function 3, choosing ACTION_X now ensures they continue to choose ACTION_X in the next round, allowing for a steady stream of 3 points per round. However, choosing ACTION_Y now against Function 3 will cause them to switch to ACTION_Y in the next round, potentially reducing future payoffs.\n   \n   However, the prompt explicitly states: \"against Function 1 or Function 2, selecting ACTION_Y is favorable this round.\" Given that F1 and F2 represent 2/3 of the probability space and are static, and F3 starts with X (making Y the dominant move for the immediate payoff), ACTION_Y is the strongest opening move to maximize immediate gain and test the response function. If the counterpart switches to Y in Round 2, I have identified Function 3. If they stay X, it's F1 or F3. If they stay Y, it's F2.\n\n   Comparing the immediate loss of 1.67 points by choosing B vs the potential future gain from F3: The immediate advantage of A is significant, and the ability to distinguish between the functions is high.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9998125065147391,
+      "delta_pre_sem": -7.31248664855957,
+      "delta_pre_by_mapping": [
+        -5.125001907348633,
+        -9.499971389770508
+      ],
+      "letter_bias": 2.1874847412109375,
+      "delta_post_sem": -19.81247568130493,
+      "delta_amp": -12.499989032745361,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 611,
+      "tail_gap_mean": -1.3864434045553207,
+      "tail_gap_std": 4.295701185362798,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 8
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Data Analysis:** In Round 1, I selected ACTION_X (COOPERATE) and the opponent selected ACTION_X (COOPERATE).\n    *   Function 1 (Always X) would have played X.\n    *   Function 2 (Always Y) would have played Y (unless an error occurred).\n    *   Function 3 (Mimic) would have played X (as it starts with X on round 1).\n    The data is consistent with Function 1 and Function 3, and highly inconsistent with Function 2.\n\n2.  **Updated Belief:** Function 2 is very unlikely. I am now weighing Function 1 (Always X) against Function 3 (Mimic).\n    *   If the opponent is Function 1, the optimal strategy for all remaining rounds is ACTION_Y (DEFECT) to get 5 points per round.\n    *   If the opponent is Function 3, the optimal strategy is to play ACTION_X (COOPERATE) to keep them playing ACTION_X, yielding 3 points per round. (Playing ACTION_Y would trigger them to play ACTION_Y, yielding only 1 point).\n\n3.  **Optimal Action:**\n    *   If I play ACTION_Y (DEFECT) now:\n        *   Against Function 1: I get 5 points now and 5 points in all future rounds.\n        *   Against Function 3: I get 5 points now, but they will switch to ACTION_Y in the next round. I would then have to play ACTION_X to try to \"reset\" them or accept 1 point per round.\n    *   If I play ACTION_X (COOPERATE) now:\n        *   Against Function 1: I get 3 points now and 3 points in future rounds (unless I switch to Y).\n        *   Against Function 3: I get 3 points now and 3 points in all future rounds.\n\n    Comparing the two: Against Function 1, ACTION_Y is strictly better. Against Function 3, ACTION_X is better for long-term stability. However, since I only have one data point (which both F1 and F3 satisfy), and the payoff for DEFECTING against F1 is so high (5 vs 3), and the penalty for DEFECTING against F3 is a temporary loss of points that can be recovered or managed, the immediate gain of testing for Function 1 is significant. More importantly, the prompt explicitly states: \"against Function 1 or Function 2, selecting ACTION_Y is favorable this round.\" Given the high probability that the opponent is either F1 or F3, and the high payoff of Y against F1, ACTION_Y is the strategic choice to maximize potential gain.\n\n4.  **Final Answer:**\n    Answer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.9997224588599525,
+      "delta_pre_sem": -8.374990463256836,
+      "delta_pre_by_mapping": [
+        -7.625,
+        -9.124980926513672
+      ],
+      "letter_bias": 0.7499904632568359,
+      "delta_post_sem": 16.9999942779541,
+      "delta_amp": 25.374984741210938,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 809,
+      "tail_gap_mean": 2.379209022819996,
+      "tail_gap_std": 4.2345796808826215,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 7
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:**\n    *   Round 1: I played ACTION_X (COOPERATE), opponent played ACTION_X (COOPERATE).\n    *   Round 2: I played ACTION_Y (DEFECT), opponent played ACTION_X (COOPERATE).\n    *   The opponent has played ACTION_X in 100% of the observed rounds.\n\n2.  **Evaluate the response functions:**\n    *   **Function 1 (Always X):** Consistent with the data.\n    *   **Function 2 (Always Y):** Inconsistent with the data.\n    *   **Function 3 (Mimic):** In Round 1, it plays X (consistent). In Round 2, it should have played what I played in Round 1 (ACTION_X), which it did (consistent).\n\n3.  **Updated Beliefs:**\n    The opponent is either Function 1 or Function 3. Function 2 is effectively ruled out.\n    *   If Function 1: The opponent will always play ACTION_X. The best move for me every round is ACTION_Y (DEFECT) to get 5 points.\n    *   If Function 3: The opponent mimics my previous move. If I play ACTION_Y now, they will play ACTION_Y next round. If I play ACTION_X now, they will play ACTION_X next round. In a repeated game against a mimic, the optimal long-term strategy is to play ACTION_X to keep the opponent playing ACTION_X (earning 3 points per round), as switching to ACTION_Y earns 5 points once but drops the payoff to 1 point in the following round (and potentially keeps it low).\n\n4.  **Optimal Action:**\n    *   Against Function 1: ACTION_Y is optimal.\n    *   Against Function 3: ACTION_X is optimal for the remaining 8 rounds (3 points $\\times$ 8 = 24) compared to alternating or switching to Y (5 + 1 + 5 + 1... = 4 points per round average).\n    *   However, looking at the specific prompt note: \"against Function 3, selecting ACTION_X is favorable over the remaining rounds; against Function 1 or Function 2, selecting ACTION_Y is favorable this round.\"\n    *   Since the opponent played ACTION_X in Round 2 despite me playing ACTION_Y in Round 1, this is the critical data point. Wait\u2014re-evaluating: In Round 1 I played X, in Round 2 the opponent played X. This is consistent with *both* Function 1 and Function 3.\n    *   Given the high payoff of DEFECT (5) against Function 1 and the risk of triggering a \"Y-cycle\" against Function 3, but noting that the opponent has been consistently playing X, the immediate gain of ACTION_Y is high. However, the prompt explicitly guides that if it is Function 3, ACTION_X is the superior long-term play.\n    *   Since the data does not yet distinguish between Function 1 and Function 3, and the prompt highlights the long-term value of ACTION_X against Function 3, I must weigh the probability. But in this specific matrix, if the opponent is Function 1, I gain 2 extra points this round by playing Y. If they are Function 3, I lose 2 points in the *next* round by playing Y now.\n    *   Because the opponent played X in Round 2 (mimicking my Round 1 X), Function 3 is highly probable. To maximize the remaining 8 rounds, maintaining the \"X-X\" cycle is the safest high-value strategy.\n\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.25908305896404576,
+      "delta_pre_sem": -8.937484741210938,
+      "delta_pre_by_mapping": [
+        -7.625,
+        -10.249969482421875
+      ],
+      "letter_bias": 1.3124847412109375,
+      "delta_post_sem": -21.015559911727905,
+      "delta_amp": -12.078075170516968,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 428,
+      "tail_gap_mean": -0.6405636325478554,
+      "tail_gap_std": 4.7689461113910605,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 6
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:**\n    *   Round 1: You played ACTION_X (COOPERATE), Opponent played ACTION_X (COOPERATE).\n    *   Round 2: You played ACTION_Y (DEFECT), Opponent played ACTION_X (COOPERATE).\n    *   Round 3: You played ACTION_X (COOPERATE), Opponent played ACTION_X (COOPERATE).\n    *   The opponent has played ACTION_X in 100% of the rounds so far.\n\n2.  **Evaluate the Response Functions:**\n    *   **Function 1 (Always X):** Consistent with all data.\n    *   **Function 2 (Always Y):** Inconsistent with all data.\n    *   **Function 3 (Mimic):** In Round 2, you played ACTION_Y. If the opponent were Function 3, they would have played ACTION_Y in Round 3. However, the opponent played ACTION_X in Round 3. This strongly suggests the opponent is not Function 3.\n\n3.  **Determine the Optimal Action:**\n    *   The evidence points heavily toward **Function 1**.\n    *   Against Function 1, the opponent will almost always play ACTION_X.\n    *   Comparing the payoffs for this round: ACTION_Y (DEFECT) gives 5 points, while ACTION_X (COOPERATE) gives 3 points.\n    *   Since the opponent's strategy is fixed and not reactive (based on the evidence against Function 3), there is no risk of \"triggering\" a shift to ACTION_Y by defecting.\n    *   Therefore, selecting ACTION_Y (DEFECT) maximizes the payoff for this round and all subsequent rounds.\n\n4.  **Final Decision:**\n    The optimal move is to defect to capture the higher payoff (5 vs 3) against a counterpart that consistently plays ACTION_X.\n\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.20586364491369408,
+      "delta_pre_sem": -7.49998664855957,
+      "delta_pre_by_mapping": [
+        -7.0,
+        -7.999973297119141
+      ],
+      "letter_bias": 0.4999866485595703,
+      "delta_post_sem": -21.60930371284485,
+      "delta_amp": -14.109317064285278,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 420,
+      "tail_gap_mean": -0.9954627704620361,
+      "tail_gap_std": 4.071929789844396,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 5
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:**\n    *   Round 1: You COOPERATE, Opponent COOPERATE.\n    *   Round 2: You DEFECT, Opponent COOPERATE.\n    *   Round 3: You COOPERATE, Opponent COOPERATE.\n    *   Round 4: You COOPERATE, Opponent COOPERATE.\n    *   The opponent has played ACTION_X (COOPERATE) in 4/4 rounds.\n\n2.  **Evaluate the Response Functions:**\n    *   **Function 1 (Always X):** Consistent with the data.\n    *   **Function 2 (Always Y):** Inconsistent with the data (they played X every time).\n    *   **Function 3 (Mimic):** In Round 2, you played DEFECT (ACTION_Y). If the opponent were Function 3, they should have played ACTION_Y in Round 3. However, they played ACTION_X in Round 3. This strongly suggests the opponent is not Function 3.\n\n3.  **Determine the Optimal Action:**\n    *   The evidence points heavily toward **Function 1**.\n    *   Against Function 1, the opponent will almost always play ACTION_X.\n    *   Comparing the payoffs for this round:\n        *   ACTION_Y (DEFECT) gives 5 points.\n        *   ACTION_X (COOPERATE) gives 3 points.\n    *   Since Function 1 is fixed and does not react to your moves, there is no future penalty for defecting now or in the remaining 5 rounds. Therefore, selecting ACTION_Y (DEFECT) maximizes the payoff for both the current round and all subsequent rounds.\n\n4.  **Conclusion:**\n    The opponent is most likely Function 1. The optimal strategy against Function 1 is to always play ACTION_Y (DEFECT).\n\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.1611089495765853,
+      "delta_pre_sem": -7.437480926513672,
+      "delta_pre_by_mapping": [
+        -6.75,
+        -8.124961853027344
+      ],
+      "letter_bias": 0.6874809265136719,
+      "delta_post_sem": -21.499900817871094,
+      "delta_amp": -14.062419891357422,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 431,
+      "tail_gap_mean": -1.4701504716277123,
+      "tail_gap_std": 4.01242805109245,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 4
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:**\n    *   Round 1: You COOPERATE, Opponent COOPERATE.\n    *   Round 2: You DEFECT, Opponent COOPERATE.\n    *   Round 3: You COOPERATE, Opponent COOPERATE.\n    *   Round 4: You COOPERATE, Opponent COOPERATE.\n    *   Round 5: You COOPERATE, Opponent COOPERATE.\n    *   The opponent has played ACTION_X (COOPERATE) in 5/5 rounds.\n\n2.  **Evaluate the Response Functions:**\n    *   **Function 1 (Always X):** Consistent with the data.\n    *   **Function 2 (Always Y):** Inconsistent with the data (Opponent played X every time).\n    *   **Function 3 (Mimic):** In Round 2, you played DEFECT (ACTION_Y). If the opponent were Function 3, they should have played ACTION_Y in Round 3. However, the opponent played ACTION_X in Round 3. This strongly suggests the opponent is not Function 3.\n\n3.  **Determine the Optimal Action:**\n    *   The evidence points heavily toward **Function 1**.\n    *   Against Function 1, the opponent will almost always play ACTION_X.\n    *   Comparing the payoffs for this round:\n        *   ACTION_Y (DEFECT): 5 points.\n        *   ACTION_X (COOPERATE): 3 points.\n    *   Since Function 1 is fixed and does not react to your moves, there is no future penalty for defecting now or in the remaining 4 rounds. Therefore, selecting ACTION_Y (DEFECT) maximizes the payoff for this round and all subsequent rounds.\n\n4.  **Conclusion:**\n    The opponent is most likely Function 1. The optimal move is to defect to gain the higher payoff.\n\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.12455784487663521,
+      "delta_pre_sem": -8.62498950958252,
+      "delta_pre_by_mapping": [
+        -7.75,
+        -9.499979019165039
+      ],
+      "letter_bias": 0.8749895095825195,
+      "delta_post_sem": -21.757766723632812,
+      "delta_amp": -13.132777214050293,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 474,
+      "tail_gap_mean": -1.3568127316236496,
+      "tail_gap_std": 5.34951513350601,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 3
+      },
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:**\n    *   Round 1: You COOPERATE, Opponent COOPERATE.\n    *   Round 2: You DEFECT, Opponent COOPERATE.\n    *   Round 3: You COOPERATE, Opponent COOPERATE.\n    *   Round 4: You COOPERATE, Opponent COOPERATE.\n    *   Round 5: You COOPERATE, Opponent COOPERATE.\n    *   Round 6: You COOPERATE, Opponent DEFECT.\n    *   The opponent played ACTION_X (COOPERATE) 5 out of 6 times.\n\n2.  **Evaluate the Response Functions:**\n    *   **Function 1 (Always X):** Consistent with the data. The one DEFECT in Round 6 would be the \"1 in 10\" error rate.\n    *   **Function 2 (Always Y):** Highly unlikely. The opponent played X 5/6 times.\n    *   **Function 3 (Mimic):** In Round 2, you played DEFECT. If the opponent were mimicking, they should have played DEFECT in Round 3. Instead, they played COOPERATE. This strongly suggests the opponent is not mimicking.\n\n3.  **Determine the Optimal Action:**\n    *   The evidence strongly points to **Function 1**.\n    *   Against Function 1 (Always X), the payoff for ACTION_Y (DEFECT) is 5, and the payoff for ACTION_X (COOPERATE) is 3.\n    *   Since Function 1 is a fixed strategy regardless of your history, there is no \"future penalty\" for defecting now. Defecting in Round 7 does not change the opponent's behavior in Rounds 8, 9, or 10.\n    *   Therefore, selecting ACTION_Y (DEFECT) maximizes the payoff for this round and all subsequent rounds.\n\n4.  **Final Decision:**\n    *   The optimal move is to DEFECT to capture the higher payoff (5 vs 3) against a counterpart that almost always plays COOPERATE.\n\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.0953502537143719,
+      "delta_pre_sem": -8.749988555908203,
+      "delta_pre_by_mapping": [
+        -8.375,
+        -9.124977111816406
+      ],
+      "letter_bias": 0.3749885559082031,
+      "delta_post_sem": -20.54685401916504,
+      "delta_amp": -11.796865463256836,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 486,
+      "tail_gap_mean": 0.02204331159591675,
+      "tail_gap_std": 5.706354818090138,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 2
+      },
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has selected ACTION_X (COOPERATE) in 6 out of 7 rounds.\n- **Function 1 (Always X):** Consistent with the data (6/7 is close to near-certainty, allowing for the 1/10 error rate).\n- **Function 2 (Always Y):** Highly inconsistent with the data.\n- **Function 3 (Mimic):** In rounds 1, 3, 4, 5, and 7, you played COOPERATE and they played COOPERATE. In round 2, you played DEFECT and they played COOPERATE (this would be an error for Function 3). In round 6, you played COOPERATE and they played DEFECT (this would be an error for Function 3). While possible, Function 1 is a more straightforward fit for a high frequency of ACTION_X regardless of your move.\n\n**Step 2: Updated belief**\nThe counterpart is most likely following Function 1 (Always X). There is a smaller possibility they are following Function 3 (Mimic), as they have mirrored your COOPERATE moves frequently, though the discrepancy in round 2 and 6 suggests Function 1 is more probable.\n\n**Step 3: Optimal action**\n- If the counterpart is **Function 1**, the optimal move every round is ACTION_Y (DEFECT) to get 5 points instead of 3.\n- If the counterpart is **Function 3**, playing ACTION_X (COOPERATE) is better for the long term because it ensures they play ACTION_X in the next round, yielding 3 points per round. If you play ACTION_Y (DEFECT) now, they will play ACTION_Y in the next round, yielding only 1 point.\n- However, the data strongly suggests the opponent is not strictly mimicking (they played X when you played DEFECT in round 2). Given the high probability of Function 1 and the fact that we are nearing the end of the game (Round 8/10), the immediate gain of DEFECTING (5 vs 3) outweighs the risk, especially since Function 1 is the most likely candidate.\n\n**Step 4: Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.08091356544877452,
+      "delta_pre_sem": -9.874985694885254,
+      "delta_pre_by_mapping": [
+        -9.75,
+        -9.999971389770508
+      ],
+      "letter_bias": 0.1249856948852539,
+      "delta_post_sem": -20.812474250793457,
+      "delta_amp": -10.937488555908203,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 441,
+      "tail_gap_mean": -1.816324292421341,
+      "tail_gap_std": 4.167396074631904,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 1
+      },
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has selected ACTION_X (COOPERATE) in 7 out of 8 rounds.\n- **Function 1 (Always X):** Consistent with the data (7/8 is close to near-certainty, allowing for the 1/10 error rate).\n- **Function 2 (Always Y):** Highly inconsistent with the data.\n- **Function 3 (Mimic):** In round 2, you played DEFECT, and in round 3, the opponent played COOPERATE. In round 6, you played COOPERATE, and in round 7, the opponent played COOPERATE. In round 8, you played DEFECT, and the outcome for round 9 is what we are deciding. If the opponent were Function 3, they would have played DEFECT in round 3 (following your round 2 DEFECT). Since they played COOPERATE in round 3, Function 3 is highly unlikely.\n\n**Step 2: Updated belief**\nThe data strongly suggests the counterpart is following **Function 1** (selects ACTION_X with near-certainty). The single instance of ACTION_Y (DEFECT) in round 6 is consistent with the stated 1/10 error rate.\n\n**Step 3: Optimal action**\n- If the opponent is Function 1, they will likely play ACTION_X this round and next round.\n- Against ACTION_X, ACTION_Y (DEFECT) yields 5 points, while ACTION_X (COOPERATE) yields 3 points.\n- Since Function 1 is independent of your actions, there is no \"punishment\" or \"incentive\" to cooperate to maintain future cooperation.\n- Even if there were a small chance of Function 3, the data from round 3 already largely ruled it out.\n- Therefore, the optimal strategy for both this round and the final round is to select ACTION_Y (DEFECT) to maximize the payoff.\n\n**Step 4: Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.054681842451595575,
+      "delta_pre_sem": -12.687482833862305,
+      "delta_pre_by_mapping": [
+        -12.499996185302734,
+        -12.874969482421875
+      ],
+      "letter_bias": 0.1874866485595703,
+      "delta_post_sem": -21.17183804512024,
+      "delta_amp": -8.484355211257935,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 510,
+      "tail_gap_mean": 0.49651951491832735,
+      "tail_gap_std": 4.686557064181034,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 0
+      },
+      "cot_text": "1. **Analyze the data:**\nThe counterpart has played ACTION_X (COOPERATE) 7 times and ACTION_Y (DEFECT) 2 times.\n- **Function 1 (Always X):** Consistent with the data (7/9 is close to near-certainty, allowing for the 1/10 error rate).\n- **Function 2 (Always Y):** Highly inconsistent with the data.\n- **Function 3 (Mimic):** Let's check the sequence.\n    - Round 1: You X, Opponent X (Matches Function 3 start)\n    - Round 2: You Y, Opponent X (Matches Function 3: Opponent mimics your Round 1 X)\n    - Round 3: You X, Opponent X (Matches Function 3: Opponent mimics your Round 2 Y? **No**. You played Y in Round 2, but opponent played X in Round 3).\n    - Round 6: You X, Opponent Y (Matches Function 3: Opponent mimics your Round 5 X? **No**. You played X in Round 5, but opponent played Y in Round 6).\n    - Round 9: You X, Opponent Y (Matches Function 3: Opponent mimics your Round 8 Y? **Yes**).\n    The data is inconsistent with Function 3's mimicry logic in several rounds.\n\n2. **Updated Belief:**\nThe counterpart is most likely following **Function 1** (selects ACTION_X with near-certainty). Function 2 is ruled out by the high frequency of X. Function 3 is ruled out by the lack of correlation between your previous move and their current move.\n\n3. **Optimal Action:**\nThis is the final round (Round 10/10). There are no future rounds to consider.\n- If the opponent is Function 1, they will likely play ACTION_X.\n- Against ACTION_X, ACTION_Y (DEFECT) yields 5 points, while ACTION_X (COOPERATE) yields 3 points.\n- Even if the opponent were Function 3, since you played ACTION_X in Round 9, they would play ACTION_X in Round 10, making ACTION_Y (DEFECT) the optimal choice for the final round.\n\n4. **Final Answer:**\nAnswer: A"
+    }
+  ]
+}

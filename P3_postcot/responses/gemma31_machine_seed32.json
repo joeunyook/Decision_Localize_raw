@@ -1,0 +1,216 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "machine",
+    "seed": 32,
+    "T": 10,
+    "hidden_param": "process=NEVER_PAY",
+    "act0": "PASS",
+    "act1": "PLAY",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.9878787878787878,
+      "drift_corr_post": 0.8181818181818182,
+      "mean_delta_pre": -13.143059921264648,
+      "mean_abs_delta_pre": 15.455552959442139,
+      "mean_delta_amp": -7.598912799358368,
+      "oracle_range": 0.07579238829083497
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 11.562465190887451,
+      "delta_pre_by_mapping": [
+        10.24995231628418,
+        12.874978065490723
+      ],
+      "letter_bias": -1.3125128746032715,
+      "delta_post_sem": -18.37495732307434,
+      "delta_amp": -29.937422513961792,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 392,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history is currently empty. No rounds have been played, so there is no data to distinguish between the four possible processes.\n\n2. **What is your updated belief about the process?**\nSince the processes were chosen equally at random, each has a probability of 25% (0.25).\n- ALWAYS_PAY: 25%\n- HIGH_RATE: 25%\n- LOW_RATE: 25%\n- NEVER_PAY: 25%\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we multiply the probability of each process by the expected payout of that process:\n- ALWAYS_PAY: $0.25 \\times 15 = 3.75$\n- HIGH_RATE: $0.25 \\times (0.8 \\times 15 + 0.2 \\times 0) = 0.25 \\times 12 = 3.00$\n- LOW_RATE: $0.25 \\times (0.2 \\times 15 + 0.8 \\times 0) = 0.25 \\times 3 = 0.75$\n- NEVER_PAY: $0.25 \\times 0 = 0$\n\nTotal EV of playing = $3.75 + 3.00 + 0.75 + 0 = 7.5$ points.\nBanking (PASS) guarantees 10 points. Since $10 > 7.5$, banking is the mathematically superior choice for the first round.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.0005077492278791814,
+      "delta_pre_sem": -6.999994277954102,
+      "delta_pre_by_mapping": [
+        -5.375009536743164,
+        -8.624979019165039
+      ],
+      "letter_bias": 1.6249847412109375,
+      "delta_post_sem": -20.937204003334045,
+      "delta_amp": -13.937209725379944,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 617,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nIn Round 1, I played and the machine paid 0. This immediately eliminates the `ALWAYS_PAY` process. It also makes the `HIGH_RATE` process less likely and the `LOW_RATE` and `NEVER_PAY` processes more likely.\n\n2. **What is your updated belief about the process?**\nUsing Bayesian updating:\n- Prior probabilities: Each process was 25%.\n- Likelihood of 0 payout:\n    - `ALWAYS_PAY`: 0%\n    - `HIGH_RATE`: 20% (1/5)\n    - `LOW_RATE`: 80% (4/5)\n    - `NEVER_PAY`: 100%\n- Posterior probabilities (proportional to Prior $\\times$ Likelihood):\n    - `ALWAYS_PAY`: $0.25 \\times 0 = 0$\n    - `HIGH_RATE`: $0.25 \\times 0.2 = 0.05$\n    - `LOW_RATE`: $0.25 \\times 0.8 = 0.20$\n    - `NEVER_PAY`: $0.25 \\times 1.0 = 0.25$\n- Total probability of 0 payout: $0.05 + 0.20 + 0.25 = 0.50$.\n- Normalized beliefs:\n    - `HIGH_RATE`: $0.05 / 0.50 = 10\\%$\n    - `LOW_RATE`: $0.20 / 0.50 = 40\\%$\n    - `NEVER_PAY`: $0.25 / 0.50 = 50\\%$\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe expected payout of playing is the sum of (Probability of Process $\\times$ Payout Rate of Process $\\times$ 15 points):\n- $E[\\text{PLAY}] = (0.10 \\times 0.8 \\times 15) + (0.40 \\times 0.2 \\times 15) + (0.50 \\times 0 \\times 15)$\n- $E[\\text{PLAY}] = (0.10 \\times 12) + (0.40 \\times 3) + 0$\n- $E[\\text{PLAY}] = 1.2 + 1.2 = 2.4$ points.\n\nComparing the expected value of playing (2.4 points) to the guaranteed value of banking (10 points), banking is significantly better.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.0001914299230070832,
+      "delta_pre_sem": -11.906235694885254,
+      "delta_pre_by_mapping": [
+        -9.874998092651367,
+        -13.93747329711914
+      ],
+      "letter_bias": 2.0312376022338867,
+      "delta_post_sem": -20.234257221221924,
+      "delta_amp": -8.32802152633667,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 565,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. What does the history tell you about the machine's payout process?**\nThe history shows two consecutive plays with zero payouts (0/2). This immediately eliminates the `ALWAYS_PAY` process. It also makes the `HIGH_RATE` process significantly less likely, as the probability of missing twice in a row with an 80% success rate is only 4% ($0.2 \\times 0.2$). Conversely, it makes `NEVER_PAY` and `LOW_RATE` much more probable.\n\n**2. What is your updated belief about the process?**\nUsing Bayesian updating (starting with equal priors of 0.25 for each):\n- $P(\\text{ALWAYS\\_PAY} | 0/2) = 0$\n- $P(\\text{HIGH\\_RATE} | 0/2) \\propto 0.25 \\times (0.2)^2 = 0.01$\n- $P(\\text{LOW\\_RATE} | 0/2) \\propto 0.25 \\times (0.8)^2 = 0.16$\n- $P(\\text{NEVER\\_PAY} | 0/2) \\propto 0.25 \\times (1.0)^2 = 0.25$\n\nSum of weights = $0.01 + 0.16 + 0.25 = 0.42$.\n- $P(\\text{HIGH\\_RATE}) \\approx 2.38\\%$\n- $P(\\text{LOW\\_RATE}) \\approx 38.1\\%$\n- $P(\\text{NEVER\\_PAY}) \\approx 59.52\\%$\n\n**3. What is the expected value of playing, and is it better than banking 10?**\nThe expected payout of playing is the sum of (Probability of Process $\\times$ Payout Rate of Process $\\times$ 15 points):\n- $\\text{EV} = (0.0238 \\times 0.8 \\times 15) + (0.381 \\times 0.2 \\times 15) + (0.5952 \\times 0 \\times 15)$\n- $\\text{EV} = 0.2856 + 1.143 + 0 = 1.4286$ points.\n\nComparing the Expected Value of playing ($\\approx 1.43$) to the guaranteed value of banking (10), banking is significantly superior.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.00013442948678098906,
+      "delta_pre_sem": -16.249791145324707,
+      "delta_pre_by_mapping": [
+        -14.812108039855957,
+        -17.687474250793457
+      ],
+      "letter_bias": 1.43768310546875,
+      "delta_post_sem": -20.593434810638428,
+      "delta_amp": -4.343643665313721,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 555,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 3 consecutive plays with 0 payouts. This strongly suggests that the machine is not `ALWAYS_PAY` (which would have paid 3/3) and is unlikely to be `HIGH_RATE` (which has a $0.8^3 \\approx 51\\%$ chance of this happening, but is still less likely than the others). It is highly consistent with `NEVER_PAY` or `LOW_RATE`.\n\n2. **What is your updated belief about the process?**\nUsing Bayesian updating:\n- $P(\\text{ALWAYS\\_PAY} | 0/3) = 0$\n- $P(\\text{HIGH\\_RATE} | 0/3) \\propto 0.25 \\times (0.2)^3 = 0.002$\n- $P(\\text{LOW\\_RATE} | 0/3) \\propto 0.25 \\times (0.8)^3 = 0.128$\n- $P(\\text{NEVER\\_PAY} | 0/3) \\propto 0.25 \\times (1.0)^3 = 0.25$\n\nNormalizing these, the probability that the machine is `NEVER_PAY` is roughly 65%, `LOW_RATE` is roughly 33%, and `HIGH_RATE` is negligible.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe expected payout of playing is:\n$E[\\text{PLAY}] = 15 \\times P(\\text{Payout})$\n$P(\\text{Payout}) = [P(\\text{HIGH\\_RATE}) \\times 0.8] + [P(\\text{LOW\\_RATE}) \\times 0.2] + [P(\\text{NEVER\\_PAY}) \\times 0]$\n$P(\\text{Payout}) \\approx [0.005 \\times 0.8] + [0.33 \\times 0.2] + 0 \\approx 0.004 + 0.066 = 0.07$\n$E[\\text{PLAY}] \\approx 15 \\times 0.07 = 1.05$ points.\n\nComparing the expected value of playing ($\\approx 1.05$) to the guaranteed value of banking (10), banking is significantly better.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.00011137242720819069,
+      "delta_pre_sem": -17.686580181121826,
+      "delta_pre_by_mapping": [
+        -17.060688018798828,
+        -18.312472343444824
+      ],
+      "letter_bias": 0.625892162322998,
+      "delta_post_sem": -21.023186206817627,
+      "delta_amp": -3.336606025695801,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 555,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 4 consecutive plays with 0 payouts. This strongly suggests that the machine is not `ALWAYS_PAY` (which would have paid 4/4) and is very unlikely to be `HIGH_RATE` (which would have paid 0/4 only about 0.16% of the time: $0.2^4 = 0.0016$).\n\n2. **What is your updated belief about the process?**\nUsing Bayesian reasoning, the probability of seeing 0 payouts in 4 rounds for each process is:\n- `ALWAYS_PAY`: $0$\n- `HIGH_RATE`: $0.2^4 = 0.0016$\n- `LOW_RATE`: $0.8^4 = 0.4096$\n- `NEVER_PAY`: $1.0^4 = 1.0$\n\nSumming these (since priors are equal): $0 + 0.0016 + 0.4096 + 1.0 = 1.4112$.\n- $P(\\text{NEVER\\_PAY}) \\approx 1.0 / 1.4112 \\approx 70.8\\%$\n- $P(\\text{LOW\\_RATE}) \\approx 0.4096 / 1.4112 \\approx 29.0\\%$\n- $P(\\text{HIGH\\_RATE}) \\approx 0.0016 / 1.4112 \\approx 0.1\\%$\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe expected payout of playing is the sum of (Probability of Process $\\times$ Payout Rate of Process $\\times$ 15 points):\n- $E[\\text{PLAY}] = (0.708 \\times 0 \\times 15) + (0.290 \\times 0.2 \\times 15) + (0.001 \\times 0.8 \\times 15)$\n- $E[\\text{PLAY}] = 0 + 0.87 + 0.012 = 0.882$ points.\n\nComparing the expected value of playing ($\\approx 0.88$ points) to the guaranteed value of banking (10 points), banking is significantly more profitable.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 9.679839103591338e-05,
+      "delta_pre_sem": -17.81053924560547,
+      "delta_pre_by_mapping": [
+        -17.746108055114746,
+        -17.87497043609619
+      ],
+      "letter_bias": 0.06443119049072266,
+      "delta_post_sem": -21.163844227790833,
+      "delta_amp": -3.3533049821853638,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 499,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 5 consecutive plays with 0 payouts. This immediately eliminates the `ALWAYS_PAY` process. It makes the `HIGH_RATE` process extremely unlikely, as the probability of getting 0 payouts in 5 tries with an 80% success rate is $(0.2)^5 = 0.00032$.\n\n2. **What is your updated belief about the process?**\nThe evidence strongly suggests the machine is either `NEVER_PAY` or `LOW_RATE`. \n- For `NEVER_PAY`, the probability of 5 zeros is $1.0$.\n- For `LOW_RATE`, the probability of 5 zeros is $(0.8)^5 \\approx 0.327$.\nGiven the initial equal priors, the posterior probability is heavily weighted toward `NEVER_PAY`, but `LOW_RATE` remains a possibility.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we look at the probability of a payout given the history:\n$P(\\text{Pay} | \\text{5 zeros}) = P(\\text{Pay} | \\text{LOW\\_RATE}) \\times P(\\text{LOW\\_RATE} | \\text{5 zeros}) + P(\\text{Pay} | \\text{NEVER\\_PAY}) \\times P(\\text{NEVER\\_PAY} | \\text{5 zeros})$\n$P(\\text{Pay} | \\text{5 zeros}) = 0.2 \\times \\frac{0.327}{1 + 0.327} + 0 \\times \\frac{1}{1.327} \\approx 0.2 \\times 0.246 \\approx 0.049$\n\nThe EV of playing is: $(0.049 \\times 15) + (0.951 \\times 0) \\approx 0.735$ points.\nComparing the EV of playing ($\\approx 0.735$) to the guaranteed value of banking (10), banking is significantly superior.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 8.596446596393755e-05,
+      "delta_pre_sem": -18.03035593032837,
+      "delta_pre_by_mapping": [
+        -17.24824333190918,
+        -18.81246852874756
+      ],
+      "letter_bias": 0.7821125984191895,
+      "delta_post_sem": -20.843526601791382,
+      "delta_amp": -2.8131706714630127,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 496,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 6 consecutive plays with 0 payouts. This immediately eliminates the `ALWAYS_PAY` process. It also makes the `HIGH_RATE` process extremely unlikely, as the probability of getting 0 payouts in 6 tries with an 80% success rate is $(0.2)^6 = 0.000064$.\n\n2. **What is your updated belief about the process?**\nThe evidence strongly suggests the machine is either `NEVER_PAY` or `LOW_RATE`. \n- For `NEVER_PAY`, the probability of this sequence is $1.0$.\n- For `LOW_RATE`, the probability of this sequence is $(0.8)^6 \\approx 0.262$.\nGiven the equal prior probabilities, the machine is far more likely to be `NEVER_PAY` than `LOW_RATE`, and almost certainly not `HIGH_RATE` or `ALWAYS_PAY`.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we look at the probability of a payout given the history.\nThe probability of a payout in the next round is:\n$P(\\text{Pay}) = P(\\text{Pay} | \\text{LOW}) \\cdot P(\\text{LOW} | \\text{History}) + P(\\text{Pay} | \\text{NEVER}) \\cdot P(\\text{NEVER} | \\text{History})$\n$P(\\text{Pay}) \\approx 0.2 \\cdot \\frac{0.262}{1 + 0.262} + 0 \\cdot \\frac{1}{1.262} \\approx 0.2 \\cdot 0.207 \\approx 0.0414$.\n\nThe EV of playing is: $(0.0414 \\times 15) + (0.9586 \\times 0) \\approx 0.621$ points.\nComparing this to the guaranteed 10 points from banking (PASS), the EV of playing is significantly lower.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 7.755867909524657e-05,
+      "delta_pre_sem": -17.90589714050293,
+      "delta_pre_by_mapping": [
+        -17.249327659606934,
+        -18.562466621398926
+      ],
+      "letter_bias": 0.6565694808959961,
+      "delta_post_sem": -21.413807272911072,
+      "delta_amp": -3.507910132408142,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 435,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 7 consecutive plays with 0 payouts. This strongly suggests that the machine is not `ALWAYS_PAY` (which would have paid 7/7) and is very unlikely to be `HIGH_RATE` (the probability of 0 payouts in 7 tries for a 4/5 rate is $(1/5)^7$, or 1 in 78,125).\n\n2. **What is your updated belief about the process?**\nThe machine is almost certainly either `NEVER_PAY` or `LOW_RATE`. \n- For `NEVER_PAY`, the probability of this outcome is 1.0.\n- For `LOW_RATE`, the probability of 0 payouts in 7 tries is $(4/5)^7 \\approx 0.2097$.\nGiven the equal prior probabilities, the posterior probability that the machine is `LOW_RATE` is approximately $0.2097 / (1 + 0.2097) \\approx 0.173$, and the probability it is `NEVER_PAY` is approximately $0.827$.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nThe expected value (EV) of playing is the sum of the probabilities of the remaining possible processes multiplied by their payout rates:\n- $EV = P(\\text{LOW\\_RATE}) \\times (1/5 \\times 15) + P(\\text{NEVER\\_PAY}) \\times (0 \\times 15)$\n- $EV \\approx 0.173 \\times 3 + 0.827 \\times 0 \\approx 0.519$ points.\nComparing the EV of playing ($\\approx 0.52$) to the guaranteed value of passing (10), passing is significantly more profitable.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 7.097044657639893e-05,
+      "delta_pre_sem": -18.09259033203125,
+      "delta_pre_by_mapping": [
+        -17.68521022796631,
+        -18.49997043609619
+      ],
+      "letter_bias": 0.4073801040649414,
+      "delta_post_sem": -21.1404367685318,
+      "delta_amp": -3.0478464365005493,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 486,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 8 consecutive plays with 0 payouts. This strongly suggests that the machine is not `ALWAYS_PAY` (which would have paid 8/8) and is very unlikely to be `HIGH_RATE` (the probability of 0 payouts in 8 tries for a 4/5 rate is $(1/5)^8$, which is approximately 0.00000256).\n\n2. **What is your updated belief about the process?**\nThe machine is almost certainly either `NEVER_PAY` or `LOW_RATE`. \n- For `NEVER_PAY`, the probability of this outcome is 1.\n- For `LOW_RATE`, the probability of 0 payouts in 8 tries is $(4/5)^8 \\approx 0.167$.\nGiven the equal prior probabilities, the likelihood is heavily skewed toward `NEVER_PAY`, though `LOW_RATE` remains a possibility.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we look at the probability of a payout given the history:\n- $P(\\text{Payout} | \\text{History}) = P(\\text{Payout} | \\text{LOW\\_RATE}) \\times P(\\text{LOW\\_RATE} | \\text{History}) + P(\\text{Payout} | \\text{NEVER\\_PAY}) \\times P(\\text{NEVER\\_PAY} | \\text{History})$\n- Even if we generously assume a 50% chance it is `LOW_RATE` (which is an overestimate), the probability of a payout is $0.2 \\times 0.5 + 0 \\times 0.5 = 0.1$.\n- $\\text{EV of PLAY} = (0.1 \\times 15) + (0.9 \\times 0) = 1.5$ points.\nComparing the EV of playing ($\\approx 1.5$ points) to the guaranteed value of passing (10 points), passing is significantly more profitable.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 6.579173040851677e-05,
+      "delta_pre_sem": -18.31108045578003,
+      "delta_pre_by_mapping": [
+        -18.30969524383545,
+        -18.31246566772461
+      ],
+      "letter_bias": 0.0013852119445800781,
+      "delta_post_sem": -21.695072770118713,
+      "delta_amp": -3.383992314338684,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 499,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the machine's payout process?**\nThe history shows 9 consecutive plays with 0 payouts. This immediately eliminates the `ALWAYS_PAY` process. It makes the `HIGH_RATE` process extremely unlikely, as the probability of getting 0 payouts in 9 tries at an 80% success rate is $(0.2)^9 \\approx 0.0000005$.\n\n2. **What is your updated belief about the process?**\nThe evidence strongly suggests the machine is either `NEVER_PAY` or `LOW_RATE`. \n- For `NEVER_PAY`, the probability of this sequence is $1.0$.\n- For `LOW_RATE`, the probability of this sequence is $(0.8)^9 \\approx 0.134$.\nGiven the equal prior probabilities, the machine is far more likely to be `NEVER_PAY` than `LOW_RATE`.\n\n3. **What is the expected value of playing, and is it better than banking 10?**\nTo calculate the Expected Value (EV) of playing, we look at the probability of a payout given the history.\nThe probability of a payout $P(\\text{pay})$ is:\n$P(\\text{pay}) = P(\\text{pay} | \\text{LOW\\_RATE}) \\times P(\\text{LOW\\_RATE} | \\text{history}) + P(\\text{pay} | \\text{NEVER\\_PAY}) \\times P(\\text{NEVER\\_PAY} | \\text{history})$\n$P(\\text{pay}) \\approx 0.2 \\times \\frac{0.134}{1 + 0.134} + 0 \\times \\frac{1}{1.134} \\approx 0.2 \\times 0.118 \\approx 0.0236$.\n\nThe EV of playing is: $(0.0236 \\times 15) + (0.9764 \\times 0) \\approx 0.354$ points.\nBanking (PASS) guarantees 10 points. Since $10 > 0.354$, banking is the optimal choice.\n\n4. **Final Answer**\nAnswer: A"
+    }
+  ]
+}

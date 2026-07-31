@@ -1,0 +1,216 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "trust_game",
+    "seed": 31,
+    "T": 10,
+    "hidden_param": "trustee=STINGY",
+    "act0": "KEEP",
+    "act1": "INVEST",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.9515151515151514,
+      "drift_corr_post": 0.6727272727272726,
+      "mean_delta_pre": -1.3093678951263428,
+      "mean_abs_delta_pre": 8.515602540969848,
+      "mean_delta_amp": -18.428888165950774,
+      "oracle_range": 0.07535043079336437
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 12.2812180519104,
+      "delta_pre_by_mapping": [
+        10.749956130981445,
+        13.812479972839355
+      ],
+      "letter_bias": -1.531261920928955,
+      "delta_post_sem": -18.906243324279785,
+      "delta_amp": -31.187461376190186,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 445,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the trustee's disposition?**\nThe history is currently empty. There is no data to suggest the trustee is any one of the four types over the others.\n\n2. **What is your updated belief about their disposition?**\nSince no rounds have been played, I maintain the prior probability: each disposition (Reciprocator, Generous, Stingy, Exploiter) has a 25% chance of being the active one.\n\n3. **What is the expected value of investing, and is it better than keeping 10?**\nTo calculate the Expected Value (EV) of investing, I sum the probability of each type multiplied by the expected return of that type:\n- Reciprocator: $0.25 \\times 15 = 3.75$\n- Generous: $0.25 \\times (0.8 \\times 15 + 0.2 \\times 0) = 0.25 \\times 12 = 3.00$\n- Stingy: $0.25 \\times (0.2 \\times 15 + 0.8 \\times 0) = 0.25 \\times 3 = 0.75$\n- Exploiter: $0.25 \\times 0 = 0$\n\nTotal EV of Investing = $3.75 + 3.00 + 0.75 + 0 = 7.5$ points.\nThe value of keeping is 10 points. Since $10 > 7.5$, keeping is the mathematically superior choice for a single round based on the priors. However, in a multi-round game, investing in Round 1 serves as a \"probe\" to gather information about the trustee's identity, which can increase the value of future rounds. Despite the information gain, the immediate expected loss is significant. Given the high probability of receiving 0 (Exploiter + Stingy failures + Generous failures), the safe play is to keep.\n\nAnswer: A"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.0005077492278791814,
+      "delta_pre_sem": -11.656220436096191,
+      "delta_pre_by_mapping": [
+        -12.812479019165039,
+        -10.499961853027344
+      ],
+      "letter_bias": -1.1562585830688477,
+      "delta_post_sem": -20.37498712539673,
+      "delta_amp": -8.718766689300537,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 588,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the trustee's disposition?**\nIn Round 1, I invested and the trustee returned 0. This outcome is impossible for a RECIPROCATOR. It is possible for a GENEROUS trustee (20% chance), a STINGY trustee (80% chance), or an EXPLOITER (100% chance).\n\n2. **What is your updated belief about their disposition?**\nPrior probabilities were 25% for each.\n- P(0 | Reciprocator) = 0\n- P(0 | Generous) = 0.2\n- P(0 | Stingy) = 0.8\n- P(0 | Exploiter) = 1.0\n\nUsing Bayesian updating:\nTotal probability of 0 = (0.25 * 0) + (0.25 * 0.2) + (0.25 * 0.8) + (0.25 * 1.0) = 0 + 0.05 + 0.2 + 0.25 = 0.5.\n- P(Reciprocator | 0) = 0%\n- P(Generous | 0) = 0.05 / 0.5 = 10%\n- P(Stingy | 0) = 0.2 / 0.5 = 40%\n- P(Exploiter | 0) = 0.25 / 0.5 = 50%\n\n3. **What is the expected value of investing, and is it better than keeping 10?**\nThe payoff for investing is 15 if they return points, and 0 otherwise.\n- P(Return | Generous) = 0.8\n- P(Return | Stingy) = 0.2\n- P(Return | Exploiter) = 0\nExpected Value (EV) = (P(Gen) * 0.8 * 15) + (P(Stingy) * 0.2 * 15) + (P(Exploiter) * 0 * 15)\nEV = (0.1 * 0.8 * 15) + (0.4 * 0.2 * 15) + 0\nEV = (0.1 * 12) + (0.4 * 3) = 1.2 + 1.2 = 2.4 points.\n\nComparing EV of investing (2.4) to the guaranteed payoff of keeping (10), keeping is significantly better.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.07585818002124349,
+      "delta_pre_sem": 8.687482833862305,
+      "delta_pre_by_mapping": [
+        8.74996566772461,
+        8.625
+      ],
+      "letter_bias": 0.06248283386230469,
+      "delta_post_sem": -19.99998426437378,
+      "delta_amp": -28.687467098236084,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 481,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the trustee's disposition?**\nThe history shows two investments: one returned 0 and one returned 15.\n- **RECIPROCATOR** is ruled out (they always return 15).\n- **EXPLOITER** is ruled out (they always return 0).\n- **GENEROUS** is possible (returns 15 with 80% probability).\n- **STINGY** is possible (returns 15 with 20% probability).\n\n2. **What is your updated belief about their disposition?**\nUsing Bayesian reasoning:\n- Prior probability for Generous ($P(G)$) = 0.25; Prior for Stingy ($P(S)$) = 0.25.\n- Likelihood of the outcome (one 15, one 0) given Generous: $2 \\times (0.8 \\times 0.2) = 0.32$.\n- Likelihood of the outcome (one 15, one 0) given Stingy: $2 \\times (0.2 \\times 0.8) = 0.32$.\nSince the likelihoods are identical, the posterior probabilities remain equal: there is a 50% chance the trustee is Generous and a 50% chance they are Stingy.\n\n3. **What is the expected value of investing, and is it better than keeping 10?**\nThe expected return for an investment is the weighted average of the expected returns of the remaining possible dispositions:\n- Expected return if Generous: $0.8 \\times 15 + 0.2 \\times 0 = 12$.\n- Expected return if Stingy: $0.2 \\times 15 + 0.8 \\times 0 = 3$.\n- Total Expected Value (EV) = $(0.5 \\times 12) + (0.5 \\times 3) = 6 + 1.5 = 7.5$.\nComparing the EV of investing (7.5) to the guaranteed value of keeping (10), keeping is the superior choice.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.005327146986569442,
+      "delta_pre_sem": -5.249992370605469,
+      "delta_pre_by_mapping": [
+        -5.250005722045898,
+        -5.249979019165039
+      ],
+      "letter_bias": -1.33514404296875e-05,
+      "delta_post_sem": -20.42183804512024,
+      "delta_amp": -15.17184567451477,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 572,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. What does the history tell you about the trustee's disposition?**\nThe history shows 3 investments: one returned 15 and two returned 0.\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Possible. The probability of returning 15 exactly 1 out of 3 times is $3 \\times (0.8)^1 \\times (0.2)^2 = 0.096$.\n- **STINGY**: Possible. The probability of returning 15 exactly 1 out of 3 times is $3 \\times (0.2)^1 \\times (0.8)^2 = 0.384$.\n\n**2. What is your updated belief about their disposition?**\nSince the Reciprocator and Exploiter are ruled out, we compare the likelihoods of Generous vs. Stingy. The observed outcome (1/3) is significantly more likely to occur under the \"Stingy\" disposition (38.4%) than the \"Generous\" disposition (9.6%).\nUsing Bayesian updating (assuming equal priors for the four types):\n$P(\\text{Stingy} | \\text{History}) = \\frac{0.384}{0.384 + 0.096} = \\frac{0.384}{0.48} = 0.8$\n$P(\\text{Generous} | \\text{History}) = \\frac{0.096}{0.48} = 0.2$\n\n**3. What is the expected value of investing, and is it better than keeping 10?**\nThe expected return for investing is the weighted average of the return probabilities:\n- If Stingy: $0.2 \\times 15 + 0.8 \\times 0 = 3$\n- If Generous: $0.8 \\times 15 + 0.2 \\times 0 = 12$\n\nExpected Value (EV) = $(P(\\text{Stingy}) \\times 3) + (P(\\text{Generous}) \\times 12)$\nEV = $(0.8 \\times 3) + (0.2 \\times 12) = 2.4 + 2.4 = 4.8$\n\nComparing the EV of investing (4.8) to the guaranteed value of keeping (10), keeping is significantly better.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.001497438900305745,
+      "delta_pre_sem": -10.624979019165039,
+      "delta_pre_by_mapping": [
+        -11.124996185302734,
+        -10.124961853027344
+      ],
+      "letter_bias": -0.5000171661376953,
+      "delta_post_sem": -19.15620183944702,
+      "delta_amp": -8.531222820281982,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 818,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. What does the history tell you about the trustee's disposition?**\nThe history shows 4 investments, with only 1 return of 15 points (a 25% success rate).\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Possible, but unlikely. The probability of a Generous trustee returning 0 three times and 15 once in four rounds is $4 \\times (0.8^3 \\times 0.2^1) \\approx 40.96\\%$.\n- **STINGY**: Possible and likely. The probability of a Stingy trustee returning 15 once and 0 three times in four rounds is $4 \\times (0.8^3 \\times 0.2^1) \\approx 40.96\\%$.\n\nWait, the probabilities for Generous and Stingy are identical for this specific outcome (1/4). However, we must look at the base rates. Since they were chosen equally at random, we compare the likelihoods. Both are equally plausible given the data, but the *expected value* of future rounds differs significantly between them.\n\n**2. What is your updated belief about their disposition?**\nSince Reciprocator and Exploiter are ruled out, the trustee is either Generous or Stingy. Given the history (1/4), there is no statistical evidence to favor one over the other yet (both have a 20% chance of returning 15 in any single round, but the Generous trustee returns 15 with $p=0.8$ and the Stingy with $p=0.2$). \n\nActually, let's re-evaluate:\n- If Generous: $P(\\text{1 return in 4}) = \\binom{4}{1}(0.8)^1(0.2)^3 = 4 \\times 0.8 \\times 0.008 = 0.0256$.\n- If Stingy: $P(\\text{1 return in 4}) = \\binom{4}{1}(0.2)^1(0.8)^3 = 4 \\times 0.2 \\times 0.512 = 0.4096$.\n\nThe history is much more consistent with a **STINGY** trustee.\n\n**3. What is the expected value of investing, and is it better than keeping 10?**\nGiven the high likelihood that the trustee is STINGY:\n- Probability of return $\\approx 20\\%$.\n- Expected Value (EV) of Investing = $(0.2 \\times 15) + (0.8 \\times 0) = 3$ points.\n- Value of Keeping = 10 points.\n\nEven if we consider the small possibility that the trustee is GENEROUS:\n- $P(\\text{Stingy} | \\text{History}) = \\frac{0.4096}{0.4096 + 0.0256} \\approx 94\\%$.\n- $P(\\text{Generous} | \\text{History}) = \\frac{0.0256}{0.4096 + 0.0256} \\approx 6\\%$.\n- Total EV = $(0.94 \\times 3) + (0.06 \\times (0.8 \\times 15)) = 2.82 + 0.72 = 3.54$ points.\n\n3.54 is significantly lower than the guaranteed 10 points.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.0010082928781465828,
+      "delta_pre_sem": -14.093676567077637,
+      "delta_pre_by_mapping": [
+        -14.374883651733398,
+        -13.812469482421875
+      ],
+      "letter_bias": -0.2812070846557617,
+      "delta_post_sem": -20.296831846237183,
+      "delta_amp": -6.203155279159546,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 408,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the trustee's disposition?**\nThe trustee has been invested in 5 times and returned 15 points exactly once.\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Possible, but unlikely. The probability of returning 15 only once in 5 trials given a 4/5 success rate is very low ($0.8^1 \\times 0.2^4 \\approx 0.00128$).\n- **STINGY**: Highly likely. The probability of returning 15 exactly once in 5 trials given a 1/5 success rate is the most probable outcome for this disposition ($\\binom{5}{1} \\times 0.2^1 \\times 0.8^4 \\approx 0.4096$).\n\n2. **What is your updated belief about their disposition?**\nBased on the evidence, the trustee is almost certainly **STINGY**. The history perfectly aligns with the STINGY profile (1/5 success rate) and strongly contradicts the GENEROUS profile.\n\n3. **What is the expected value of investing, and is it better than keeping 10?**\nIf the trustee is STINGY, the probability of receiving 15 points is 1/5 (20%) and the probability of receiving 0 points is 4/5 (80%).\nExpected Value (EV) of Investing = $(0.2 \\times 15) + (0.8 \\times 0) = 3$ points.\nComparing this to the guaranteed payoff of KEEPING (10 points), the EV of investing (3) is significantly lower than the value of keeping (10).\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.0015456107981372139,
+      "delta_pre_sem": -7.499983787536621,
+      "delta_pre_by_mapping": [
+        -7.500003814697266,
+        -7.499963760375977
+      ],
+      "letter_bias": -2.002716064453125e-05,
+      "delta_post_sem": -20.78900372982025,
+      "delta_amp": -13.28901994228363,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 548,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe trustee has been invested in 6 times and returned 15 points twice.\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Probability of returning 15 is $p=0.8$. The probability of 2 successes in 6 trials is $\\binom{6}{2}(0.8)^2(0.2)^4 \\approx 15 \\times 0.64 \\times 0.0016 \\approx 0.015$.\n- **STINGY**: Probability of returning 15 is $p=0.2$. The probability of 2 successes in 6 trials is $\\binom{6}{2}(0.2)^2(0.8)^4 \\approx 15 \\times 0.04 \\times 0.4096 \\approx 0.246$.\n\n**2. Updated Beliefs**\nComparing the likelihoods, the trustee is significantly more likely to be **STINGY** than GENEROUS.\nRelative probability for STINGY: $0.246 / (0.246 + 0.015) \\approx 94.2\\%$.\nRelative probability for GENEROUS: $0.015 / (0.246 + 0.015) \\approx 5.8\\%$.\n\n**3. Expected Value (EV)**\nIf I invest, the expected return is:\n$EV = (P(\\text{STINGY}) \\times P(\\text{Return}|\\text{STINGY}) \\times 15) + (P(\\text{GENEROUS}) \\times P(\\text{Return}|\\text{GENEROUS}) \\times 15)$\n$EV \\approx (0.942 \\times 0.2 \\times 15) + (0.058 \\times 0.8 \\times 15)$\n$EV \\approx (0.942 \\times 3) + (0.058 \\times 12)$\n$EV \\approx 2.826 + 0.696 = 3.522$\n\nThe expected value of investing ($\\approx 3.52$) is significantly lower than the guaranteed value of keeping the points (10).\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.005486292564437452,
+      "delta_pre_sem": 1.374995231628418,
+      "delta_pre_by_mapping": [
+        3.2499866485595703,
+        -0.4999961853027344
+      ],
+      "letter_bias": 1.8749914169311523,
+      "delta_post_sem": -20.12497568130493,
+      "delta_amp": -21.49997091293335,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 525,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe trustee has been invested in 7 times and returned 15 points 3 times.\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Possible. The probability of 3 successes in 7 trials with $p=0.8$ is $\\binom{7}{3}(0.8)^3(0.2)^4 \\approx 35 \\times 0.512 \\times 0.0016 \\approx 0.028$.\n- **STINGY**: Possible. The probability of 3 successes in 7 trials with $p=0.2$ is $\\binom{7}{3}(0.2)^3(0.8)^4 \\approx 35 \\times 0.008 \\times 0.4096 \\approx 0.115$.\n\n**2. Updated Beliefs**\nSince the Reciprocator and Exploiter are ruled out, we compare the likelihoods of Generous vs. Stingy. The Stingy disposition is significantly more likely to have produced this specific outcome (3/7) than the Generous disposition ($\\approx 0.115$ vs $\\approx 0.028$).\nThe posterior probability of the trustee being **STINGY** is approximately $0.115 / (0.115 + 0.028) \\approx 80\\%$.\nThe posterior probability of the trustee being **GENEROUS** is approximately $0.028 / (0.115 + 0.028) \\approx 20\\%$.\n\n**3. Expected Value (EV)**\nIf I invest, the expected return is:\n$EV = P(\\text{Generous}) \\times (0.8 \\times 15) + P(\\text{Stingy}) \\times (0.2 \\times 15)$\n$EV = 0.2 \\times 12 + 0.8 \\times 3$\n$EV = 2.4 + 2.4 = 4.8$\n\nComparing the EV of investing (4.8) to the guaranteed payoff of keeping (10), keeping is the superior choice.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.07585818002124355,
+      "delta_pre_sem": 9.687481880187988,
+      "delta_pre_by_mapping": [
+        10.624961853027344,
+        8.750001907348633
+      ],
+      "letter_bias": 0.9374799728393555,
+      "delta_post_sem": -18.343748092651367,
+      "delta_amp": -28.031229972839355,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 599,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe trustee has been invested in 8 times and returned 15 points in 4 of those instances (a 50% return rate).\n- **RECIPROCATOR**: Impossible. A Reciprocator returns 15 every time (would be 8/8).\n- **EXPLOITER**: Impossible. An Exploiter returns 0 every time (would be 0/8).\n- **GENEROUS**: Possible. They return 15 with a probability of 0.8.\n- **STINGY**: Possible. They return 15 with a probability of 0.2.\n\n**2. Updated Beliefs**\nWe use Bayesian reasoning to compare the likelihood of the observed data (4 successes in 8 trials) given the two remaining possibilities:\n- Likelihood for Generous: $P(4/8 | 0.8) = \\binom{8}{4} \\times (0.8)^4 \\times (0.2)^4 \\approx 70 \\times 0.4096 \\times 0.0016 \\approx 0.0458$\n- Likelihood for Stingy: $P(4/8 | 0.2) = \\binom{8}{4} \\times (0.2)^4 \\times (0.8)^4 \\approx 70 \\times 0.0016 \\times 0.4096 \\approx 0.0458$\n\nBecause the observed return rate (0.5) is exactly halfway between the Generous rate (0.8) and the Stingy rate (0.2), and the prior probabilities were equal, the trustee is currently equally likely to be Generous or Stingy.\n\n**3. Expected Value (EV)**\nThe probability of receiving 15 points if I invest is the average of the two remaining dispositions:\n$P(\\text{return 15}) = (0.5 \\times 0.8) + (0.5 \\times 0.2) = 0.4 + 0.1 = 0.5$\n\n$EV(\\text{INVEST}) = (P(\\text{return 15}) \\times 15) + (P(\\text{return 0}) \\times 0)$\n$EV(\\text{INVEST}) = (0.5 \\times 15) + (0.5 \\times 0) = 7.5$\n\nComparing the options:\n- $EV(\\text{KEEP}) = 10$\n- $EV(\\text{INVEST}) = 7.5$\n\nSince 10 > 7.5, keeping the points is the mathematically superior choice.\n\n**Answer: A**"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.005486298859896144,
+      "delta_pre_sem": 3.999995231628418,
+      "delta_pre_by_mapping": [
+        5.12498664855957,
+        2.8750038146972656
+      ],
+      "letter_bias": 1.1249914169311523,
+      "delta_post_sem": -18.968746662139893,
+      "delta_amp": -22.96874189376831,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 642,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History**\nThe trustee has been invested in 9 times and returned 15 points in 4 of those instances.\n- **RECIPROCATOR**: Impossible (would have returned 15 every time).\n- **EXPLOITER**: Impossible (would have returned 0 every time).\n- **GENEROUS**: Possible. The probability of 4/9 successes given a 4/5 (80%) success rate is relatively high.\n- **STINGY**: Possible. The probability of 4/9 successes given a 1/5 (20%) success rate is lower, but not impossible.\n\n**2. Updated Beliefs**\nWe are choosing between GENEROUS and STINGY.\nUsing a Bayesian approach:\n- Likelihood for GENEROUS: $P(4/9 | 0.8) = \\binom{9}{4} (0.8)^4 (0.2)^5 \\approx 126 \\times 0.4096 \\times 0.00032 \\approx 0.0166$\n- Likelihood for STINGY: $P(4/9 | 0.2) = \\binom{9}{4} (0.2)^4 (0.8)^5 \\approx 126 \\times 0.0016 \\times 0.32768 \\approx 0.066$\n\nInterestingly, the observed data (4/9) is actually slightly more likely to occur under the STINGY disposition than the GENEROUS one, because 4/9 (44%) is closer to 20% than it is to 80% in terms of binomial distribution for this specific sample size. However, both are viable.\n\n**3. Expected Value (EV)**\nLet $P(G)$ be the probability the trustee is GENEROUS and $P(S)$ be the probability they are STINGY.\nGiven the likelihoods above:\n$P(G) \\approx 0.0166 / (0.0166 + 0.066) \\approx 20\\%$\n$P(S) \\approx 0.066 / (0.0166 + 0.066) \\approx 80\\%$\n\nExpected return if investing:\n$EV = [P(G) \\times (0.8 \\times 15)] + [P(S) \\times (0.2 \\times 15)]$\n$EV = [0.2 \\times 12] + [0.8 \\times 3] = 2.4 + 2.4 = 4.8$\n\nThe expected value of investing is approximately 4.8 points.\nThe value of keeping is 10 points.\n\nSince $10 > 4.8$, keeping the points is the mathematically superior choice.\n\n**Answer: A**"
+    }
+  ]
+}

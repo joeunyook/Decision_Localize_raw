@@ -1,0 +1,400 @@
+% =============================================================================
+% Appendix: causal intervention (steering) -- full protocol and validation.
+% All numbers computed from steer/P1_v4 (9 models x 8 scenarios x 40 seeds)
+% and results/P1_v4/direction_*.npz on 2026-07-28.
+% =============================================================================
+
+\section{Causal Intervention: Protocol and Validation}
+\label{app:steering}
+
+This appendix gives the full specification of the steering intervention used in
+Result~2, together with the fidelity, control, and robustness checks that
+support the reported dissociation. We state the intervention, the outcome
+definitions, the statistical tests, and the threats to validity that remain,
+including a bound on the one place where the tested rounds are not fully
+held out. Throughout, the claim under test is one of \emph{sufficiency}: that
+adding the decoded decision-state direction to the residual stream changes the
+action preference in the direction the decoded belief implies. We do not claim
+necessity, since we neither ablate the direction nor establish that the model's
+own computation routes through it.
+
+\subsection{Session Replay}
+
+For each model \(m\), scenario \(S\), and seed \(s\), we regenerate the
+environment with the same generator seed and the same fixed behavior policy
+used in the main sweep, so the history \(h_{s,t}\) at every step \(t\) is
+identical to the one the model saw there, and we re-render the same
+forced-choice template. We replay \(40\) seeds with \(T=10\) steps for all
+\(9\) models and \(8\) scenarios, giving \(2{,}880\) replayed sessions and
+\(28{,}800\) replayed decision steps.
+
+At step \(t\) the prompt is rendered under both action-label assignments
+\(\pi\in\{0,1\}\), which exchange which of the two scenario actions is
+presented as \texttt{A}. Writing \(z^{\pi}_{\texttt{A}}\) and
+\(z^{\pi}_{\texttt{B}}\) for the label logits at the final prompt position,
+aggregated over tokenizer variants by log-sum-exp, the readout is the
+mapping-averaged semantic gap
+\begin{equation}
+\Delta_{s,t}
+=
+\tfrac{1}{2}
+\sum_{\pi\in\{0,1\}}
+\sigma(\pi)\left(
+z^{\pi}_{\texttt{B}}-z^{\pi}_{\texttt{A}}
+\right),
+\qquad
+\sigma(\pi)=
+\begin{cases}
++1 & \pi=0,\\
+-1 & \pi=1,
+\end{cases}
+\end{equation}
+oriented so that \(\Delta_{s,t}>0\) is a preference for the scenario action
+indexed \(1\). Because the two assignments enter with opposite sign, any
+component of the logit difference that is attached to the letters
+\texttt{A} and \texttt{B} rather than to the scenario actions cancels exactly.
+An intervention that only shifted label preference would therefore leave
+\(\Delta_{s,t}\) unchanged, which is the sense in which the outcome measure is
+insensitive to answer-label bias.
+
+Let \(p^\star_{s,t}=P(a^\star_t=\text{action }1\mid h_{s,t})\) denote the
+baseline's posterior decision quantity and \(a^\star_{s,t}\) its optimal action.
+A step is \emph{unambiguous} when \(|p^\star_{s,t}-0.5|>0.1\); we restrict all
+analysis to these \(26{,}334\) steps (\(91.4\%\) of the replay), since near
+indifference the sign of \(\Delta\) is not a meaningful decision. A step is
+scored \emph{correct} when \(\operatorname{sign}(\Delta_{s,t})\) agrees with
+\(a^\star_{s,t}\).
+
+\subsection{Steering Direction}
+
+The intervention uses the Probe~1 direction, refitted at a single layer. For
+model \(m\) and scenario \(S\), let \(X^{(\ell)}\) collect the layer-\(\ell\)
+residual stream at the final prompt token over all \(100\) probe seeds and all
+usable steps, with labels \(y=\mathbf{1}[a^\star=\text{action }1]\). We fit
+\(\ell_2\)-regularized logistic regression (\(C=0.1\), the same setting as
+Probe~1) and take
+\begin{equation}
+\hat w
+=
+\frac{w}{\lVert w\rVert_2},
+\qquad
+\sigma_{\mathrm{proj}}
+=
+\operatorname{sd}\!\left(X^{(\ell^\star)}\hat w\right),
+\end{equation}
+with the sign fixed so that a positive projection predicts action \(1\). The
+layer \(\ell^\star\) is the argmax of the leave-one-seed-out accuracy curve
+reported in Table~\ref{tab:main-results}; across the \(72\) model and scenario
+combinations it lies at a mean normalized depth of \(0.81\) (range
+\(0.12\)--\(1.00\)).
+
+Steering magnitudes are expressed in units of \(\sigma_{\mathrm{proj}}\), the
+standard deviation of the projection of the representation onto \(\hat w\), so
+that \(\alpha=4\) means four standard deviations of the model's own natural
+variation along that direction. This normalization is per model and per
+scenario, which matters because \(\sigma_{\mathrm{proj}}\) varies by an order of
+magnitude across models (\(0.91\) for \model{Llama-3.2} 3B to \(9.46\) for
+\model{Llama-3.3} 70B); a fixed absolute magnitude would confound intervention
+strength with representation scale.
+
+\subsection{Intervention}
+
+We follow the hidden-state indexing of the probe capture: index \(0\) is the
+token embedding, index \(\ell\in\{1,\ldots,L-1\}\) is the output of decoder
+block \(\ell-1\), and index \(L\) is the output of the final norm. The hook is
+attached to the module whose output is exactly the tensor the probe read at
+\(\ell^\star\), located by selecting the longest module list of decoder blocks,
+which resolves correctly for multimodal wrappers where the decoder stack is not
+at the conventional path. The perturbation is added at the final prompt
+position only, and no tokens are generated.
+
+For each unambiguous step, with \(\varsigma_{s,t}=+1\) if
+\(a^\star_{s,t}=\text{action }1\) and \(-1\) otherwise, we evaluate
+\begin{equation}
+h^{(\ell^\star)}
+\;\leftarrow\;
+h^{(\ell^\star)}
++
+\alpha\,\sigma_{\mathrm{proj}}\,\varsigma_{s,t}\,v,
+\end{equation}
+under four condition families:
+\emph{baseline} (\(\alpha=0\));
+\emph{rescue}, with \(v=\hat w\), pushing toward the baseline's action;
+\emph{anti}, with \(v=-\hat w\), pushing away from it; and
+\emph{random}, with \(v=r_j\) for two fixed unit vectors
+\(r_1,r_2\) drawn from an isotropic Gaussian and normalized, so that every
+condition applies a perturbation of identical Euclidean norm
+\(\alpha\,\sigma_{\mathrm{proj}}\) at the same layer and position. The control
+vectors are drawn from a generator seeded by the model and scenario identifiers,
+so reruns and resumed jobs use identical controls. Each family is evaluated at
+\(\alpha\in\{1,2,4,8\}\), giving \(13\) conditions per step. All conditions for
+a step are evaluated as rows of one batched forward pass sharing the same
+tokenized prompt, so they differ only in the added vector.
+
+Crucially, \(\alpha\) is not selected. We report the entire dose-response curve,
+because a single magnitude cannot distinguish a direction that is causally inert
+from one that is merely under-driven: only a curve that rises with \(\alpha\) in
+one condition while tracking the random control in another establishes
+specificity. There is consequently no strength hyperparameter that could be
+tuned on the evaluated rounds.
+
+\subsection{Outcome Measures and Tests}
+
+Among unambiguous steps we define, separately for each \(\alpha\),
+the \emph{rescue rate} as the fraction of steps whose baseline preference
+disagrees with \(a^\star\) and whose steered preference agrees;
+the \emph{random rate} as the same quantity under \(r_j\), averaged over the two
+controls; the \emph{break rate} as the fraction of steps whose baseline
+preference agrees with \(a^\star\) and whose preference under \emph{anti}
+steering disagrees; and the \emph{damage rate} as the same quantity under
+\emph{rescue} steering, which should be small if the direction is aligned with
+the decision rather than merely disruptive.
+
+Rescue and random conditions are evaluated on exactly the same steps, so the
+comparison is paired. We report McNemar's test on the discordant pairs with a
+continuity correction, and a percentile bootstrap of the rate difference with
+\(2{,}000\) resamples in which a whole session is resampled as a unit, since the
+ten steps of a session share one hidden parameter and are not independent.
+
+\subsection{Replay Fidelity}
+
+The \emph{baseline} condition is a no-intervention forward pass and must
+reproduce the pre-CoT gap recorded in the main sweep. Over the \(28{,}800\)
+replayed steps, the absolute deviation between the replayed and stored gap has
+mean \(0.019\) and median \(0.000\) nats, with a \(99\)th percentile of
+\(0.188\) and a maximum of \(0.563\); the sign agrees on \(99.16\%\) of steps
+(\(241\) disagreements, all with a near-zero gap). The residual discrepancy is
+attributable to nondeterministic reduction order under batched execution. The
+replay therefore reconstructs the measured quantity rather than approximating
+it, and the reported flips are not an artifact of a differently constructed
+forward pass.
+
+\subsection{Results by Scenario}
+
+Table~\ref{tab:steer-scenario} reports every scenario separately. The
+intervention is effective in the five scenarios with a nonreactive hidden
+parameter and inert in the three with an opponent-reactive hidden type. This
+boundary does not coincide with the Bayesian and game-theoretic families:
+\textit{Chicken}, a game with a stationary yield rate and no reactive type,
+behaves like the inference scenarios, while all three scenarios containing a
+reactive type behave alike regardless of family.
+
+Pooled over the five nonreactive scenarios (\(3{,}458\) incorrect steps), the
+rescue rate at \(\alpha=4\) is \(21.7\%\) against \(6.4\%\) for both matched
+random controls, a paired difference of \(+15.3\) percentage points with
+bootstrap interval \([+13.2,+17.7]\) and McNemar \(p<10^{-4}\)
+(\(b=556\), \(c=26\)). The dose-response rises monotonically,
+\(8.9\to13.3\to21.7\to30.8\%\) for \(\alpha=1,2,4,8\), while the random control
+stays between \(4.3\%\) and \(7.2\%\). Anti-steering damages \(5.0\%\) of
+previously correct steps against \(1.1\%\) for random directions, so the
+direction acts in both signs; rescue steering damages only \(0.6\%\),
+confirming that it is not a general disruption.
+
+Pooled over the three reactive scenarios (\(3{,}580\) incorrect steps), the
+rescue rate at \(\alpha=4\) is \(1.2\%\) against \(1.7\%\) and \(1.6\%\) for the
+two random controls, a paired difference of \(-0.5\) points with interval
+\([-1.0,-0.1]\). The dose-response is flat and tracks the control at every
+magnitude (\(1.0/1.1/1.2/1.6\%\) against \(1.1/1.2/1.7/2.2\%\)), and
+anti-steering damages \(0.9\%\) of correct steps against \(0.9\%\) for random
+directions. The effect is thus statistically indistinguishable from a
+norm-matched random perturbation in both signs, and if anything marginally
+below it, at a sample size that would resolve a difference of one percentage
+point. This is a null with power, not an absence of evidence.
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lrrrrcrr@{}}
+\toprule
+&
+&
+\multicolumn{3}{c}{\textbf{Rescue rate at} \(\alpha=4\)}
+&
+\multicolumn{1}{c}{\textbf{Dose-response}}
+&
+\multicolumn{2}{c}{\textbf{Cost on correct steps}}
+\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-6}\cmidrule(lr){7-8}
+\textbf{Scenario}
+& \textbf{Incorrect}
+& \textbf{Probe} & \textbf{Random} & \textbf{Diff.}
+& \(\alpha=1/2/4/8\)
+& \textbf{Anti} & \textbf{Rescue}
+\\
+\midrule
+\multicolumn{8}{@{}l}{\textit{Nonreactive hidden parameter}}\\
+Bandit          &  159 & 61.0 &  8.2 & \(+52.8\) & 12.6\,/\,36.5\,/\,61.0\,/\,62.9 & 7.7 & 0.2 \\
+Machine         &  952 & 34.0 &  9.9 & \(+24.1\) & 16.6\,/\,24.8\,/\,34.0\,/\,43.1 & 7.0 & 0.3 \\
+Trust Game      &  755 & 24.4 &  6.1 & \(+18.3\) &  8.2\,/\,\phantom{0}7.4\,/\,24.4\,/\,40.4 & 3.2 & 0.8 \\
+Monty Hall      &  521 & 10.4 &  6.4 & \(+3.9\)  &  5.0\,/\,\phantom{0}8.4\,/\,10.4\,/\,18.2 & 2.6 & 0.8 \\
+Chicken         & 1071 &  8.7 &  3.3 & \(+5.4\)  &  3.9\,/\,\phantom{0}6.3\,/\,\phantom{0}8.7\,/\,14.4 & 4.6 & 0.9 \\
+\addlinespace[2pt]
+\textit{Pooled} & 3458 & 21.7 &  6.4 & \(+15.3\) &  8.9\,/\,13.3\,/\,21.7\,/\,30.8 & 5.0 & 0.6 \\
+\midrule
+\multicolumn{8}{@{}l}{\textit{Opponent-reactive hidden type}}\\
+Matching Pennies & 1236 & 1.6 & 1.8 & \(-0.2\) & 1.6\,/\,1.1\,/\,1.6\,/\,2.1 & 1.8 & 1.5 \\
+Bach or Stravinsky & 1023 & 1.3 & 1.7 & \(-0.4\) & 0.8\,/\,1.4\,/\,1.3\,/\,1.6 & 0.6 & 0.3 \\
+Stag Hunt        & 1321 & 0.7 & 1.6 & \(-0.9\) & 0.5\,/\,0.9\,/\,0.7\,/\,1.2 & 0.5 & 0.3 \\
+\addlinespace[2pt]
+\textit{Pooled}  & 3580 & 1.2 & 1.7 & \(-0.5\) & 1.0\,/\,1.1\,/\,1.2\,/\,1.6 & 0.9 & 0.6 \\
+\bottomrule
+\end{tabular}
+\caption{Steering results by scenario, pooled over all nine models. Incorrect
+counts are unambiguous steps whose pre-CoT preference disagrees with the
+baseline. Rescue is the percentage of those steps whose preference flips to the
+baseline action; Random is the mean over two norm-matched random directions
+evaluated on the same steps. Anti and Rescue costs are the percentages of
+already-correct steps broken by the anti-signed and rescue-signed direction.
+Scenarios are ordered by effect size within group. All values are percentages.}
+\label{tab:steer-scenario}
+\end{table*}
+
+\subsection{Results by Model, and Two Kinds of Null}
+
+Table~\ref{tab:steer-model} breaks the same analysis down by model and adds
+two diagnostics: the mean absolute change in the action gap induced by the
+probe direction relative to the change induced by the random controls, and the
+median absolute baseline gap on the incorrect steps.
+
+Within the reactive scenarios the null is uniform: no model exceeds its own
+random control by more than \(0.9\) points, and the probe direction moves the
+action gap by only \(0.03\)--\(0.07\) nats, a ratio of \(0.9\)--\(1.3\) times
+the random control. The readout is not merely unflipped, it is essentially
+unmoved. This is the signature of an absent pathway rather than an insufficient
+push, and it is why increasing \(\alpha\) does not help.
+
+Within the nonreactive scenarios the picture is not uniform, and the diagnostics
+separate two distinct explanations. Six of nine models show a large positive
+effect (\(+5.4\) to \(+25.4\) points over their own random control), with the
+probe direction moving the gap \(1.6\)--\(4.1\) times as much as a random
+direction. Two models, \model{Gemma-4} 31B and \model{Llama-3.3} 70B, show
+almost no rescue despite a substantial absolute displacement of the gap: their
+incorrect steps carry a median baseline gap of \(11.56\) and \(6.50\) nats
+respectively, against \(0.38\) nats pooled, so the displacement achievable at
+\(\alpha\le8\) is an order of magnitude smaller than the preference it would
+have to reverse. These models are not weakly coupled but confidently wrong, and
+the intervention is underpowered relative to their certainty rather than inert;
+consistent with this, \model{Gemma-4} 31B rises from \(0.7\%\) to \(9.4\%\) as
+\(\alpha\) goes from \(1\) to \(8\). One model, \model{Qwen-3.5} 4B, shows the
+inert signature in the nonreactive scenarios as well: a small median gap
+(\(0.69\) nats) that the direction nonetheless fails to move
+(\(1.2\times\) random). We report it as an exception rather than absorbing it
+into either group.
+
+Two consequences follow for interpretation. First, the reported dissociation is
+between representational availability and causal use, and it is established by
+the contrast between conditions within the same steps, not by the absolute
+rescue rates, which depend on how confidently each model holds its incorrect
+preference. Second, the pooled nonreactive rate of \(21.7\%\) is an average over
+a heterogeneous set and should not be read as a per-model expectation.
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lrrrrrcrrrr@{}}
+\toprule
+&
+\multicolumn{5}{c}{\textbf{Nonreactive scenarios}}
+&
+&
+\multicolumn{4}{c}{\textbf{Reactive scenarios}}
+\\
+\cmidrule(lr){2-6}\cmidrule(lr){8-11}
+\textbf{Model}
+& \textbf{Inc.} & \textbf{Probe} & \textbf{Rand.} & \(\rho\) & \textbf{med} \(|\Delta|\)
+&
+& \textbf{Inc.} & \textbf{Probe} & \textbf{Rand.} & \(\rho\)
+\\
+\midrule
+Gemma-2 2B      & 546 & 26.2 &  3.4 & 3.0 &  0.53 && 510 & 0.0 & 1.0 & 1.1 \\
+Llama-3.2 3B    & 731 & 35.2 &  9.8 & 4.1 &  0.19 && 500 & 0.0 & 0.0 & 1.2 \\
+Phi-4-mini 3.8B & 452 & 36.1 & 19.7 & 3.8 &  0.38 && 537 & 0.9 & 0.5 & 0.9 \\
+Qwen-3.5 4B     & 306 &  0.3 &  0.8 & 1.2 &  0.69 && 336 & 0.3 & 0.9 & 1.1 \\
+\textit{R1-Qwen 7B}   & 523 & 17.0 &  3.3 & 2.7 &  0.44 && 441 & 4.1 & 3.2 & 0.9 \\
+Qwen-3.6 27B    & 245 & 24.9 &  0.2 & 4.1 &  0.56 && 321 & 0.9 & 1.2 & 1.3 \\
+Gemma-4 31B     & 138 &  1.4 &  0.4 & 0.2 & 11.56 && 270 & 3.0 & 6.9 & 0.1 \\
+Llama-3.3 70B   & 256 &  0.0 &  0.4 & 1.3 &  6.50 && 286 & 0.3 & 0.3 & 1.2 \\
+\textit{R1-Llama 70B} & 261 & 13.8 &  8.4 & 1.6 &  0.19 && 379 & 1.6 & 3.0 & 1.0 \\
+\bottomrule
+\end{tabular}
+\caption{Steering by model at \(\alpha=4\). Inc.\ is the number of unambiguous
+incorrect steps; Probe and Rand.\ are rescue rates in percent.
+\(\rho\) is the mean absolute change in the action gap under the probe
+direction divided by the same quantity under the random controls, so
+\(\rho\approx1\) means the direction moves the readout no more than a random
+vector of equal norm. med \(|\Delta|\) is the median absolute baseline gap in
+nats on the incorrect steps, which bounds how far the readout must move for a
+flip. Reactive scenarios are \textit{Stag Hunt}, \textit{Bach or Stravinsky},
+and \textit{Matching Pennies}; nonreactive are the remaining five.}
+\label{tab:steer-model}
+\end{table*}
+
+\subsection{Threats to Validity}
+
+\paragraph{The steering direction is fitted on data that includes the replayed
+seeds.}
+Probe~1 accuracies in Table~\ref{tab:main-results} are leave-one-seed-out, but
+the direction used for steering is refitted on all \(100\) probe seeds pooled,
+which includes the \(40\) seeds later replayed. We bound the resulting optimism
+directly: across the \(72\) combinations, the pooled direction's in-sample
+accuracy exceeds its leave-one-seed-out accuracy by a mean of \(1.9\), a median
+of \(0.4\), and at most \(8.3\) percentage points, so the direction generalizes
+across seeds and does not substantially memorize them. The bias also runs
+against the reported dissociation rather than with it, and does so sharply: the
+optimism averages \(4.5\) points in the reactive scenarios against \(0.3\)
+points in the nonreactive ones, and the ten largest values in the entire grid
+are all reactive combinations, led by \model{R1-Qwen} 7B on \textit{Bach or
+Stravinsky} at \(8.3\) points. The scenarios reported as inert are thus the
+scenarios whose directions are the most in-sample optimistic. An overfitted
+direction would inflate the rescue rate there; it instead remains at the level
+of the random control. The null is therefore conservative with respect to this
+leakage.
+
+\paragraph{The intervention layer is selected on the same seed pool.}
+\(\ell^\star\) maximizes leave-one-seed-out accuracy over the same \(100\)
+seeds, so layer choice is not held out either. The probe accuracy surface is
+mostly flat near the optimum: within \(\pm2\) layers of \(\ell^\star\) the
+accuracy declines by a median of \(1.2\) and a mean of \(2.6\) percentage
+points, with \(34\) of \(72\) combinations below \(1\) point and \(58\) below
+\(3\). The remaining \(14\) sit on a steeper part of the curve, the largest
+being \model{Llama-3.2} 3B on \textit{Bandit} (\(40.2\) points) and
+\model{Gemma-2} 2B on \textit{Machine} (\(17.8\) points, at normalized depth
+\(0.12\)). We report the intervention at \(\ell^\star\) only and do not
+establish that the rescue rates are stable across a layer band; a layer sweep of
+the intervention itself would be required for that, and we mark it as a
+limitation rather than claiming robustness we did not measure.
+
+\paragraph{Sufficiency, not necessity, and a single site.}
+The perturbation is additive, at one layer, at one token position, and is not
+propagated through generation. It therefore tests whether the action readout is
+sensitive to the decoded direction at that site. It does not show that the
+model's own decision is computed through that direction, nor that no other
+route exists; an intervention that failed under these constraints could still
+correspond to a pathway that is distributed across layers or positions. This is
+the principal reason we frame the reactive-scenario result as the absence of a
+locally accessible pathway rather than as the absence of any belief-to-action
+mapping.
+
+\paragraph{Controls not included.}
+The reported controls are norm-matched isotropic random directions and the
+anti-signed probe direction. We do not report a direction fitted to shuffled
+labels, a direction orthogonalized against \(\hat w\), a direction transferred
+from another scenario, or a re-decoding of the posterior from the steered
+representation. The last of these is the check that would connect the
+intervention to belief content rather than to the action readout alone, and its
+absence is why this appendix supports a claim about the decision state
+specifically.
+
+\paragraph{One model shows an anomalous control.}
+For \model{Gemma-4} 31B the random directions displace the action gap more than
+the probe direction does (\(\rho=0.2\) nonreactive, \(0.1\) reactive), which is
+the reverse of the pattern in every other model. Combined with its unusually
+large baseline gaps, this suggests that its readout scale is not comparable with
+the others, and we exclude it from any claim that rests on \(\rho\).
+
+\paragraph{Restriction to unambiguous steps.}
+Excluding steps with \(|p^\star-0.5|\le0.1\) removes \(8.6\%\) of the replay.
+These are the steps where a flip is cheapest, so their exclusion lowers the
+rescue rates in both groups and does not manufacture the contrast between them.

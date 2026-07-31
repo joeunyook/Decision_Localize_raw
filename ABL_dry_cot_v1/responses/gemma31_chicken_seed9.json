@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "chicken",
+    "seed": 9,
+    "T": 10,
+    "hidden_param": "opponent=WARY",
+    "act0": "YIELD",
+    "act1": "DARE",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 7,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.9030303030303028,
+      "drift_corr_post": 0.9151515151515152,
+      "mean_delta_pre": 2.968742847442627,
+      "mean_abs_delta_pre": 5.193740940093994,
+      "mean_delta_amp": 13.935781726241112,
+      "oracle_range": 0.7092677768776959
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5,
+      "delta_pre_sem": 3.7499990463256836,
+      "delta_pre_by_mapping": [
+        3.124990463256836,
+        4.375007629394531
+      ],
+      "letter_bias": -0.6250085830688477,
+      "delta_post_sem": 25.33102285861969,
+      "delta_amp": 21.581023812294006,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 456,
+      "tail_gap_mean": 1.8425662019848823,
+      "tail_gap_std": 4.719231231315228,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the data tell you about the counterpart's response rate?**\nThere is no observed data from prior rounds yet. Therefore, I have no evidence to favor one rate over another.\n\n2. **What is your updated belief about that rate, and how likely is it to select ACTION_Y this round?**\nSince the rates were chosen uniformly at random, each of the four rates has a prior probability of 25%. To find the overall probability that the counterpart selects ACTION_Y, I calculate the average of the four rates:\n(0.9 + 0.7 + 0.3 + 0.1) / 4 = 2.0 / 4 = 0.5.\nThe counterpart is expected to select ACTION_Y 50% of the time.\n\n3. **What is the optimal action given that belief?**\nI compare the expected values (EV) of the two actions:\n- **EV of ACTION_X (DARE):** (Prob Y * 4) + (Prob X * 0) = (0.5 * 4) + (0.5 * 0) = 2.0 points.\n- **EV of ACTION_Y (YIELD):** (Prob Y * 3) + (Prob X * 1) = (0.5 * 3) + (0.5 * 1) = 1.5 + 0.5 = 2.0 points.\n\nIn this specific case, the expected values are identical. However, in a repeated game with an unknown fixed rate, taking the \"risky\" action (ACTION_X) early provides more information if the payoff is 0 (indicating a low Y rate) or 4 (indicating a high Y rate), whereas ACTION_Y provides less distinct differentiation in payoff relative to the risk. More importantly, in standard decision theory for this matrix, when EV is tied, the higher potential payoff is often pursued or the choice is arbitrary. Given the symmetry of the EV here, ACTION_X is a mathematically sound starting move to test the environment.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.8807970779778823,
+      "delta_pre_sem": 6.187465667724609,
+      "delta_pre_by_mapping": [
+        7.1249237060546875,
+        5.250007629394531
+      ],
+      "letter_bias": 0.9374580383300781,
+      "delta_post_sem": 26.289031982421875,
+      "delta_amp": 20.101566314697266,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 501,
+      "tail_gap_mean": 5.311231520175934,
+      "tail_gap_std": 4.864931570267037,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Data Analysis:** In the previous round, the counterpart selected ACTION_Y (YIELD). The current tally is 1/1 for ACTION_Y.\n2.  **Updated Belief:** We have four possible rates for the counterpart selecting ACTION_Y: 0.9, 0.7, 0.3, and 0.1.\n    *   The probability of observing ACTION_Y given Rate 1 is 0.9.\n    *   The probability of observing ACTION_Y given Rate 2 is 0.7.\n    *   The probability of observing ACTION_Y given Rate 3 is 0.3.\n    *   The probability of observing ACTION_Y given Rate 4 is 0.1.\n    Using Bayesian updating (starting with equal priors), the posterior probability that the counterpart is using a high-Y rate (Rate 1 or 2) is significantly higher than a low-Y rate. Specifically, the probability they select ACTION_Y this round is the weighted average: $(0.9 \\cdot 0.9 + 0.7 \\cdot 0.7 + 0.3 \\cdot 0.3 + 0.1 \\cdot 0.1) / (0.9 + 0.7 + 0.3 + 0.1) = (0.81 + 0.49 + 0.09 + 0.01) / 2 = 1.4 / 2 = 0.7$.\n3.  **Optimal Action:**\n    *   Expected Value of ACTION_X (DARE): $P(Y) \\cdot 4 + P(X) \\cdot 0 = 0.7 \\cdot 4 + 0.3 \\cdot 0 = 2.8$\n    *   Expected Value of ACTION_Y (YIELD): $P(Y) \\cdot 3 + P(X) \\cdot 1 = 0.7 \\cdot 3 + 0.3 \\cdot 1 = 2.1 + 0.3 = 2.4$\n    Since the expected value of ACTION_X (2.8) is higher than ACTION_Y (2.4), the optimal move is to take the risk.\n\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.9456867338673592,
+      "delta_pre_sem": 10.312464714050293,
+      "delta_pre_by_mapping": [
+        10.124929428100586,
+        10.5
+      ],
+      "letter_bias": -0.18753528594970703,
+      "delta_post_sem": 27.234333038330078,
+      "delta_amp": 16.921868324279785,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 523,
+      "tail_gap_mean": 6.211376638114452,
+      "tail_gap_std": 4.771305978795822,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Data Analysis:** In the first two rounds, the counterpart selected ACTION_Y (YIELD) both times (2/2).\n2.  **Updating Beliefs:** We evaluate the likelihood of the observed data (YY) given the four possible rates:\n    *   Rate 1 (0.9): $0.9^2 = 0.81$\n    *   Rate 2 (0.7): $0.7^2 = 0.49$\n    *   Rate 3 (0.3): $0.3^2 = 0.09$\n    *   Rate 4 (0.1): $0.1^2 = 0.01$\n    The data strongly suggests the counterpart is using Rate 1 or Rate 2. The posterior probability that the counterpart will select ACTION_Y is the weighted average of the rates based on these likelihoods:\n    $P(Y) = \\frac{(0.9 \\times 0.81) + (0.7 \\times 0.49) + (0.3 \\times 0.09) + (0.1 \\times 0.01)}{0.81 + 0.49 + 0.09 + 0.01} = \\frac{0.729 + 0.343 + 0.027 + 0.001}{1.4} = \\frac{1.1}{1.4} \\approx 0.786$\n3.  **Optimal Action:**\n    *   Expected Value of ACTION_X (DARE): $P(Y) \\times 4 + P(X) \\times 0 = 0.786 \\times 4 = 3.144$\n    *   Expected Value of ACTION_Y (YIELD): $P(Y) \\times 3 + P(X) \\times 1 = (0.786 \\times 3) + (0.214 \\times 1) = 2.358 + 0.214 = 2.572$\n    Since the expected value of ACTION_X (3.144) is higher than ACTION_Y (2.572), the optimal move is ACTION_X.\n\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.8205384805926731,
+      "delta_pre_sem": 6.249992370605469,
+      "delta_pre_by_mapping": [
+        5.749982833862305,
+        6.750001907348633
+      ],
+      "letter_bias": -0.5000095367431641,
+      "delta_post_sem": 25.800754070281982,
+      "delta_amp": 19.550761699676514,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 542,
+      "tail_gap_mean": 4.150164470821619,
+      "tail_gap_std": 5.049077968988003,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has played ACTION_Y (YIELD) 2 times out of 3 rounds (approximately 66.7%).\nThe possible rates for ACTION_Y are:\n- Rate 1: 0.9\n- Rate 2: 0.7\n- Rate 3: 0.3\n- Rate 4: 0.1\n\n**Step 2: Update beliefs**\nThe observed frequency (2/3) is closest to Rate 2 (0.7) and Rate 1 (0.9). It is highly unlikely to be Rate 3 or Rate 4.\nUsing Bayesian logic:\n- Likelihood of 2/3 Ys given Rate 1 (0.9): $0.9^2 \\times 0.1^1 = 0.081$\n- Likelihood of 2/3 Ys given Rate 2 (0.7): $0.7^2 \\times 0.3^1 = 0.147$\n- Likelihood of 2/3 Ys given Rate 3 (0.3): $0.3^2 \\times 0.7^1 = 0.063$\n- Likelihood of 2/3 Ys given Rate 4 (0.1): $0.1^2 \\times 0.9^1 = 0.009$\n\nThe most probable rate is Rate 2, followed by Rate 1. Both suggest a high probability that the opponent will select ACTION_Y. The weighted average probability $P(Y)$ is significantly higher than 0.5.\n\n**Step 3: Determine optimal action**\nLet $p$ be the probability the opponent plays ACTION_Y.\n- Expected Value of ACTION_X (DARE): $4p + 0(1-p) = 4p$\n- Expected Value of ACTION_Y (YIELD): $3p + 1(1-p) = 2p + 1$\n\nACTION_X is superior if $4p > 2p + 1$, which simplifies to $2p > 1$, or $p > 0.5$.\nGiven the data, $p$ is very likely to be 0.7 or 0.9 (or at least significantly above 0.5). Therefore, ACTION_X (DARE) is the optimal choice.\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.4999999999999998,
+      "delta_pre_sem": -3.1249961853027344,
+      "delta_pre_by_mapping": [
+        -3.000001907348633,
+        -3.249990463256836
+      ],
+      "letter_bias": 0.12499427795410156,
+      "delta_post_sem": -16.0937237739563,
+      "delta_amp": -12.968727588653564,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 1095,
+      "tail_gap_mean": 1.6188478744775057,
+      "tail_gap_std": 5.314490185311969,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:** The counterpart has played ACTION_Y (YIELD) 2 times out of 4 rounds (50%).\n2.  **Update beliefs about the response rate:**\n    *   Rate 1 (90% Y): Very unlikely to produce only 2 Ys in 4 rounds.\n    *   Rate 2 (70% Y): Possible, but slightly low.\n    *   Rate 3 (30% Y): Possible, but slightly high.\n    *   Rate 4 (10% Y): Unlikely to produce 2 Ys in 4 rounds.\n    \n    The observed frequency (50%) sits exactly between Rate 2 (70%) and Rate 3 (30%). Given the uniform prior, these two rates are currently the most probable.\n3.  **Calculate Expected Value (EV):**\n    Let $p$ be the probability the opponent plays ACTION_Y.\n    *   $EV(\\text{DARE}) = 4p + 0(1-p) = 4p$\n    *   $EV(\\text{YIELD}) = 3p + 1(1-p) = 2p + 1$\n    \n    To find the threshold where DARE is better than YIELD:\n    $4p > 2p + 1 \\implies 2p > 1 \\implies p > 0.5$.\n    \n    If the opponent is Rate 2 ($p=0.7$), DARE is optimal ($2.8 > 2.4$).\n    If the opponent is Rate 3 ($p=0.3$), YIELD is optimal ($1.2 < 1.6$).\n    \n    Since the observed data (2/4) is perfectly centered, we look at the likelihoods. The probability of 2/4 successes for $p=0.7$ is $\\binom{4}{2}(0.7^2)(0.3^2) = 6(0.49)(0.09) = 0.2646$. The probability for $p=0.3$ is $\\binom{4}{2}(0.3^2)(0.7^2) = 0.2646$.\n    \n    Because the likelihoods for Rate 2 and Rate 3 are identical and the other rates are significantly less likely, the estimated $p$ is approximately $0.5$. However, in a game of anti-coordination with these specific payoffs, the \"risk\" of DARE (0) is more punishing than the \"safety\" of YIELD (1). But mathematically, if $p$ is exactly $0.5$, both actions yield an EV of 2.0. \n    \n    Looking closer at the rates: Rate 1 (0.9) and Rate 2 (0.7) both favor DARE. Rate 3 (0.3) and Rate 4 (0.1) both favor YIELD. Given the data (50%), the probability is split. However, in most Bayesian updates for this specific set of rates, the evidence of 2/4 slightly leans toward the higher rates when considering the distance from the extremes, but here it is symmetric. In the absence of a tie-breaker, we evaluate the most likely rates. Since $p=0.7$ and $p=0.3$ are equally likely, and $p=0.9$ is more likely than $p=0.1$ given 2/4 (and vice versa), the expected $p$ remains $0.5$. \n    \n    However, usually, in these problems, if the evidence is balanced, we check if the \"upside\" of the risky move outweighs the \"downside.\" With $p=0.5$, $EV$ is equal. But if we consider the possibility of Rate 1 vs Rate 4, Rate 1 is slightly more compatible with 2/4 than Rate 4 is (though they are symmetric here). Let's re-verify: $0.9^2 \\cdot 0.1^2$ vs $0.1^2 \\cdot 0.9^2$. They are identical.\n    \n    Given the symmetry, but the fact that the payoff for YIELD is more stable, YIELD is the safer play, but DARE is the aggressive play. In a 50/50 split, the expected value is identical. However, looking at the provided rates, the average of the most likely candidates (Rate 2 and 3) is 0.5. If we include the tails, the average of all rates is $(0.9+0.7+0.3+0.1)/4 = 0.5$. \n    \n    Since $p=0.5$ is the equilibrium, and the data doesn't push us firmly into the $p > 0.5$ camp, YIELD (A) is the standard choice to avoid the 0 payoff.\n\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.2364189569896633,
+      "delta_pre_sem": -7.124995231628418,
+      "delta_pre_by_mapping": [
+        -6.000001907348633,
+        -8.249988555908203
+      ],
+      "letter_bias": 1.1249933242797852,
+      "delta_post_sem": -21.937940150499344,
+      "delta_amp": -14.812944918870926,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 808,
+      "tail_gap_mean": 2.512919873893261,
+      "tail_gap_std": 5.723848744614916,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has played ACTION_Y (YIELD) 2 times out of 5 rounds (40%).\nThe possible rates for ACTION_Y are:\n- Rate 1: 0.9\n- Rate 2: 0.7\n- Rate 3: 0.3\n- Rate 4: 0.1\n\n**Step 2: Update beliefs**\nWe calculate the likelihood of observing 2 Ys in 5 trials for each rate using the binomial formula $P(k|n,p) = \\binom{n}{k} p^k (1-p)^{n-k}$:\n- Rate 1 (0.9): $\\binom{5}{2} (0.9)^2 (0.1)^3 = 10 \\times 0.81 \\times 0.001 = 0.0081$\n- Rate 2 (0.7): $\\binom{5}{2} (0.7)^2 (0.3)^3 = 10 \\times 0.49 \\times 0.027 = 0.1323$\n- Rate 3 (0.3): $\\binom{5}{2} (0.3)^2 (0.7)^3 = 10 \\times 0.09 \\times 0.343 = 0.3087$\n- Rate 4 (0.1): $\\binom{5}{2} (0.1)^2 (0.9)^3 = 10 \\times 0.01 \\times 0.729 = 0.0729$\n\nThe most likely rate is Rate 3 (0.3), followed by Rate 2 (0.7).\nTo find the expected probability $P(Y)$, we sum $(Rate \\times Likelihood) / \\sum Likelihoods$:\n$\\sum Likelihoods = 0.0081 + 0.1323 + 0.3087 + 0.0729 = 0.522$\n$E[P(Y)] = \\frac{(0.9 \\times 0.0081) + (0.7 \\times 0.1323) + (0.3 \\times 0.3087) + (0.1 \\times 0.0729)}{0.522}$\n$E[P(Y)] = \\frac{0.00729 + 0.09261 + 0.09261 + 0.00729}{0.522} = \\frac{0.1998}{0.522} \\approx 0.3827$\n\n**Step 3: Determine optimal action**\nExpected Value of ACTION_X (DARE): $4 \\times P(Y) + 0 \\times P(X) = 4 \\times 0.3827 = 1.5308$\nExpected Value of ACTION_Y (YIELD): $3 \\times P(Y) + 1 \\times P(X) = 3 \\times 0.3827 + 1 \\times (1 - 0.3827) = 1.1481 + 0.6173 = 1.7654$\n\nSince $1.7654 > 1.5308$, ACTION_Y (YIELD) is the optimal choice.\n\n**Step 4: Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.5,
+      "delta_pre_sem": -0.8749990463256836,
+      "delta_pre_by_mapping": [
+        -0.1250019073486328,
+        -1.6249961853027344
+      ],
+      "letter_bias": 0.7499971389770508,
+      "delta_post_sem": 24.648414134979248,
+      "delta_amp": 25.52341318130493,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 860,
+      "tail_gap_mean": 4.387597817182541,
+      "tail_gap_std": 5.383784518182199,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has played ACTION_Y (YIELD) 3 times out of 6 rounds (50%).\nThe possible rates for ACTION_Y are:\n- Rate 1: 0.9\n- Rate 2: 0.7\n- Rate 3: 0.3\n- Rate 4: 0.1\n\n**Step 2: Update beliefs**\nWe use the observed data (3 Ys, 3 Xs) to determine the likelihood of each rate using the binomial distribution formula $P(\\text{data}|\\text{rate}) = \\binom{6}{3} p^3 (1-p)^3$:\n- Rate 1 (0.9): $0.9^3 \\times 0.1^3 = 0.729 \\times 0.001 = 0.000729$\n- Rate 2 (0.7): $0.7^3 \\times 0.3^3 = 0.343 \\times 0.027 = 0.009261$\n- Rate 3 (0.3): $0.3^3 \\times 0.7^3 = 0.027 \\times 0.343 = 0.009261$\n- Rate 4 (0.1): $0.1^3 \\times 0.9^3 = 0.001 \\times 0.729 = 0.000729$\n\nThe data suggests Rate 2 and Rate 3 are equally likely and significantly more probable than Rates 1 and 4.\nThe expected probability $P(Y)$ is the weighted average:\n$P(Y) = \\frac{(0.009261 \\times 0.7) + (0.009261 \\times 0.3) + (0.000729 \\times 0.9) + (0.000729 \\times 0.1)}{0.009261 + 0.009261 + 0.000729 + 0.000729}$\n$P(Y) = \\frac{0.009261(1) + 0.000729(1)}{0.01998} = \\frac{0.00999}{0.01998} = 0.5$\n\n**Step 3: Determine optimal action**\nCalculate Expected Value (EV) for each action given $P(Y) = 0.5$:\n- EV(ACTION_X/DARE) = $(P(Y) \\times 4) + (P(X) \\times 0) = (0.5 \\times 4) + (0.5 \\times 0) = 2.0$\n- EV(ACTION_Y/YIELD) = $(P(Y) \\times 3) + (P(X) \\times 1) = (0.5 \\times 3) + (0.5 \\times 1) = 2.0$\n\nIn a tie-break scenario for an anti-coordination problem where the probability is exactly 0.5, the \"safe\" option (YIELD) protects against the worst-case scenario (0 points), but the \"risky\" option (DARE) targets the maximum payoff. However, mathematically, the EVs are identical. In repeated games of this type, if the probability of the opponent playing Y is $\\ge 0.25$, ACTION_X (DARE) becomes the superior or equal choice. Since $0.5 > 0.25$, ACTION_X is optimal.\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.7261418550362365,
+      "delta_pre_sem": 3.4375,
+      "delta_pre_by_mapping": [
+        3.3749961853027344,
+        3.5000038146972656
+      ],
+      "letter_bias": -0.06250381469726562,
+      "delta_post_sem": 25.79294002056122,
+      "delta_amp": 22.35544002056122,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 762,
+      "tail_gap_mean": 5.547828470468521,
+      "tail_gap_std": 5.243620446224304,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe counterpart has played ACTION_Y (YIELD) 4 times out of 7 rounds ($\\approx 57\\%$).\nThe possible rates for ACTION_Y are:\n- Rate 1: 0.9\n- Rate 2: 0.7\n- Rate 3: 0.3\n- Rate 4: 0.1\n\n**Step 2: Update beliefs**\nWe calculate the likelihood of observing 4 Ys in 7 trials for each rate using the binomial formula $P(k|n, p) = \\binom{n}{k} p^k (1-p)^{n-k}$:\n- Rate 1 (0.9): $\\binom{7}{4} (0.9)^4 (0.1)^3 \\approx 35 \\times 0.6561 \\times 0.001 \\approx 0.023$\n- Rate 2 (0.7): $\\binom{7}{4} (0.7)^4 (0.3)^3 \\approx 35 \\times 0.2401 \\times 0.027 \\approx 0.227$\n- Rate 3 (0.3): $\\binom{7}{4} (0.3)^4 (0.7)^3 \\approx 35 \\times 0.0081 \\times 0.343 \\approx 0.097$\n- Rate 4 (0.1): $\\binom{7}{4} (0.1)^4 (0.9)^3 \\approx 35 \\times 0.0001 \\times 0.729 \\approx 0.002$\n\nRate 2 is the most likely, followed by Rate 3. To find the expected probability $P(Y)$, we weight the rates by their likelihoods:\n$P(Y) = \\frac{(0.9 \\times 0.023) + (0.7 \\times 0.227) + (0.3 \\times 0.097) + (0.1 \\times 0.002)}{0.023 + 0.227 + 0.097 + 0.002} \\approx \\frac{0.0207 + 0.1589 + 0.0291 + 0.0002}{0.349} \\approx \\frac{0.2089}{0.349} \\approx 0.598$\n\n**Step 3: Determine optimal action**\nExpected Value (EV) of ACTION_X (DARE): $4 \\times P(Y) + 0 \\times P(X) = 4 \\times 0.598 = 2.392$\nExpected Value (EV) of ACTION_Y (YIELD): $3 \\times P(Y) + 1 \\times P(X) = 3 \\times 0.598 + 1 \\times (1 - 0.598) = 1.794 + 0.402 = 2.196$\n\nSince $EV(\\text{DARE}) > EV(\\text{YIELD})$, the optimal action is ACTION_X (DARE).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.836441850397981,
+      "delta_pre_sem": 6.624997138977051,
+      "delta_pre_by_mapping": [
+        5.624994277954102,
+        7.625
+      ],
+      "letter_bias": -1.0000028610229492,
+      "delta_post_sem": 27.578089237213135,
+      "delta_amp": 20.953092098236084,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 376,
+      "tail_gap_mean": 4.249682656228543,
+      "tail_gap_std": 5.553317526124445,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:** The counterpart has played ACTION_Y (YIELD) 5 times out of 8 rounds (62.5%).\n2.  **Evaluate the Rates:**\n    *   Rate 1 (90% Y): Very likely to produce 5/8 or more.\n    *   Rate 2 (70% Y): Very likely to produce 5/8.\n    *   Rate 3 (30% Y): Unlikely to produce 5/8.\n    *   Rate 4 (10% Y): Extremely unlikely to produce 5/8.\n    The data strongly suggests the counterpart is using either Rate 1 or Rate 2. In both of these scenarios, the probability of the counterpart selecting ACTION_Y is high (at least 70%).\n3.  **Calculate Expected Value (EV):**\n    *   Let $p$ be the probability the counterpart selects ACTION_Y.\n    *   EV(ACTION_X/DARE) = $4p + 0(1-p) = 4p$\n    *   EV(ACTION_Y/YIELD) = $3p + 1(1-p) = 2p + 1$\n    *   ACTION_X is superior if $4p > 2p + 1 \\Rightarrow 2p > 1 \\Rightarrow p > 0.5$.\n4.  **Conclusion:** Since the observed data (62.5% Y) and the most likely underlying rates (70% or 90% Y) all place $p$ well above 0.5, the optimal strategy is to select ACTION_X (DARE).\n\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.7064747783306563,
+      "delta_pre_sem": 4.25,
+      "delta_pre_by_mapping": [
+        3.499998092651367,
+        5.000001907348633
+      ],
+      "letter_bias": -0.7500019073486328,
+      "delta_post_sem": 24.402324318885803,
+      "delta_amp": 20.152324318885803,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 567,
+      "tail_gap_mean": 3.9861103636026383,
+      "tail_gap_std": 4.747023282613004,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Reasoning:**\n\n1.  **Analyze the data:** In the 9 observed rounds, the counterpart selected ACTION_Y (YIELD) 5 times and ACTION_X (DARE) 4 times. This is a YIELD rate of approximately 55.5%.\n\n2.  **Update beliefs about the response rate:**\n    *   Rate 1 (90% Y): Very unlikely given only 5/9 Ys.\n    *   Rate 2 (70% Y): Possible.\n    *   Rate 3 (30% Y): Possible.\n    *   Rate 4 (10% Y): Very unlikely given 5/9 Ys.\n    \n    Comparing Rate 2 (0.7) and Rate 3 (0.3), the observed 5/9 is roughly equidistant, but slightly closer to Rate 2. However, we must calculate the expected value (EV) for the current round based on the probability of the opponent playing YIELD ($P(Y)$).\n\n3.  **Determine the optimal action:**\n    *   EV of ACTION_X (DARE): $4 \\times P(Y) + 0 \\times (1 - P(Y)) = 4 \\times P(Y)$\n    *   EV of ACTION_Y (YIELD): $3 \\times P(Y) + 1 \\times (1 - P(Y)) = 2 \\times P(Y) + 1$\n    \n    To find the threshold where ACTION_X becomes better than ACTION_Y:\n    $4 \\times P(Y) > 2 \\times P(Y) + 1$\n    $2 \\times P(Y) > 1$\n    $P(Y) > 0.5$\n\n    Given the observed data (5/9 $\\approx$ 0.55), the most likely rates are Rate 2 (0.7) and Rate 3 (0.3). If the opponent is Rate 2, ACTION_X is optimal. If the opponent is Rate 3, ACTION_Y is optimal. Since the observed frequency (55.5%) is above the 50% threshold and the data leans slightly more toward the higher-probability rates (Rate 1 and 2 combined are more consistent with 5/9 than Rate 3 and 4 combined), the expected probability $P(Y)$ is likely $> 0.5$.\n\n4.  **Conclusion:** Since the observed YIELD rate is above 50%, the risk of ACTION_X (DARE) is outweighed by the potential reward.\n\nAnswer: B"
+    }
+  ]
+}

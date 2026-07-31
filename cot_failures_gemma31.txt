@@ -1,0 +1,343 @@
+==============================================================================
+[1] gemma31  |  stag_hunt  seed20  t=10  |  opponent=TIT_FOR_TAT
+    actions: A=HARE(act0)  B=STAG(act1)
+    oracle P(act1 optimal)=0.000 -> correct = A/HARE   MODEL SAID: B
+    history: t1:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t2:{'action': 'STAG', 'my': 'STAG', 'opp': 'HARE', 'win': False, 'payoff': 0, 'result': 'opp played HARE, you scored 0'}; t3:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t4:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t5:{'action': 'HARE', 'my': 'HARE', 'opp': 'HARE', 'win': True, 'payoff': 2, 'result': 'opp played HARE, you scored
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+*   **ALWAYS_STAG:** The opponent played STAG 6/9 times. This is consistent with ALWAYS_STAG if they made 3 mistakes (though 3/9 is higher than the expected 1/10).
+*   **ALWAYS_HARE:** The opponent played STAG 6/9 times. This is highly unlikely for ALWAYS_HARE, as it would require 6 mistakes in 9 rounds.
+*   **TIT_FOR_TAT (TFT):** Let's check the sequence:
+    *   R1: You HARE, Opponent STAG (TFT starts STAG).
+    *   R2: You STAG, Opponent HARE (TFT copies your R1 HARE).
+    *   R3: You HARE, Opponent STAG (TFT copies your R2 STAG).
+    *   R4: You HARE, Opponent STAG (TFT copies your R3 HARE? **No**. This is a mismatch).
+    *   R5: You HARE, Opponent HARE (TFT copies your R4 HARE).
+    *   R6: You STAG, Opponent HARE (TFT copies your R5 HARE).
+    *   R7: You STAG, Opponent STAG (TFT copies your R6 STAG).
+    *   R8: You HARE, Opponent STAG (TFT copies your R7 STAG).
+    *   R9: You HARE, Opponent STAG (TFT copies your R8 HARE? **No**. This is a mismatch).
+    TFT matches the history in 7/9 rounds. The mismatches in R4 and R9 are consistent with the "occasional mistake" rule.
+
+2. **Updated Belief:**
+The opponent is most likely **TIT_FOR_TAT** or **ALWAYS_STAG**.
+*   If ALWAYS_STAG: They will play STAG this round (~90% probability).
+*   If TIT_FOR_TAT: They will copy your move from Round 9. In Round 9, you played **HARE**. Therefore, a TIT_FOR_TAT opponent is likely to play **HARE** this round.
+
+Comparing the two: The history fits TIT_FOR_TAT very closely (the "mistakes" in R4 and R9 are few). However, the opponent has played STAG 66% of the time. If they are TIT_FOR_TAT, they are reacting to your frequent HARE plays. Since you played HARE in the most recent round, the probability of them playing STAG is low if they are TFT, and high if they are ALWAYS_STAG.
+
+Given the pattern of the last few rounds (R7: STAG->STAG, R8: HARE->STAG, R9: HARE->STAG), the opponent has actually played STAG three times in a row despite your HARE plays. This strongly suggests **ALWAYS_STAG** over TIT_FOR_TAT.
+
+3. **Optimal Action:**
+If the opponent is ALWAYS_STAG, playing STAG yields 4 points. If they are TIT_FOR_TAT and you play STAG, you risk 0 points (since they are copying your R9 HARE). However, the evidence of the last three rounds (where they played STAG while you played HARE/STAG/HARE) heavily outweighs the TFT hypothesis.
+
+Answer: B
+
+==============================================================================
+[2] gemma31  |  stag_hunt  seed34  t=8  |  opponent=ALWAYS_STAG
+    actions: A=HARE(act0)  B=STAG(act1)
+    oracle P(act1 optimal)=0.990 -> correct = B/STAG   MODEL SAID: A
+    history: t1:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t2:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t3:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t4:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t5:{'action': 'STAG', 'my': 'STAG', 'opp': 'STAG', 'win': True, 'payoff': 4, 'result': 'opp played STAG, you scored 
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+*   Rounds 1-4: You played HARE, opponent played STAG.
+*   Round 5: You played STAG, opponent played STAG.
+*   Round 6: You played HARE, opponent played HARE.
+*   Round 7: You played STAG, opponent played HARE.
+
+2. **Evaluate strategies:**
+*   **ALWAYS_STAG:** This strategy would have played STAG in rounds 6 and 7. The opponent played HARE in both. While mistakes happen (1/10), two HAREs in a row makes this unlikely.
+*   **ALWAYS_HARE:** This strategy would have played HARE in rounds 1-5. The opponent played STAG in all five. This is virtually impossible.
+*   **TIT_FOR_TAT (TFT):** TFT copies your previous move.
+    *   Round 1: Opponent starts STAG (as per rules).
+    *   Round 2: You played HARE in R1 $\rightarrow$ Opponent plays HARE? **No**, opponent played STAG. (Mistake 1)
+    *   Round 3: You played HARE in R2 $\rightarrow$ Opponent plays HARE? **No**, opponent played STAG. (Mistake 2)
+    *   Round 4: You played HARE in R3 $\rightarrow$ Opponent plays HARE? **No**, opponent played STAG. (Mistake 3)
+    *   Round 5: You played HARE in R4 $\rightarrow$ Opponent plays HARE? **No**, opponent played STAG. (Mistake 4)
+    *   Round 6: You played STAG in R5 $\rightarrow$ Opponent plays STAG? **No**, opponent played HARE. (Mistake 5)
+    *   Round 7: You played HARE in R6 $\rightarrow$ Opponent plays HARE? **Yes**.
+
+Wait, looking closer at the history: The opponent played STAG for the first 5 rounds regardless of your move, then switched to HARE exactly when you switched to HARE (Round 6) and stayed HARE when you switched to STAG (Round 7). 
+
+Actually, looking at the sequence:
+R5: You STAG $\rightarrow$ R6: Opponent HARE (Mistake if TFT)
+R6: You HARE $\rightarrow$ R7: Opponent HARE (Correct if TFT)
+
+The opponent's behavior is highly inconsistent with all three provided strategies. However, the most telling data is the most recent: the opponent has played HARE for the last two rounds. In a Stag Hunt, if the opponent has shifted to HARE, the risk of playing STAG (getting 0) outweighs the reward (4) unless you are certain they will switch back. Given the history, the opponent is currently in a "HARE" state.
+
+3. **Optimal Action:**
+Since the opponent played HARE in Round 6 and Round 7, the probability they play STAG in Round 8 is low, regardless of which strategy they are attempting (if ALWAYS_STAG, they are failing; if TFT, they are copying your R7 STAG but failed; if ALWAYS_HARE, they are now consistent). The safest and most rational move when the opponent is trending HARE is to hunt HARE.
+
+Answer: A
+
+==============================================================================
+[3] gemma31  |  stag_hunt  seed6  t=9  |  opponent=ALWAYS_HARE
+    actions: A=HARE(act0)  B=STAG(act1)
+    oracle P(act1 optimal)=0.000 -> correct = A/HARE   MODEL SAID: B
+    history: t1:{'action': 'STAG', 'my': 'STAG', 'opp': 'HARE', 'win': False, 'payoff': 0, 'result': 'opp played HARE, you scored 0'}; t2:{'action': 'STAG', 'my': 'STAG', 'opp': 'HARE', 'win': False, 'payoff': 0, 'result': 'opp played HARE, you scored 0'}; t3:{'action': 'HARE', 'my': 'HARE', 'opp': 'HARE', 'win': True, 'payoff': 2, 'result': 'opp played HARE, you scored 2'}; t4:{'action': 'HARE', 'my': 'HARE', 'opp': 'HARE', 'win': True, 'payoff': 2, 'result': 'opp played HARE, you scored 2'}; t5:{'action': 'STAG', 'my': 'STAG', 'opp': 'HARE', 'win': False, 'payoff': 0, 'result': 'opp played HARE, you scor
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+*   **ALWAYS_STAG:** Highly unlikely. The opponent played HARE in 6 out of 8 rounds.
+*   **ALWAYS_HARE:** Possible, but the opponent played STAG in the last two rounds. While they can make mistakes (1 in 10), two STAGs in a row is statistically unlikely for an ALWAYS_HARE strategy.
+*   **TIT_FOR_TAT (TFT):** Very likely. Let's trace the history:
+    *   R1: You STAG $\rightarrow$ Opponent HARE (Mistake? TFT starts STAG, but the prompt says they make mistakes).
+    *   R2: You STAG $\rightarrow$ Opponent HARE (TFT copies your R1 STAG, but played HARE. Mistake).
+    *   R3: You HARE $\rightarrow$ Opponent HARE (TFT copies your R2 STAG, but played HARE. Mistake).
+    *   R4: You HARE $\rightarrow$ Opponent HARE (TFT copies your R3 HARE. **Match**).
+    *   R5: You STAG $\rightarrow$ Opponent HARE (TFT copies your R4 HARE. **Match**).
+    *   R6: You STAG $\rightarrow$ Opponent HARE (TFT copies your R5 STAG, but played HARE. Mistake).
+    *   R7: You STAG $\rightarrow$ Opponent STAG (TFT copies your R6 STAG. **Match**).
+    *   R8: You STAG $\rightarrow$ Opponent STAG (TFT copies your R7 STAG. **Match**).
+
+2. **Updated Belief:**
+The opponent's behavior in the most recent rounds (R7 and R8) strongly aligns with TIT_FOR_TAT. Since you played STAG in Round 8, a TIT_FOR_TAT opponent is highly likely to play STAG in Round 9.
+
+3. **Optimal Action:**
+If the opponent is TIT_FOR_TAT, they will play STAG.
+*   If you play STAG (B), you get 4 points.
+*   If you play HARE (A), you get 3 points.
+Given the strong evidence that the opponent is mirroring your previous STAG moves, the expected value of hunting STAG is higher.
+
+4. **Final Answer:**
+Answer: B
+
+==============================================================================
+[4] gemma31  |  bos  seed6  t=9  |  opponent=ALWAYS_STRAV
+    actions: A=STRAVINSKY(act0)  B=BACH(act1)
+    oracle P(act1 optimal)=0.011 -> correct = A/STRAVINSKY   MODEL SAID: B
+    history: t1:{'action': 'BACH', 'my': 'BACH', 'opp': 'STRAVINSKY', 'win': False, 'payoff': 0, 'result': 'opp chose STRAVINSKY, you scored 0'}; t2:{'action': 'BACH', 'my': 'BACH', 'opp': 'STRAVINSKY', 'win': False, 'payoff': 0, 'result': 'opp chose STRAVINSKY, you scored 0'}; t3:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'STRAVINSKY', 'win': True, 'payoff': 1, 'result': 'opp chose STRAVINSKY, you scored 1'}; t4:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'STRAVINSKY', 'win': True, 'payoff': 1, 'result': 'opp chose STRAVINSKY, you scored 1'}; t5:{'action': 'BACH', 'my': 'BACH', 'opp': 'ST
+------------------------------------------------------------------------------
+**1. Analysis of History:**
+*   **Round 1-2:** You played BACH, opponent played STRAVINSKY.
+*   **Round 3-4:** You played STRAVINSKY, opponent played STRAVINSKY.
+*   **Round 5-6:** You played BACH, opponent played STRAVINSKY.
+*   **Round 7-8:** You played BACH, opponent played BACH.
+
+**2. Evaluating Strategies:**
+*   **ALWAYS_BACH:** Highly unlikely. The opponent chose STRAVINSKY in 6 out of 8 rounds.
+*   **ALWAYS_STRAV:** Unlikely. While they chose STRAVINSKY often, they chose BACH in rounds 7 and 8. While mistakes happen (1/10), two consecutive BACH choices are statistically improbable for an ALWAYS_STRAV strategy.
+*   **TIT_FOR_TAT (TFT):** This fits the pattern almost perfectly. 
+    *   R1: You BACH $\rightarrow$ Opponent (R2) STRAVINSKY (Mistake)
+    *   R2: You BACH $\rightarrow$ Opponent (R3) STRAVINSKY (Mistake/Consistent)
+    *   R3: You STRAVINSKY $\rightarrow$ Opponent (R4) STRAVINSKY (Correct TFT)
+    *   R4: You STRAVINSKY $\rightarrow$ Opponent (R5) STRAVINSKY (Correct TFT)
+    *   R5: You BACH $\rightarrow$ Opponent (R6) STRAVINSKY (Mistake)
+    *   R6: You BACH $\rightarrow$ Opponent (R7) BACH (Correct TFT)
+    *   R7: You BACH $\rightarrow$ Opponent (R8) BACH (Correct TFT)
+
+The opponent's behavior in rounds 7 and 8 strongly suggests they are mirroring your previous move. Since you played BACH in round 8, a TIT_FOR_TAT strategy will play BACH in round 9.
+
+**3. Optimal Action:**
+Given the high probability that the opponent is playing TIT_FOR_TAT, they are expected to play BACH this round because you played BACH in the previous round. Since BACH yields a higher payoff (2 points) than STRAVINSKY (1 point) when coordinated, choosing BACH is the optimal move.
+
+**4. Final Answer:**
+Answer: B
+
+==============================================================================
+[5] gemma31  |  pennies  seed8  t=9  |  opponent=COUNTER
+    actions: A=TAILS(act0)  B=HEADS(act1)
+    oracle P(act1 optimal)=0.065 -> correct = A/TAILS   MODEL SAID: B
+    history: t1:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'TAILS', 'win': True, 'payoff': 1, 'result': 'opp chose TAILS, you scored 1'}; t2:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t3:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t4:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t5:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+   - Round 1: You TAILS, Opponent TAILS (Match)
+   - Round 2: You TAILS, Opponent HEADS (No match)
+   - Round 3: You TAILS, Opponent HEADS (No match)
+   - Round 4: You TAILS, Opponent HEADS (No match)
+   - Round 5: You TAILS, Opponent HEADS (No match)
+   - Round 6: You TAILS, Opponent HEADS (No match)
+   - Round 7: You TAILS, Opponent HEADS (No match)
+   - Round 8: You HEADS, Opponent HEADS (Match)
+
+2. **Evaluate the strategies:**
+   - **ALWAYS_TAILS:** Highly unlikely. The opponent chose HEADS in 7 out of 8 rounds.
+   - **COUNTER:** If the opponent were COUNTER, they would play the opposite of your previous move. In rounds 2 through 7, you played TAILS, so a COUNTER strategy would play HEADS. This matches the history. However, in round 8, you played HEADS, and the opponent played HEADS. A COUNTER strategy would have played TAILS in round 8. While a mistake is possible (1 in 10), the pattern is more consistent with another strategy.
+   - **ALWAYS_HEADS:** The opponent chose HEADS in 7 out of 8 rounds. The only outlier was round 1 (TAILS), which fits the "occasional mistake" (1 in 10) description perfectly.
+
+3. **Updated belief:**
+   The evidence strongly suggests the opponent is using the **ALWAYS_HEADS** strategy. The single instance of TAILS in round 1 is consistent with the allowed error rate. Therefore, it is highly probable that the opponent will choose HEADS this round.
+
+4. **Optimal action:**
+   Since the opponent is most likely to choose HEADS, you should choose HEADS to score a point.
+
+Answer: B
+
+==============================================================================
+[6] gemma31  |  bos  seed30  t=9  |  opponent=ALWAYS_BACH
+    actions: A=STRAVINSKY(act0)  B=BACH(act1)
+    oracle P(act1 optimal)=1.000 -> correct = B/BACH   MODEL SAID: A
+    history: t1:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'BACH', 'win': False, 'payoff': 0, 'result': 'opp chose BACH, you scored 0'}; t2:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'BACH', 'win': False, 'payoff': 0, 'result': 'opp chose BACH, you scored 0'}; t3:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'BACH', 'win': False, 'payoff': 0, 'result': 'opp chose BACH, you scored 0'}; t4:{'action': 'STRAVINSKY', 'my': 'STRAVINSKY', 'opp': 'BACH', 'win': False, 'payoff': 0, 'result': 'opp chose BACH, you scored 0'}; t5:{'action': 'BACH', 'my': 'BACH', 'opp': 'BACH', 'win': True, 'pay
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+   - The opponent chose BACH in rounds 1, 2, 3, 4, 5, 6, 7 and STRAVINSKY in round 8.
+   - If the strategy were **ALWAYS_STRAV**, they would have chosen Stravinsky almost every time. This is highly unlikely.
+   - If the strategy were **TIT_FOR_TAT**, they would have mirrored your previous move. In round 6, you played BACH in round 5, so they should have played BACH (which they did). In round 8, you played STRAVINSKY in round 7, so they should have played STRAVINSKY (which they did).
+   - If the strategy were **ALWAYS_BACH**, they would have played Bach in round 8. The move to Stravinsky in round 8 could be the "occasional mistake" (1 in 10).
+
+2. **Updated belief:**
+   - The opponent's behavior in round 8 is the key. You played STRAVINSKY in round 7, and they responded with STRAVINSKY in round 8. This is perfectly consistent with **TIT_FOR_TAT**.
+   - While it could be an ALWAYS_BACH player making a mistake, the fact that the move mirrored your previous action strongly suggests TIT_FOR_TAT.
+   - If the strategy is TIT_FOR_TAT, they will mirror your move from round 8. In round 8, you played STRAVINSKY. Therefore, they are very likely to play STRAVINSKY in round 9.
+   - If the strategy is ALWAYS_BACH, they will play BACH.
+
+3. **Optimal action:**
+   - If they are TIT_FOR_TAT: Choosing STRAVINSKY (A) gives 1 point; choosing BACH (B) gives 0 points.
+   - If they are ALWAYS_BACH: Choosing STRAVINSKY (A) gives 0 points; choosing BACH (B) gives 2 points.
+   - Given the history, TIT_FOR_TAT is the most probable explanation for the shift in round 8. However, we must consider the payoff. If we believe they are mirroring us, we should play Stravinsky. But wait—if we play BACH, and they are TIT_FOR_TAT, they will play STRAVINSKY (based on our round 8 move), resulting in 0. If we play STRAVINSKY, and they are TIT_FOR_TAT, we get 1.
+   - Let's re-evaluate: In round 8, you played STRAVINSKY and they played STRAVINSKY. This is a strong signal for TIT_FOR_TAT. If they are TIT_FOR_TAT, they will play STRAVINSKY in round 9 because you played STRAVINSKY in round 8. To match them, you must play STRAVINSKY.
+
+4. **Final Answer:**
+   The evidence for TIT_FOR_TAT is strong because the opponent switched to Stravinsky exactly when you had played Stravinsky in the previous round. To coordinate with a TIT_FOR_TAT player who is mirroring your last move (Stravinsky), you must also choose Stravinsky.
+
+Answer: A
+
+==============================================================================
+[7] gemma31  |  pennies  seed34  t=9  |  opponent=ALWAYS_HEADS
+    actions: A=TAILS(act0)  B=HEADS(act1)
+    oracle P(act1 optimal)=0.758 -> correct = B/HEADS   MODEL SAID: A
+    history: t1:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t2:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t3:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t4:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t5:{'action': 'HEADS', 'my': 'HEADS', 'opp': 'HEADS', 'win': True, 'payoff': 1, 'result': 'opp chose
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+*   Rounds 1-4: You played TAILS, opponent played HEADS. (Opponent did not match you).
+*   Round 5: You played HEADS, opponent played HEADS. (Opponent matched you).
+*   Round 6: You played TAILS, opponent played TAILS. (Opponent matched you).
+*   Round 7: You played HEADS, opponent played TAILS. (Opponent did not match you).
+*   Round 8: You played HEADS, opponent played HEADS. (Opponent matched you).
+
+2. **Evaluate the strategies:**
+*   **ALWAYS_HEADS:** This strategy would have played HEADS in almost every round. However, the opponent played TAILS in Round 6 and Round 7. Two TAILS in 8 rounds is unlikely for a strategy that only makes a mistake 1/10 times.
+*   **ALWAYS_TAILS:** This is impossible, as the opponent played HEADS 6 times.
+*   **COUNTER:** This strategy plays the opposite of your previous move.
+    *   R1: (Random) -> HEADS
+    *   R2: You played TAILS in R1 -> Opponent plays HEADS (Correct)
+    *   R3: You played TAILS in R2 -> Opponent plays HEADS (Correct)
+    *   R4: You played TAILS in R3 -> Opponent plays HEADS (Correct)
+    *   R5: You played TAILS in R4 -> Opponent plays HEADS (Correct)
+    *   R6: You played HEADS in R5 -> Opponent plays TAILS (Correct)
+    *   R7: You played TAILS in R6 -> Opponent plays HEADS (Wait, history says opponent played TAILS. This is a mistake/deviation).
+    *   R8: You played HEADS in R7 -> Opponent plays TAILS (Wait, history says opponent played HEADS. This is a mistake/deviation).
+
+Wait, let's re-examine the history for COUNTER:
+R1: You T, Opp H
+R2: You T, Opp H (Opposite of R1 T) - Match
+R3: You T, Opp H (Opposite of R2 T) - Match
+R4: You T, Opp H (Opposite of R3 T) - Match
+R5: You H, Opp H (Opposite of R4 T) - Match
+R6: You T, Opp T (Opposite of R5 H) - Match
+R7: You H, Opp T (Opposite of R6 T) - Match
+R8: You H, Opp H (Opposite of R7 H) - Mistake (Should have been T)
+
+The COUNTER strategy fits almost perfectly (7/8 rounds), with only Round 8 being a mistake. ALWAYS_HEADS fails at R6 and R7.
+
+3. **Determine the move for Round 9:**
+The opponent is most likely using the **COUNTER** strategy. In Round 8, you played **HEADS**. Therefore, the COUNTER strategy will choose the opposite of HEADS, which is **TAILS**.
+
+To score a point, you must match the opponent. Since the opponent is expected to play TAILS, you should also play TAILS.
+
+Answer: A
+
+==============================================================================
+[8] gemma31  |  pennies  seed25  t=6  |  opponent=ALWAYS_TAILS
+    actions: A=TAILS(act0)  B=HEADS(act1)
+    oracle P(act1 optimal)=0.310 -> correct = A/TAILS   MODEL SAID: B
+    history: t1:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t2:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'TAILS', 'win': True, 'payoff': 1, 'result': 'opp chose TAILS, you scored 1'}; t3:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'HEADS', 'win': False, 'payoff': 0, 'result': 'opp chose HEADS, you scored 0'}; t4:{'action': 'HEADS', 'my': 'HEADS', 'opp': 'TAILS', 'win': False, 'payoff': 0, 'result': 'opp chose TAILS, you scored 0'}; t5:{'action': 'TAILS', 'my': 'TAILS', 'opp': 'TAILS', 'win': True, 'payoff': 1, 'result': 'opp chose 
+------------------------------------------------------------------------------
+1. **Analyze the history:**
+*   Round 1: You TAILS, Opponent HEADS (No match)
+*   Round 2: You TAILS, Opponent TAILS (Match)
+*   Round 3: You TAILS, Opponent HEADS (No match)
+*   Round 4: You HEADS, Opponent TAILS (No match)
+*   Round 5: You TAILS, Opponent TAILS (Match)
+
+**Evaluating the strategies:**
+*   **ALWAYS_HEADS:** Highly unlikely. The opponent chose TAILS in rounds 2, 4, and 5.
+*   **ALWAYS_TAILS:** Possible, but they chose HEADS in rounds 1 and 3. This would require 2 mistakes in 5 rounds (higher than the expected 1/10).
+*   **COUNTER:** Let's check the sequence.
+    *   Round 2: You played TAILS in R1 $\rightarrow$ Opponent played TAILS (Incorrect for COUNTER)
+    *   Round 3: You played TAILS in R2 $\rightarrow$ Opponent played HEADS (Correct for COUNTER)
+    *   Round 4: You played TAILS in R3 $\rightarrow$ Opponent played TAILS (Correct for COUNTER)
+    *   Round 5: You played HEADS in R4 $\rightarrow$ Opponent played TAILS (Correct for COUNTER)
+    The COUNTER strategy matches the opponent's behavior in 3 out of 4 possible transitions.
+
+2. **Updated Belief:**
+The opponent is most likely following the **COUNTER** strategy. In Round 5, you played TAILS. According to the COUNTER strategy, the opponent will choose the opposite of your previous move. Since you played TAILS in Round 5, the opponent is highly likely to choose HEADS in Round 6.
+
+3. **Optimal Action:**
+To score a point, you need to match the opponent. If the opponent is likely to choose HEADS, you should also choose HEADS.
+
+4. **Final Answer:**
+Answer: B
+
+==============================================================================
+[9] gemma31  |  stag_hunt  seed20  t=5  |  opponent=TIT_FOR_TAT
+    actions: A=HARE(act0)  B=STAG(act1)
+    oracle P(act1 optimal)=0.033 -> correct = A/HARE   MODEL SAID: B
+    history: t1:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t2:{'action': 'STAG', 'my': 'STAG', 'opp': 'HARE', 'win': False, 'payoff': 0, 'result': 'opp played HARE, you scored 0'}; t3:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}; t4:{'action': 'HARE', 'my': 'HARE', 'opp': 'STAG', 'win': True, 'payoff': 3, 'result': 'opp played STAG, you scored 3'}
+------------------------------------------------------------------------------
+1. **Analysis of History:**
+*   Round 1: You HARE, Opponent STAG.
+*   Round 2: You STAG, Opponent HARE.
+*   Round 3: You HARE, Opponent STAG.
+*   Round 4: You HARE, Opponent STAG.
+
+Let's test the strategies:
+*   **ALWAYS_STAG:** Consistent with the history. The HARE in Round 2 would be the "occasional mistake" (1 in 10 chance).
+*   **ALWAYS_HARE:** Highly unlikely. The opponent played STAG 3 out of 4 times.
+*   **TIT_FOR_TAT:** This strategy copies your previous move.
+    *   Round 1: Opponent starts STAG (Correct).
+    *   Round 2: You played HARE in R1 $\rightarrow$ Opponent should play HARE (Correct).
+    *   Round 3: You played STAG in R2 $\rightarrow$ Opponent should play STAG (Correct).
+    *   Round 4: You played HARE in R3 $\rightarrow$ Opponent should play HARE. **However, the opponent played STAG.** This is a mistake (1 in 10 chance).
+
+2. **Updated Belief:**
+The history is perfectly consistent with TIT_FOR_TAT (with one mistake in R4) and consistent with ALWAYS_STAG (with one mistake in R2). 
+*   If the opponent is **ALWAYS_STAG**, they will play STAG this round (~90% probability).
+*   If the opponent is **TIT_FOR_TAT**, they will copy your Round 4 move. You played HARE in Round 4, so they will likely play HARE this round (~90% probability).
+
+Comparing the two: In Round 4, you played HARE and they played STAG. For TIT_FOR_TAT, this is a mistake. For ALWAYS_STAG, this is the expected behavior. This makes ALWAYS_STAG slightly more probable than TIT_FOR_TAT, but both remain possibilities. However, if the opponent is TIT_FOR_TAT, they are almost certainly playing HARE now.
+
+3. **Optimal Action:**
+*   If I play **HARE (A)**: I am guaranteed 2 or 3 points.
+*   If I play **STAG (B)**: I get 4 points if they play STAG, but 0 if they play HARE.
+
+Given that you played HARE in the previous round, a TIT_FOR_TAT opponent will punish you with HARE. An ALWAYS_STAG opponent will reward you with STAG. Because the opponent played STAG in Round 4 despite you playing HARE in Round 3, the evidence leans toward ALWAYS_STAG. However, the risk of 0 points (if they are TIT_FOR_TAT) is high. But looking at the pattern: the opponent has played STAG in 75% of rounds regardless of your move. The most likely scenario is that they are ALWAYS_STAG.
+
+Answer: B
+
+==============================================================================
+[10] gemma31  |  stag_hunt  seed27  t=4  |  opponent=ALWAYS_STAG
+    actions: A=HARE(act0)  B=STAG(act1)
+    oracle P(act1 optimal)=0.023 -> correct = A/HARE   MODEL SAID: B
+    history: t1:{'action': 'STAG', 'my': 'STAG', 'opp': 'STAG', 'win': True, 'payoff': 4, 'result': 'opp played STAG, you scored 4'}; t2:{'action': 'STAG', 'my': 'STAG', 'opp': 'STAG', 'win': True, 'payoff': 4, 'result': 'opp played STAG, you scored 4'}; t3:{'action': 'HARE', 'my': 'HARE', 'opp': 'HARE', 'win': True, 'payoff': 2, 'result': 'opp played HARE, you scored 2'}
+------------------------------------------------------------------------------
+1. **Analysis of History:**
+*   Round 1: You STAG, Opponent STAG. (Consistent with ALWAYS_STAG, TIT_FOR_TAT).
+*   Round 2: You STAG, Opponent STAG. (Consistent with ALWAYS_STAG, TIT_FOR_TAT).
+*   Round 3: You HARE, Opponent HARE. (Consistent with TIT_FOR_TAT, or ALWAYS_HARE making a mistake in R1/R2, or ALWAYS_STAG making a mistake in R3).
+
+The key observation is Round 3. When you switched to HARE, the opponent immediately switched to HARE. This is the signature behavior of **TIT_FOR_TAT**. While it could be a coincidence (ALWAYS_STAG making a mistake), the perfect correlation between your move in R2 and their move in R3 strongly suggests TIT_FOR_TAT.
+
+2. **Updated Belief:**
+*   **ALWAYS_STAG:** Unlikely. They would have had to make a mistake exactly when you switched to HARE.
+*   **ALWAYS_HARE:** Very unlikely. They would have had to make two mistakes in a row (R1 and R2).
+*   **TIT_FOR_TAT:** Highly likely. They mirrored your R1 STAG in R2, and mirrored your R2 STAG in R3 (Wait, looking closer: in R3 you played HARE and they played HARE. TIT_FOR_TAT mirrors the *previous* round. In R2 you played STAG, so a TIT_FOR_TAT opponent should have played STAG in R3. However, they played HARE).
+
+*Correction on History Analysis:*
+R1: You STAG $\rightarrow$ Opponent STAG
+R2: You STAG $\rightarrow$ Opponent STAG
+R3: You HARE $\rightarrow$ Opponent HARE
+If the opponent is TIT_FOR_TAT, they play what you played in the *previous* round.
+R2 Opponent played STAG (Your R1 was STAG) - Matches.
+R3 Opponent played HARE (Your R2 was STAG) - **Does not match.**
+
+Wait, if the opponent played HARE in R3 while you played STAG in R2, they are not following TIT_FOR_TAT perfectly. However, if they are ALWAYS_HARE, they failed R1 and R2. If they are ALWAYS_STAG, they failed R3.
+Given the "1 in 10" mistake rate, it is far more likely that an ALWAYS_STAG hunter made one mistake in R3 than an ALWAYS_HARE hunter made two mistakes in R1 and R2.
+
+3. **Optimal Action:**
+The opponent has played STAG 66% of the time. The most probable strategy is ALWAYS_STAG (with one mistake in R3). If they are ALWAYS_STAG, playing STAG yields 4 points. If they are TIT_FOR_TAT, they will mirror your R3 HARE and play HARE this round (yielding 0 for STAG, 2 for HARE).
+However, if they are ALWAYS_STAG, the expected value of STAG is $\approx 4$. If they are TIT_FOR_TAT, they are currently in a "punishment" phase. But the history suggests they are more likely to be a generally cooperative type (ALWAYS_STAG) who slipped up, or a TIT_FOR_TAT who is mirroring your R3 HARE.
+Actually, if they are TIT_FOR_TAT, they will play HARE in R4 because you played HARE in R3. If they are ALWAYS_STAG, they will play STAG.
+Given the high payoff of STAG (4) vs HARE (2/3), and the fact that they have been STAG most of the time, testing for the return to STAG is optimal.
+
+Answer: B
+

@@ -1,0 +1,116 @@
+% =============================================================================
+% Discussion + Limitations -- rewritten 2026-07-27 against the final Results.
+% Interpretation only: no quantity appears here that Results has not reported,
+% except the two cross-cutting comparisons flagged in the comments below.
+% =============================================================================
+
+\section{Discussion}
+
+\paragraph{One localization, two failures.}
+Locating the failure in the belief to action mapping does not make it one
+phenomenon. Under Bayesian inference the belief is coupled to the action and
+underweighted: amplifying it along its own direction recovers a substantial
+share of errors, so the pathway exists and carries too little weight. Under
+game theoretic structure the same intervention is barely distinguishable from
+a matched random perturbation, and the action is far less sensitive to a
+belief the model demonstrably holds. These are a gain problem and a
+connectivity problem. They share a name and not a mechanism, and only the
+first is the kind of defect a scaling or reweighting fix could plausibly
+address.
+
+\paragraph{Reactivity degrades the belief; game structure breaks the mapping.}
+The two stages are governed by different properties of a scenario, and one
+scenario separates them. \textit{Chicken} has a payoff matrix and an opponent,
+but its opponent is a fixed yield rate rather than a strategy that responds to
+the agent. Its belief forms like a nonstrategic inference problem and its
+action collapses like a game. The comparison is direct: \textit{Chicken} and
+the reactive scenarios reach almost the same action agreement, \(66.1\) and
+\(65.2\), from very different belief levels, \(98.5\) and \(90.2\). What
+depresses belief formation is the need to condition on the agent's own
+previous action; what breaks the mapping is the strategic framing. Neither
+explains the other, and a suite without a nonreactive game could not have told
+them apart.
+
+This also bounds the obvious alternative account. From the Bayesian inference
+scenarios to the reactive ones the belief falls by roughly nine points while
+action agreement falls by more than twice that, and the intervention shows the
+action does not track the belief in the game theoretic scenarios at any level.
+A weaker belief is present. It is not sufficient.
+
+\paragraph{Both interventions fail on the same decisions.}
+Steering and chain of thought act through different routes. Steering operates
+on the model's own belief to action pathway; reasoning bypasses that pathway
+and substitutes an external, serialized computation. They therefore succeed in
+different places, and reasoning recovers errors in exactly the scenarios where
+steering cannot.
+
+Where they agree is more informative. Both fail when the model is confidently
+wrong. Steering does not move the largest models on their errors, because
+those errors sit five to eleven nats from the decision boundary, beyond what
+the intervention can cross. Reasoning shows the same profile: its correction
+rate falls from \(95.5\%\) on the errors closest to the boundary to \(30.4\%\)
+on the most confident quartile for \model{Gemma-4} 31B. Two interventions with
+different mechanisms fail on the same decisions, which suggests the binding
+constraint is not the route taken but how far the decision already is from
+reversing.
+
+\paragraph{What this implies for training.}
+The belief is present, linearly decodable at every scale we test, and
+therefore already available as a supervised target. Nothing is gained by
+teaching these models the structure of the scenarios; that information is
+there. What must be trained is a utility sensitive mapping from a represented
+belief to an action. Neither more reasoning supervision nor a stronger belief
+addresses that, and the degradation of \model{Gemma-2} 2B under chain of
+thought is the direct evidence: layering reasoning on top of a broken mapping
+does not repair it, it amplifies whatever the mapping already does.
+
+\paragraph{Why localization was necessary.}
+An outcome score cannot separate the failures this paper distinguishes. A
+model that never formed the belief, a model that formed it and did not act on
+it, and a model that acted correctly and then reasoned itself out of it all
+produce one wrong answer. On this suite they occur in different models and
+different scenarios, and they call for different interventions. Prompting for
+more careful inference targets a stage that is not failing. The measurements,
+not the outcomes, identify where to intervene.
+
+\subsection{Limitations}
+
+\textbf{\textit{Committed opponents.}}
+Opponents follow fixed strategies rather than best responding, so the game
+theoretic scenarios are Bayesian decision problems against committed types
+rather than equilibrium computations. This is what makes an exact optimal
+action available at every step, and it scopes our claims to best response
+against a predicted opponent.
+
+\textbf{\textit{The belief evidence is correlational; only steering is causal.}}
+Linear decodability establishes that the information is present, not that the
+model uses it. The steering intervention supplies the causal evidence, and it
+is narrow: one layer, the final prompt position, a single direction per
+scenario. Orthogonal and shuffled target directions, and direct verification
+that the intervention moves the decoded posterior, remain to be run.
+
+\textbf{\textit{A simple statistic recovers the posterior in the reactive
+scenarios.}}
+Our prompts print a running tally. In the reactive scenarios a quadratic
+function of the joint tally of the agent's previous action and the opponent's
+move predicts the posterior better than the residual stream does. The
+like-for-like linear comparison favors the representation throughout, but we
+do not claim the network computes a quantity no simple function of the tally
+could.
+
+\textbf{\textit{A scenario we designed out.}}
+An earlier version of the suite included the Iterated Prisoner's Dilemma. We
+excluded it after establishing that its optimal action is not belief driven:
+defection strictly dominates in the stage game under the payoffs used, so
+restoring belief relevance requires a finite horizon continuation term, which
+makes the optimal action a function of the remaining horizon as well as the
+posterior. A predictor that sees only the step index and never the history
+reproduces the resulting labels on \(70.5\%\) of steps against a base rate of
+\(56.3\%\).
+
+\textbf{\textit{Scope.}}
+All scenarios use a binary action space and a fixed horizon of ten steps.
+Histories are generated by a fixed behavior policy, so our claims concern
+observer style decision making: whether a model responds rationally to
+provided evidence, not whether its own policy would have generated
+informative evidence.

@@ -1,0 +1,216 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "stag_hunt",
+    "seed": 28,
+    "T": 10,
+    "hidden_param": "opponent=ALWAYS_HARE",
+    "act0": "HARE",
+    "act1": "STAG",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.3,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.7939393939393938,
+      "drift_corr_post": 0.6484848484848483,
+      "mean_delta_pre": -5.692255616188049,
+      "mean_abs_delta_pre": 13.260788989067077,
+      "mean_delta_amp": 3.88316847383976,
+      "oracle_range": 0.9786240091869498
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.33924363123418283,
+      "delta_pre_sem": 18.217687368392944,
+      "delta_pre_by_mapping": [
+        18.06245994567871,
+        18.372914791107178
+      ],
+      "letter_bias": -0.1552274227142334,
+      "delta_post_sem": 28.23433566093445,
+      "delta_amp": 10.016648292541504,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 420,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the other hunter's strategy?**\nThis is Round 1, so there is no history yet. I have no data to distinguish between the three possible strategies.\n\n2. **What is your updated belief about their strategy, and how likely are they to hunt stag this round?**\nThe strategies are chosen with equal probability (1/3 each).\n- If ALWAYS_STAG: They will hunt STAG (with ~90% probability).\n- If ALWAYS_HARE: They will hunt HARE (with ~90% probability).\n- If TIT_FOR_TAT: They start by hunting STAG in Round 1.\nTherefore, the probability they hunt STAG is approximately: $(1/3 \\times 0.9) + (1/3 \\times 0.1) + (1/3 \\times 1.0) \\approx 0.66$.\n\n3. **What is the optimal action given that belief?**\nExpected Value (EV) of STAG (B): $(0.66 \\times 4) + (0.34 \\times 0) = 2.64$\nExpected Value (EV) of HARE (A): $(0.66 \\times 3) + (0.34 \\times 2) = 1.98 + 0.68 = 2.66$\nThe EVs are very close, but HARE is slightly safer. However, in a multi-round game, playing STAG in Round 1 is the only way to \"test\" if the opponent is TIT_FOR_TAT or ALWAYS_STAG. If I play HARE now, a TIT_FOR_TAT opponent will switch to HARE for Round 2, potentially locking us into a low-payoff equilibrium. To maximize long-term points, I must attempt to establish cooperation.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.00021943337951474816,
+      "delta_pre_sem": -17.15620470046997,
+      "delta_pre_by_mapping": [
+        -15.124943733215332,
+        -19.18746566772461
+      ],
+      "letter_bias": 2.0312609672546387,
+      "delta_post_sem": -21.857188135385513,
+      "delta_amp": -4.700983434915543,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 359,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the other hunter's strategy?**\nIn Round 1, I played STAG and the opponent played HARE. \n- If the opponent were ALWAYS_STAG, this would be a mistake (10% chance).\n- If the opponent were ALWAYS_HARE, this is the expected behavior (90% chance).\n- If the opponent were TIT_FOR_TAT, they should have played STAG in Round 1 (as per the rules). This would be a mistake (10% chance).\n\n2. **What is your updated belief about their strategy, and how likely are they to hunt stag this round?**\nThe observation of HARE in Round 1 strongly suggests the opponent is ALWAYS_HARE. \n- Probability of ALWAYS_HARE: High.\n- Probability of ALWAYS_STAG: Low (requires a mistake).\n- Probability of TIT_FOR_TAT: Low (requires a mistake).\n\nIf the opponent is ALWAYS_HARE, they will play HARE again. If they are TIT_FOR_TAT, they will copy my Round 1 move (STAG). However, given the high likelihood of ALWAYS_HARE, the probability that they hunt STAG this round is low.\n\n3. **What is the optimal action given that belief?**\nIf I play STAG and they play HARE, I get 0. If I play HARE and they play HARE, I get 2. Since the evidence points toward the opponent being a HARE hunter, playing HARE is the safe and expected optimal move to avoid a payoff of 0.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.33924363123418233,
+      "delta_pre_sem": 4.375,
+      "delta_pre_by_mapping": [
+        3.874998092651367,
+        4.875001907348633
+      ],
+      "letter_bias": -0.5000019073486328,
+      "delta_post_sem": 27.953086853027344,
+      "delta_amp": 23.578086853027344,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 529,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\n*   **Round 1:** You played STAG, opponent played HARE.\n*   **Round 2:** You played STAG, opponent played STAG.\n\nEvaluating the possible strategies:\n*   **ALWAYS_STAG:** Possible. They would have played STAG in Round 1, but made a \"mistake\" (1 in 10 chance) by playing HARE.\n*   **ALWAYS_HARE:** Possible. They would have played HARE in Round 1, but made a \"mistake\" by playing STAG in Round 2.\n*   **TIT_FOR_TAT:** Highly likely. In Round 1, TIT_FOR_TAT starts with STAG. However, the opponent played HARE. This would be a mistake. In Round 2, TIT_FOR_TAT copies your Round 1 move (STAG). The opponent played STAG, which matches this perfectly.\n\n2. **Updated Beliefs:**\nThe opponent has played HARE once and STAG once. \n*   If they are **ALWAYS_STAG**, they made a mistake in R1.\n*   If they are **ALWAYS_HARE**, they made a mistake in R2.\n*   If they are **TIT_FOR_TAT**, they made a mistake in R1, but their R2 move was a correct response to your R1 STAG.\n\nGiven the symmetry of the mistakes, the most telling move is Round 2. The fact that they switched to STAG after you played STAG suggests they are either ALWAYS_STAG or TIT_FOR_TAT. If they were ALWAYS_HARE, the R2 STAG was a fluke. If they are TIT_FOR_TAT, they are now \"synced\" with your STAG.\n\n3. **Optimal Action:**\nIf the opponent is ALWAYS_STAG or TIT_FOR_TAT (and you played STAG last), the probability they play STAG this round is very high (~90%). \n*   Expected value of STAG: $0.9(4) + 0.1(0) = 3.6$\n*   Expected value of HARE: $0.9(3) + 0.1(2) = 2.9$\n\nSince the expected value of hunting STAG is higher based on the likelihood that the opponent is not ALWAYS_HARE, the optimal move is to hunt STAG.\n\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.9786382767284595,
+      "delta_pre_sem": 15.249979496002197,
+      "delta_pre_by_mapping": [
+        15.187480926513672,
+        15.312478065490723
+      ],
+      "letter_bias": -0.06249856948852539,
+      "delta_post_sem": 27.81247854232788,
+      "delta_amp": 12.562499046325684,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 523,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\n*   Round 1: You played STAG, opponent played HARE.\n*   Round 2: You played STAG, opponent played STAG.\n*   Round 3: You played STAG, opponent played STAG.\n\nIf the opponent were `ALWAYS_HARE`, they would have played HARE in rounds 2 and 3 (unless they made two mistakes in a row, which is unlikely).\nIf the opponent were `TIT_FOR_TAT`, they would have played STAG in round 1 (by definition), HARE in round 2 (copying your round 1 STAG? No, TFT copies the *previous* move. In round 1 you played STAG, so in round 2 they should play STAG. In round 2 you played STAG, so in round 3 they should play STAG). Wait, let's re-evaluate TFT:\n- Round 1: TFT starts with STAG. (Opponent played HARE $\\rightarrow$ Mistake)\n- Round 2: TFT copies your Round 1 (STAG). (Opponent played STAG $\\rightarrow$ Correct)\n- Round 3: TFT copies your Round 2 (STAG). (Opponent played STAG $\\rightarrow$ Correct)\n\nIf the opponent were `ALWAYS_STAG`, they would have played STAG in rounds 1, 2, and 3. (Opponent played HARE in round 1 $\\rightarrow$ Mistake).\n\n2. **Updated Beliefs:**\nThe opponent has played STAG in 2 out of 3 rounds.\n*   `ALWAYS_HARE` is highly unlikely (would require 2 mistakes in 3 rounds).\n*   `ALWAYS_STAG` is very likely (requires 1 mistake in 3 rounds).\n*   `TIT_FOR_TAT` is very likely (requires 1 mistake in 3 rounds).\n\nIn both likely scenarios (`ALWAYS_STAG` and `TIT_FOR_TAT`), the opponent is expected to play STAG in Round 4, provided you played STAG in Round 3 (which you did).\n\n3. **Optimal Action:**\nSince the probability that the opponent plays STAG is very high, the expected value of hunting STAG (4 points $\\times$ high probability) significantly outweighs the safe return of hunting HARE (2-3 points).\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.3392436312341819,
+      "delta_pre_sem": -0.6249990463256836,
+      "delta_pre_by_mapping": [
+        1.6249980926513672,
+        -2.8749961853027344
+      ],
+      "letter_bias": 2.249997138977051,
+      "delta_post_sem": 28.218708753585815,
+      "delta_amp": 28.8437077999115,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 480,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\n*   Round 1: You STAG, Opponent HARE. (If TIT_FOR_TAT, they should have played STAG. If ALWAYS_STAG, they made a mistake. If ALWAYS_HARE, they played correctly).\n*   Round 2: You STAG, Opponent STAG. (If TIT_FOR_TAT, they copied your R1 STAG. If ALWAYS_STAG, they played correctly. If ALWAYS_HARE, they made a mistake).\n*   Round 3: You STAG, Opponent STAG. (If TIT_FOR_TAT, they copied your R2 STAG. If ALWAYS_STAG, they played correctly. If ALWAYS_HARE, they made a mistake).\n*   Round 4: You STAG, Opponent HARE. (If TIT_FOR_TAT, they copied your R3 STAG\u2014this would be a mistake. If ALWAYS_STAG, this is a mistake. If ALWAYS_HARE, they played correctly).\n\n2. **Updated Beliefs:**\n*   **ALWAYS_STAG:** Unlikely. They played HARE twice (R1 and R4). While mistakes happen (1/10), two mistakes in four rounds is statistically improbable.\n*   **ALWAYS_HARE:** Unlikely. They played STAG twice (R2 and R3). Two mistakes in four rounds is equally improbable.\n*   **TIT_FOR_TAT:** Most likely. In R2 and R3, they mirrored your previous STAG moves perfectly. The HARE moves in R1 (where they should have started STAG) and R4 (where they should have mirrored your R3 STAG) can be explained as the \"occasional mistakes\" mentioned in the rules.\n\n3. **Optimal Action:**\nIf the opponent is TIT_FOR_TAT, they will mirror your move from Round 4. In Round 4, you played STAG. Therefore, the opponent is highly likely to play STAG in Round 5. Since the payoff for (STAG, STAG) is 4 and (HARE, STAG) is 3, hunting STAG is the optimal move to maximize the expected payoff.\n\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 5.1247735420632675e-05,
+      "delta_pre_sem": -8.999996185302734,
+      "delta_pre_by_mapping": [
+        -7.125001907348633,
+        -10.874990463256836
+      ],
+      "letter_bias": 1.8749942779541016,
+      "delta_post_sem": -21.39827525615692,
+      "delta_amp": -12.398279070854187,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 637,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History:**\n*   **Round 1:** You STAG, Opponent HARE. (Contradicts ALWAYS_STAG and TIT_FOR_TAT, as TFT starts with STAG).\n*   **Round 2:** You STAG, Opponent STAG. (Contradicts ALWAYS_HARE).\n*   **Round 3:** You STAG, Opponent STAG.\n*   **Round 4:** You STAG, Opponent HARE.\n*   **Round 5:** You HARE, Opponent HARE. (Consistent with TIT_FOR_TAT copying your Round 4 STAG? No, you played STAG in R4 and they played HARE in R5. Wait, in R5 you played HARE, and they played HARE. If they were TIT_FOR_TAT, they would copy your R4 move (STAG). They played HARE).\n\n**2. Evaluating Strategies:**\n*   **ALWAYS_STAG:** Very unlikely. They played HARE 3 out of 5 times.\n*   **TIT_FOR_TAT:** Very unlikely. In Round 2, they played STAG (matching your R1 STAG). In Round 5, they played HARE (matching your R4 STAG? No, that's a mismatch). In Round 1, they played HARE (TFT starts with STAG).\n*   **ALWAYS_HARE:** Possible. They played HARE 3/5 times. The two STAGs in Rounds 2 and 3 would be the \"occasional mistakes\" (though 2/5 is high for a 1/10 error rate).\n\nHowever, looking at the pattern:\nR1: You S -> Opp H\nR2: You S -> Opp S\nR3: You S -> Opp S\nR4: You S -> Opp H\nR5: You H -> Opp H\n\nThe opponent's moves are H, S, S, H, H. There is no clear correlation with your previous moves (TFT) or a consistent bias toward STAG. The most likely scenario is that the opponent is ALWAYS_HARE and had a streak of mistakes, or the randomness is high. Given the options, ALWAYS_HARE is the most consistent fit for a player who has played HARE more often than not and failed the TFT starting condition.\n\n**3. Optimal Action:**\nIf the opponent is ALWAYS_HARE, hunting STAG yields 0 points and hunting HARE yields 2 points. Even if there is a slight chance they are TIT_FOR_TAT, you played HARE in Round 5, meaning a TFT player would play HARE in Round 6. In almost all likely scenarios (ALWAYS_HARE or TIT_FOR_TAT reacting to your last move), the opponent will play HARE.\n\n**4. Final Decision:**\nThe safest and most expected-value-positive move is to hunt HARE.\n\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 1.426754150968375e-05,
+      "delta_pre_sem": -15.374984741210938,
+      "delta_pre_by_mapping": [
+        -14.187493324279785,
+        -16.56247615814209
+      ],
+      "letter_bias": 1.1874914169311523,
+      "delta_post_sem": -21.273375988006592,
+      "delta_amp": -5.898391246795654,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 424,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You STAG, Opponent HARE. (If TIT_FOR_TAT, they should have played STAG. This suggests they are not TIT_FOR_TAT, or they made a mistake).\n*   Round 2: You STAG, Opponent STAG.\n*   Round 3: You STAG, Opponent STAG.\n*   Round 4: You STAG, Opponent HARE.\n*   Round 5: You HARE, Opponent HARE. (If TIT_FOR_TAT, they would copy your Round 4 STAG. They played HARE).\n*   Round 6: You HARE, Opponent HARE. (If TIT_FOR_TAT, they would copy your Round 5 HARE. They played HARE).\n\n2. **Evaluate strategies:**\n*   **TIT_FOR_TAT:** Highly unlikely. They failed to copy you in Round 1, Round 5, and Round 6.\n*   **ALWAYS_STAG:** Highly unlikely. They played HARE in 4 out of 6 rounds.\n*   **ALWAYS_HARE:** Most likely. They played HARE in 4/6 rounds. While they played STAG twice, the prompt mentions they make occasional mistakes (1 in 10). While 2/6 is higher than 1/10, it is far more consistent with ALWAYS_HARE than the other two options.\n\n3. **Determine optimal action:**\nGiven the high probability that the opponent is ALWAYS_HARE, the expected value of hunting STAG is very low (close to 0), while hunting HARE guarantees at least 2 points. Even if there is a small chance they are behaving erratically, the risk of getting 0 points by choosing STAG outweighs the potential reward of 4 points, as the evidence strongly points away from a cooperative strategy.\n\n4. **Final Answer:**\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 6.033260961341133e-05,
+      "delta_pre_sem": -18.64048433303833,
+      "delta_pre_by_mapping": [
+        -17.9372501373291,
+        -19.34371852874756
+      ],
+      "letter_bias": 0.7032341957092285,
+      "delta_post_sem": -21.931472897529602,
+      "delta_amp": -3.290988564491272,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 457,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You STAG, Opponent HARE. (If TIT_FOR_TAT, they should have played STAG. This suggests they are not TIT_FOR_TAT, or they made a mistake).\n*   Round 2: You STAG, Opponent STAG.\n*   Round 3: You STAG, Opponent STAG.\n*   Round 4: You STAG, Opponent HARE.\n*   Round 5: You HARE, Opponent HARE. (If TIT_FOR_TAT, they would copy your Round 4 STAG. They played HARE).\n*   Round 6: You HARE, Opponent HARE. (If TIT_FOR_TAT, they would copy your Round 5 HARE. They played HARE).\n*   Round 7: You STAG, Opponent HARE. (If TIT_FOR_TAT, they would copy your Round 6 HARE. They played HARE).\n\n2. **Evaluate strategies:**\n*   **TIT_FOR_TAT:** Highly unlikely. In Round 1, they played HARE instead of STAG. In Round 5, they played HARE instead of copying your Round 4 STAG.\n*   **ALWAYS_STAG:** Highly unlikely. They have played HARE in 5 out of 7 rounds.\n*   **ALWAYS_HARE:** Highly likely. They played HARE in 5/7 rounds. The two STAG plays in Rounds 2 and 3 are consistent with the \"occasional mistake\" (1 in 10) rule, although 2/7 is slightly higher than 1/10, it is far more probable than the other two options.\n\n3. **Determine optimal action:**\nThe opponent is most likely following the ALWAYS_HARE strategy. If the opponent plays HARE, your payoff for STAG is 0 and your payoff for HARE is 2. Since the probability of them playing STAG is very low, the safe and expected-value-maximizing move is to hunt HARE.\n\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 1.4580190223029273e-05,
+      "delta_pre_sem": -18.87482452392578,
+      "delta_pre_by_mapping": [
+        -18.187179565429688,
+        -19.562469482421875
+      ],
+      "letter_bias": 0.6876449584960938,
+      "delta_post_sem": -22.232071101665497,
+      "delta_amp": -3.3572465777397156,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 518,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analyze the history:**\n*   **ALWAYS_STAG:** This is highly unlikely. The opponent played HARE 6 out of 8 times. Even with a 10% error rate, this is statistically impossible.\n*   **TIT_FOR_TAT (TFT):** Let's check the sequence.\n    *   R1: You STAG $\\rightarrow$ Opponent HARE (TFT would have played STAG on R1).\n    *   R2: You STAG $\\rightarrow$ Opponent STAG (TFT would have played STAG because you played STAG in R1).\n    *   R3: You STAG $\\rightarrow$ Opponent STAG (TFT would have played STAG because you played STAG in R2).\n    *   R4: You STAG $\\rightarrow$ Opponent HARE (TFT would have played STAG because you played STAG in R3).\n    *   R5: You HARE $\\rightarrow$ Opponent HARE (TFT would have played HARE because you played STAG in R4... wait, no, TFT copies the *previous* move. In R4 you played STAG, so TFT should play STAG in R5).\n    *   The opponent's moves do not correlate with your previous moves.\n*   **ALWAYS_HARE:** This is the most likely strategy. The opponent played HARE in 6/8 rounds. The two STAG moves in R2 and R3 can be explained as the \"occasional mistakes\" (1 in 10) or random noise.\n\n2. **Updated Belief:**\nThe opponent is almost certainly following the **ALWAYS_HARE** strategy. Therefore, the probability that they will hunt STAG this round is very low (approximately 10% due to the mentioned error rate).\n\n3. **Optimal Action:**\n*   If I choose STAG (B): Expected value $\\approx (0.1 \\times 4) + (0.9 \\times 0) = 0.4$ points.\n*   If I choose HARE (A): Expected value $\\approx (0.1 \\times 3) + (0.9 \\times 2) = 2.1$ points.\nHunting HARE is the dominant strategy given the belief that the opponent is an ALWAYS_HARE player.\n\n4. **Final Answer:**\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 6.033260961341133e-05,
+      "delta_pre_sem": -15.093729496002197,
+      "delta_pre_by_mapping": [
+        -14.999974250793457,
+        -15.187484741210938
+      ],
+      "letter_bias": 0.09375524520874023,
+      "delta_post_sem": -21.617097854614258,
+      "delta_amp": -6.5233683586120605,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 591,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**1. Analysis of History:**\n*   **ALWAYS_STAG:** This strategy is highly unlikely. The opponent played HARE 6 out of 9 times. Even with a 10% error rate, 6 HAREs in 9 rounds is statistically impossible for an ALWAYS_STAG player.\n*   **TIT_FOR_TAT (TFT):** Let's check the correlation between your previous move and their current move:\n    *   R1: You STAG $\\rightarrow$ R2: Opponent STAG (Match)\n    *   R2: You STAG $\\rightarrow$ R3: Opponent STAG (Match)\n    *   R3: You STAG $\\rightarrow$ R4: Opponent HARE (Mismatch/Error)\n    *   R4: You STAG $\\rightarrow$ R5: Opponent HARE (Mismatch/Error)\n    *   R5: You HARE $\\rightarrow$ R6: Opponent HARE (Match)\n    *   R6: You HARE $\\rightarrow$ R7: Opponent HARE (Match)\n    *   R7: You STAG $\\rightarrow$ R8: Opponent HARE (Mismatch/Error)\n    *   R8: You STAG $\\rightarrow$ R9: Opponent STAG (Match)\n    TFT is possible, but there are 3 errors in 8 transitions, which is significantly higher than the stated 10% error rate.\n*   **ALWAYS_HARE:** This strategy is the most plausible. The opponent played HARE 6/9 times. While they played STAG 3 times, these could be the \"occasional mistakes\" (though 3/9 is high, it is more likely than the other options given the lack of consistent reciprocity).\n\n**2. Updated Belief:**\nThe opponent is most likely ALWAYS_HARE. Even if they are TIT_FOR_TAT, your move in Round 9 was STAG, which would lead a TFT player to play STAG in Round 10. However, the overall history strongly suggests a bias toward HARE. Given the high frequency of HARE (66%), the probability that they will play STAG this round is low.\n\n**3. Optimal Action:**\nIf the opponent is ALWAYS_HARE, playing HARE (A) guarantees 2 points, while STAG (B) likely yields 0. If the opponent is TIT_FOR_TAT, playing STAG (B) could yield 4, but the history of failures to reciprocate makes this a risky bet. In a Stag Hunt, when the probability of the partner cooperating is low, the risk-dominant strategy (HARE) is the optimal choice.\n\n**4. Final Answer:**\nAnswer: A"
+    }
+  ]
+}

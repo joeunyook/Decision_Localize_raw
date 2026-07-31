@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "stag_hunt",
+    "seed": 11,
+    "T": 10,
+    "hidden_param": "opponent=ALWAYS_STAG",
+    "act0": "HARE",
+    "act1": "STAG",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.1,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.6606060606060605,
+      "drift_corr_post": 0.5757575757575757,
+      "mean_delta_pre": 13.024947309494019,
+      "mean_abs_delta_pre": 13.024947309494019,
+      "mean_delta_amp": 8.524256336688996,
+      "oracle_range": 0.9678049269601086
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.33924363123418283,
+      "delta_pre_sem": 6.187459945678711,
+      "delta_pre_by_mapping": [
+        5.499917984008789,
+        6.875001907348633
+      ],
+      "letter_bias": -0.6875419616699219,
+      "delta_post_sem": 20.499985218048096,
+      "delta_amp": 14.312525272369385,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 485,
+      "tail_gap_mean": 0.9743660229444504,
+      "tail_gap_std": 4.0086709278873895,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Data Analysis**: There are no prior rounds of data. I have no observations to distinguish between Function 1, Function 2, or Function 3.\n\n2. **Belief Update**: Since the functions were chosen uniformly at random, each has a prior probability of $1/3$.\n   - Function 1: Selects ACTION_X.\n   - Function 2: Selects ACTION_Y.\n   - Function 3: Selects ACTION_X on round 1.\n   \n   Probability of counterpart selecting ACTION_X in Round 1:\n   $P(X) = P(F1) \\cdot P(X|F1) + P(F2) \\cdot P(X|F2) + P(F3) \\cdot P(X|F3)$\n   $P(X) \\approx (1/3 \\cdot 1) + (1/3 \\cdot 0) + (1/3 \\cdot 1) = 2/3$.\n\n3. **Optimal Action**:\n   - ACTION_X (Hunt STAG) yields 4 points if counterpart plays X, and 0 if Y.\n     Expected Value (EV) = $(2/3 \\cdot 4) + (1/3 \\cdot 0) = 2.67$ points.\n   - ACTION_Y (Hunt HARE) yields 3 points if counterpart plays X, and 2 if Y.\n     Expected Value (EV) = $(2/3 \\cdot 3) + (1/3 \\cdot 2) = 2 + 0.67 = 2.67$ points.\n\n   The expected values are identical. However, in a repeated game, choosing ACTION_X (STAG) in Round 1 serves as a probe. If the counterpart is Function 3, playing X now ensures they play X in Round 2. If I play Y now, Function 3 will play Y in Round 2. Since Function 1 and 2 are fixed, the only way to influence future payoffs is through the action taken now. Playing X maximizes the potential for the highest payoff (4) in subsequent rounds if Function 3 is active.\n\n4. **Final Answer**:\n   Answer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.022879113314193223,
+      "delta_pre_sem": 7.437470436096191,
+      "delta_pre_by_mapping": [
+        7.124940872192383,
+        7.75
+      ],
+      "letter_bias": -0.3125295639038086,
+      "delta_post_sem": -21.234257221221924,
+      "delta_amp": -28.671727657318115,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 472,
+      "tail_gap_mean": 1.2461937622725963,
+      "tail_gap_std": 4.820944465706364,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nIn Round 1, I played ACTION_Y (HARE) and the opponent played ACTION_X (STAG).\n- Function 1 (Always X): Consistent with this outcome.\n- Function 2 (Always Y): Inconsistent with this outcome.\n- Function 3 (Mimic previous/X on round 1): Consistent with this outcome (Function 3 always starts with ACTION_X).\n\n**Step 2: Update beliefs**\nFunction 2 is highly unlikely. We are left with Function 1 and Function 3.\n- If Function 1: The opponent will play ACTION_X this round.\n- If Function 3: The opponent mimics my previous action. Since I played ACTION_Y in Round 1, Function 3 will play ACTION_Y this round.\n\nGiven the functions were chosen uniformly at random, and both Function 1 and Function 3 are consistent with the Round 1 data, there is a roughly 50% chance the opponent is Function 1 (will play X) and a 50% chance the opponent is Function 3 (will play Y).\n\n**Step 3: Determine the optimal action**\n- If I choose ACTION_X (STAG):\n    - Opponent plays X (50%): 4 points.\n    - Opponent plays Y (50%): 0 points.\n    - Expected Value: $(0.5 \\times 4) + (0.5 \\times 0) = 2.0$ points.\n- If I choose ACTION_Y (HARE):\n    - Opponent plays X (50%): 3 points.\n    - Opponent plays Y (50%): 2 points.\n    - Expected Value: $(0.5 \\times 3) + (0.5 \\times 2) = 2.5$ points.\n\nComparing the expected values, ACTION_Y (HARE) provides a higher expected payoff (2.5 vs 2.0) because it mitigates the risk of the opponent switching to ACTION_Y (which Function 3 will do).\n\n**Step 4: Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.9889131028592871,
+      "delta_pre_sem": 12.96866226196289,
+      "delta_pre_by_mapping": [
+        11.999826431274414,
+        13.937498092651367
+      ],
+      "letter_bias": -0.9688358306884766,
+      "delta_post_sem": 26.62497067451477,
+      "delta_amp": 13.65630841255188,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 390,
+      "tail_gap_mean": 3.671475986838341,
+      "tail_gap_std": 4.544642684229212,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix maps as follows:\n- ACTION_X = STAG (High reward if coordinated, 0 if not)\n- ACTION_Y = HARE (Safe reward)\n\nData from prior rounds:\n- Round 1: You played HARE (ACTION_Y), Opponent played STAG (ACTION_X).\n- Round 2: You played STAG (ACTION_X), Opponent played STAG (ACTION_X).\n\n**Step 2: Update beliefs about the response function**\n- **Function 1 (Always X):** Consistent with data. The opponent played X both times.\n- **Function 2 (Always Y):** Inconsistent. The opponent played X both times.\n- **Function 3 (Mimic):** Consistent with data. In Round 1, the opponent plays X by default. In Round 2, the opponent mimics your Round 1 choice (HARE/ACTION_Y). However, the data shows the opponent played STAG (ACTION_X) in Round 2. This contradicts Function 3.\n\nTherefore, Function 1 is the only function consistent with the observed behavior (allowing for the small error rate). The probability that the opponent selects ACTION_X (STAG) this round is very high.\n\n**Step 3: Determine the optimal action**\nIf the opponent is following Function 1, they will play ACTION_X.\n- If you play ACTION_X (STAG), you receive 4 points.\n- If you play ACTION_Y (HARE), you receive 3 points.\n\nSince the probability of the opponent playing ACTION_X is high, the expected value of ACTION_X (STAG) is significantly higher than ACTION_Y (HARE).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.9905001869621148,
+      "delta_pre_sem": 13.999945640563965,
+      "delta_pre_by_mapping": [
+        13.437393188476562,
+        14.562498092651367
+      ],
+      "letter_bias": -0.5625524520874023,
+      "delta_post_sem": 26.867152452468872,
+      "delta_amp": 12.867206811904907,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 469,
+      "tail_gap_mean": 4.981615716759116,
+      "tail_gap_std": 4.6490700697528,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix maps as follows:\n- ACTION_X = STAG (High reward if coordinated, 0 if not)\n- ACTION_Y = HARE (Safe reward)\n\nThe observed data shows the opponent played STAG (ACTION_X) in all 3 prior rounds.\n- Round 1: You played HARE, Opponent played STAG.\n- Round 2: You played STAG, Opponent played STAG.\n- Round 3: You played STAG, Opponent played STAG.\n\n**Step 2: Update beliefs about the response function**\n- **Function 1 (Always X):** Consistent with all 3 rounds.\n- **Function 2 (Always Y):** Inconsistent with all 3 rounds.\n- **Function 3 (Mimic):** In Round 1, the opponent played STAG (as specified for Round 1). In Round 2, the opponent played STAG because you played HARE in Round 1? **No.** If the opponent were mimicking, they would have played HARE in Round 2 because you played HARE in Round 1. Since the opponent played STAG in Round 2 despite you playing HARE in Round 1, Function 3 is highly unlikely.\n\nThe data strongly suggests the counterpart is using **Function 1**. Under Function 1, the opponent selects ACTION_X (STAG) with near-certainty (approx. 90% probability).\n\n**Step 3: Determine the optimal action**\n- If you choose ACTION_X (STAG) and the opponent chooses ACTION_X, you get 4 points.\n- If you choose ACTION_Y (HARE) and the opponent chooses ACTION_X, you get 3 points.\nGiven the high probability that the opponent will play ACTION_X, the expected value of ACTION_X (4 * 0.9 + 0 * 0.1 = 3.6) is higher than the expected value of ACTION_Y (3 * 0.9 + 2 * 0.1 = 2.9).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.9554125849959928,
+      "delta_pre_sem": 14.8436918258667,
+      "delta_pre_by_mapping": [
+        13.812387466430664,
+        15.874996185302734
+      ],
+      "letter_bias": -1.0313043594360352,
+      "delta_post_sem": 28.031208753585815,
+      "delta_amp": 13.187516927719116,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 519,
+      "tail_gap_mean": 6.019639343470335,
+      "tail_gap_std": 5.420899330944476,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix provided in the prompt uses `ACTION_X` and `ACTION_Y`, while the observed data uses `STAG` and `HARE`. Mapping the payoffs:\n- You ACTION_X, Opponent ACTION_X = 4 (STAG, STAG)\n- You ACTION_X, Opponent ACTION_Y = 0 (STAG, HARE)\n- You ACTION_Y, Opponent ACTION_X = 3 (HARE, STAG)\n- You ACTION_Y, Opponent ACTION_Y = 2 (HARE, HARE)\n\nIn the 4 observed rounds, the opponent played `STAG` (ACTION_X) every single time, regardless of whether you played `HARE` or `STAG`.\n\n**Step 2: Update beliefs about the response function**\n- **Function 1 (Always X):** Perfectly consistent with the data.\n- **Function 2 (Always Y):** Inconsistent with the data (opponent played X 4/4 times).\n- **Function 3 (Mimic):** Inconsistent with the data. In round 1, you played `HARE` (ACTION_Y), and the opponent played `STAG` (ACTION_X). In round 4, you played `HARE` (ACTION_Y), and the opponent played `STAG` (ACTION_X). Function 3 would have played `HARE` in round 2 and round 5.\n\nGiven the data, it is highly probable that the counterpart is using **Function 1**. Therefore, the likelihood that the counterpart selects ACTION_X (STAG) this round is very high (approximately 90%, accounting for the 1/10 error rate).\n\n**Step 3: Determine the optimal action**\n- If you choose **B (STAG/ACTION_X)**: Expected value $\\approx (0.9 \\times 4) + (0.1 \\times 0) = 3.6$ points.\n- If you choose **A (HARE/ACTION_Y)**: Expected value $\\approx (0.9 \\times 3) + (0.1 \\times 2) = 2.9$ points.\n\nSince 3.6 > 2.9, the optimal action is to hunt STAG.\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.9906815701192752,
+      "delta_pre_sem": 15.03120756149292,
+      "delta_pre_by_mapping": [
+        14.124917984008789,
+        15.93749713897705
+      ],
+      "letter_bias": -0.9062895774841309,
+      "delta_post_sem": 26.687474131584167,
+      "delta_amp": 11.656266570091248,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 436,
+      "tail_gap_mean": 5.046775006875396,
+      "tail_gap_std": 4.454465586099953,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix maps as follows:\n- ACTION_X = STAG (High reward if coordinated, 0 if not)\n- ACTION_Y = HARE (Safe reward)\n\nThe observed data shows the opponent played STAG (ACTION_X) in 5 out of 5 rounds.\n- **Function 1 (Always X):** Consistent with the data.\n- **Function 2 (Always Y):** Inconsistent with the data (would require 5 consecutive errors).\n- **Function 3 (Mimic):** Inconsistent with the data. In round 1, you played HARE (ACTION_Y), and the opponent played STAG (ACTION_X). In round 4, you played HARE (ACTION_Y), and the opponent played STAG (ACTION_X). While Function 3 starts with X in round 1, it would have switched to HARE in rounds 2 and 5 following your HARE plays.\n\n**Step 2: Updated belief**\nThe opponent has played ACTION_X every single round regardless of your choice. This strongly indicates the opponent is using **Function 1**. The probability that the opponent will select ACTION_X this round is very high (approximately 90%, accounting for the 1/10 error rate).\n\n**Step 3: Optimal action**\n- If you choose ACTION_X (STAG) and the opponent chooses ACTION_X, you get **4 points**.\n- If you choose ACTION_Y (HARE) and the opponent chooses ACTION_X, you get **3 points**.\nGiven the high probability that the opponent will play ACTION_X, the expected value of ACTION_X (approx $0.9 \\times 4 + 0.1 \\times 0 = 3.6$) is higher than the expected value of ACTION_Y (approx $0.9 \\times 3 + 0.1 \\times 2 = 2.9$).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.9906837661789345,
+      "delta_pre_sem": 15.062452793121338,
+      "delta_pre_by_mapping": [
+        14.312410354614258,
+        15.812495231628418
+      ],
+      "letter_bias": -0.7500424385070801,
+      "delta_post_sem": 27.40622329711914,
+      "delta_amp": 12.343770503997803,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 414,
+      "tail_gap_mean": 4.929245148003101,
+      "tail_gap_std": 4.706499639790418,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe observed data shows that the counterpart has selected ACTION_X (STAG) in 6 out of 6 rounds.\n- **Function 1 (Always X):** Consistent with the data.\n- **Function 2 (Always Y):** Highly inconsistent with the data (would require 6 consecutive errors).\n- **Function 3 (Mimicry):** In rounds 1, 2, 3, 5, and 6, you played ACTION_X (STAG), and the opponent played ACTION_X. In round 4, you played ACTION_Y (HARE), and the opponent played ACTION_X. If the opponent were mimicking you, they should have played ACTION_Y in round 5. Instead, they played ACTION_X.\n\n**Step 2: Update beliefs**\nThe data strongly supports Function 1. Function 2 is virtually impossible. Function 3 is unlikely because the opponent did not switch to ACTION_Y after you played ACTION_Y in round 4. Therefore, there is a very high probability that the counterpart is using Function 1, meaning they will select ACTION_X with near-certainty (approximately 90% probability, accounting for the error rate).\n\n**Step 3: Determine optimal action**\n- If you choose ACTION_X (STAG) and the opponent chooses ACTION_X, you get 4 points.\n- If you choose ACTION_Y (HARE) and the opponent chooses ACTION_X, you get 3 points.\nGiven the high probability that the opponent will play ACTION_X, the expected value of ACTION_X (4 * 0.9 + 0 * 0.1 = 3.6) is higher than the expected value of ACTION_Y (3 * 0.9 + 2 * 0.1 = 2.9).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.9906840101579453,
+      "delta_pre_sem": 14.87494707107544,
+      "delta_pre_by_mapping": [
+        13.937397956848145,
+        15.812496185302734
+      ],
+      "letter_bias": -0.9375491142272949,
+      "delta_post_sem": 26.835903525352478,
+      "delta_amp": 11.960956454277039,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 315,
+      "tail_gap_mean": 3.784433969259262,
+      "tail_gap_std": 4.542352108716046,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix maps as follows:\n- ACTION_X = STAG (High reward if coordinated, 0 if not)\n- ACTION_Y = HARE (Safe reward)\nThe observed data shows the opponent has played STAG (ACTION_X) in 7 out of 7 rounds.\n\n**Step 2: Evaluate the response functions**\n- **Function 1 (Always X):** Perfectly consistent with the data.\n- **Function 2 (Always Y):** Inconsistent with the data (opponent played X 7/7 times).\n- **Function 3 (Mimicry):** In the data, you played HARE in rounds 1 and 4. If the opponent were mimicking you, they should have played HARE in rounds 2 and 5. However, the opponent played STAG in every single round regardless of your previous move. This makes Function 3 highly unlikely.\n\n**Step 3: Determine the optimal action**\nThe evidence strongly suggests the counterpart is using Function 1 (Always ACTION_X). Given that the opponent is almost certain to select ACTION_X, the payoffs for the current round are:\n- If you choose ACTION_X (STAG): 4 points.\n- If you choose ACTION_Y (HARE): 3 points.\n\nSince 4 > 3, the optimal strategy is to select ACTION_X.\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.988699509855599,
+      "delta_pre_sem": 14.93745231628418,
+      "delta_pre_by_mapping": [
+        14.124907493591309,
+        15.74999713897705
+      ],
+      "letter_bias": -0.8125448226928711,
+      "delta_post_sem": 26.50778639316559,
+      "delta_amp": 11.570334076881409,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 507,
+      "tail_gap_mean": 4.99097927480936,
+      "tail_gap_std": 4.371342394952751,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe payoff matrix maps as follows:\n- ACTION_X = STAG (High reward if coordinated, 0 if not)\n- ACTION_Y = HARE (Safe reward)\nThe observed data shows that in 8 out of 8 rounds, the opponent played STAG (ACTION_X). \n- Function 1 (Always X) is perfectly consistent with this data.\n- Function 2 (Always Y) is completely inconsistent with this data.\n- Function 3 (Mimicry) is consistent with this data because the user played STAG in the round immediately preceding every instance where the opponent played STAG (except for the very first round where Function 3 starts with X). However, looking at the sequence, the opponent played STAG even when the user played HARE (Rounds 1, 4, and 8). Specifically, in Round 1, the user played HARE and the opponent played STAG. In Round 4, the user played HARE and the opponent played STAG. In Round 8, the user played HARE and the opponent played STAG.\n\n**Step 2: Update beliefs**\nBecause the opponent played STAG (ACTION_X) even when the user played HARE (ACTION_Y) in rounds 1, 4, and 8, Function 3 (Mimicry) is effectively ruled out. Function 2 is also ruled out. The only remaining plausible function is Function 1 (Always X). Given the 1/10 error rate, the probability that the opponent selects ACTION_X this round is very high (approximately 90%).\n\n**Step 3: Determine optimal action**\n- If I choose ACTION_X (STAG) and the opponent chooses ACTION_X, I get 4 points.\n- If I choose ACTION_Y (HARE) and the opponent chooses ACTION_X, I get 3 points.\nSince the probability of the opponent playing ACTION_X is very high, the expected value of ACTION_X (approx $0.9 \\times 4 + 0.1 \\times 0 = 3.6$) is higher than the expected value of ACTION_Y (approx $0.9 \\times 3 + 0.1 \\times 2 = 2.9$).\n\n**Step 4: Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.9906840402743018,
+      "delta_pre_sem": 14.906183242797852,
+      "delta_pre_by_mapping": [
+        13.937374114990234,
+        15.874992370605469
+      ],
+      "letter_bias": -0.9688091278076172,
+      "delta_post_sem": 27.265589237213135,
+      "delta_amp": 12.359405994415283,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 393,
+      "tail_gap_mean": 5.042525734007358,
+      "tail_gap_std": 4.553320582665072,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "**Step 1: Analyze the data**\nThe provided data shows that in 9 out of 9 rounds, the opponent selected \"STAG\" (which corresponds to ACTION_X in the payoff matrix). \n- If the opponent were using Function 2 (ACTION_Y), the probability of this outcome is nearly zero.\n- If the opponent were using Function 3 (Mimicry), they would have played ACTION_Y in rounds where you played HARE (ACTION_Y). However, you played HARE in rounds 1, 4, and 8, yet the opponent still played STAG. This makes Function 3 highly unlikely.\n- If the opponent were using Function 1 (Always ACTION_X), this data is perfectly consistent with that behavior.\n\n**Step 2: Update beliefs**\nGiven that the opponent played ACTION_X regardless of your choice (including when you played ACTION_Y), the probability that the counterpart is using Function 1 is extremely high. The probability that they will select ACTION_X this round is approximately 90% (accounting for the 1/10 error rate).\n\n**Step 3: Determine optimal action**\n- If you choose ACTION_X (STAG) and the opponent chooses ACTION_X, you get 4 points.\n- If you choose ACTION_Y (HARE) and the opponent chooses ACTION_X, you get 3 points.\nSince the probability of the opponent choosing ACTION_X is very high, the expected value of ACTION_X (approx $0.9 \\times 4 + 0.1 \\times 0 = 3.6$) is higher than the expected value of ACTION_Y (approx $0.9 \\times 3 + 0.1 \\times 2 = 2.9$).\n\n**Step 4: Final Answer**\nAnswer: B"
+    }
+  ]
+}

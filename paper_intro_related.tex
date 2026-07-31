@@ -1,0 +1,134 @@
+% =============================================================================
+% Introduction + Related Work  -- drafted 2026-07-24
+% Paste into the main .tex, replacing the empty \section{Introduction} and
+% \section{Related Work} stubs.
+%
+% CITATION STATUS: every \citep key below is a PLACEHOLDER of the form
+% \citep{VERIFY_...}. The classic decision-theory / probing references are ones
+% I am confident exist; the recent LLM-specific ones MUST be checked against a
+% real bibliography before submission. references.bib does not yet exist.
+% =============================================================================
+
+\section{Introduction}
+
+Large language models (LLMs) are increasingly deployed as agents that must
+\emph{decide} rather than merely answer: selecting tools, allocating budgets,
+negotiating, and committing to actions under uncertainty over many
+steps~\citep{VERIFY_llm_agents_survey}. Evaluation of these systems is almost
+entirely outcome based. A model is scored on whether its final action matched a
+reference answer, or on the reward it accumulated. Such measures establish
+\emph{that} a system failed. They do not establish \emph{where}.
+
+The distinction is consequential because different failures demand different
+remedies. A model that cannot infer the state of its environment from
+accumulating evidence needs better inference. A model that infers correctly but
+selects the wrong action needs a corrected decision rule, and its inference
+machinery is already sound. A model that would have chosen correctly but is
+talked out of it by its own reasoning needs neither. These three failures are
+indistinguishable in an outcome based score: each produces one wrong answer.
+
+We therefore ask a different question. \emph{Where in an LLM's decision process
+does rational behavior break down?} Answering it requires two ingredients: a
+decision problem whose correct action is not a matter of judgment, and a way to
+read the model's intermediate commitments before they are collapsed into a
+final token.
+
+For the first, we construct eight sequential decision scenarios in which a
+hidden parameter governs the environment and is inferable from an accumulating
+history. Each scenario has a finite hidden parameter space with a known uniform
+prior and an explicit likelihood, so the Bayesian optimal action is computable
+exactly at every step rather than approximated or elicited. This yields a
+reference against which any decision, at any point in the history, can be
+scored. The scenarios span three decision structures of increasing inferential
+difficulty, from discrete hypothesis testing to expected utility thresholds to
+inference about a strategic opponent whose next move depends on the agent's own
+previous action.
+
+For the second, we define three mechanistic checkpoints read directly at the
+logit level, chosen to mirror the stages of the reference procedure itself.
+Probe~1 tests whether the hidden environment state is linearly decodable from
+the residual stream. Probe~2 reads the model's action preference immediately
+before it generates anything. Probe~3 reads that preference again after the
+model has produced its own chain of thought. Together they partition failure
+into three localizable stages: a belief that was never formed, a belief that
+was formed but not acted on, and a belief that was acted on and then reversed.
+
+Applying this to nine instruction tuned models spanning roughly 2B to 70B
+parameters across four families, we find that the failure is overwhelmingly
+concentrated in one stage. Beliefs are linearly decodable at every scale we
+test, including the smallest models, and at every point in the history. What
+varies, and varies enormously, is whether that decodable belief reaches the
+action. Failure is therefore not a deficit of inference but of the mapping from
+belief to action, and it concentrates in the scenarios where the environment
+responds to what the agent itself did.
+
+We further find that chain of thought reasoning partially repairs this mapping
+while simultaneously degrading calibration: post hoc reasoning raises agreement
+with the optimal action, yet the confidence it expresses becomes \emph{less}
+informative about the strength of the evidence. Accuracy and calibration move
+in opposite directions under self generated reasoning, which complicates the
+common assumption that more reasoning yields a better decision maker.
+
+Our contributions are:
+
+\begin{itemize}
+    \item A suite of eight sequential decision scenarios with exactly
+    computable Bayesian optimal baselines, spanning nonstrategic inference,
+    expected utility thresholds, and games against committed opponent types,
+    including all four classic $2{\times}2$ games.
+
+    \item A three checkpoint logit level probing method that localizes a
+    decision failure to belief formation, belief to action mapping, or post
+    reasoning commitment, rather than reporting only that a failure occurred.
+
+    \item An empirical characterization across nine models showing that belief
+    representation is essentially solved at all scales tested, that the belief
+    to action mapping is where scale and reasoning training actually differ,
+    and that self generated reasoning trades calibration for accuracy.
+\end{itemize}
+
+
+\section{Related Work}
+
+\subsection{Evaluating LLMs as Decision Makers}
+
+A large body of work evaluates LLMs in agentic and interactive settings, from
+tool use and multi step planning to negotiation and repeated
+games~\citep{VERIFY_react, VERIFY_llm_agents_survey, VERIFY_akata_repeated_games}.
+These evaluations are predominantly outcome based: they report task success,
+accumulated reward, or agreement with a reference action. A parallel line
+studies LLM behavior against normative standards from decision theory and
+behavioral economics, documenting deviations that resemble human cognitive
+biases~\citep{VERIFY_llm_behavioral_econ}. Our work differs in what is measured
+rather than in what is tested. Where these studies establish that behavior
+departs from a normative benchmark, we ask which stage of the model's own
+computation produced the departure, and we hold the benchmark to an exactly
+computable optimum rather than an elicited or approximated one.
+
+\subsection{Games and Uncertainty}
+
+Our scenarios are Bayesian games with incomplete information in the sense
+of~\citet{VERIFY_harsanyi}: the opponent's type is drawn from a known common
+prior and inferred by Bayesian updating. Because opponents follow committed
+strategies rather than best responding, these are decision problems against
+fixed types rather than equilibrium computations, which is what makes an exact
+optimal action available at every step. The baseline itself follows standard
+Bayesian statistical decision theory~\citep{VERIFY_wald, VERIFY_savage}. By
+construction it assumes the hidden parameter space and likelihood are
+specified, excluding ambiguity in the sense
+of~\citet{VERIFY_ellsberg} from our scope.
+
+\subsection{Probing Internal Representations}
+
+Linear probes are a standard tool for testing whether a property is linearly
+decodable from a network's internal
+activations~\citep{VERIFY_alain_bengio, VERIFY_belinkov_survey}, and have been
+used to show that language models maintain structured representations of
+latent state, such as board position in a game the model was never explicitly
+taught~\citep{VERIFY_othello}. Reading predictions directly from intermediate
+logits is likewise established practice~\citep{VERIFY_logit_lens}. We combine
+both: a residual stream probe for the belief, and logit level reads for the
+action preference before and after reasoning. The contribution is not the
+individual instruments but their alignment with the stages of a normative
+reference procedure, which is what converts a representational observation into
+a statement about where a decision failed.

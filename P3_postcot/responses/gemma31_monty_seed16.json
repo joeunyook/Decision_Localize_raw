@@ -1,0 +1,256 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "monty",
+    "seed": 16,
+    "T": 10,
+    "hidden_param": "rule=sticky",
+    "act0": "STAY",
+    "act1": "SWITCH",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.8787878787878788,
+      "drift_corr_post": 0.5272727272727272,
+      "mean_delta_pre": -15.56789255142212,
+      "mean_abs_delta_pre": 18.030387210845948,
+      "mean_delta_amp": -1.6491402849555015,
+      "oracle_range": 0.5555216871006345
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5555555555555556,
+      "delta_pre_sem": 12.31247329711914,
+      "delta_pre_by_mapping": [
+        12.999971389770508,
+        11.624975204467773
+      ],
+      "letter_bias": 0.6874980926513672,
+      "delta_post_sem": 28.374972343444824,
+      "delta_amp": 16.062499046325684,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 399,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "1. **What does the history tell you about each rule?**\nThere are no completed rounds in the history. Therefore, no evidence has been gathered to favor or eliminate any of the three rules.\n\n2. **What is your updated belief about which rule is in play?**\nSince no data has been collected, the prior probabilities remain equal. Each rule (Random, Sticky, Shifting) has a 1/3 probability of being the active rule.\n\n3. **What is the optimal action given that belief?**\nI need to calculate the probability of winning for each action across the three possible rules:\n- **If I Keep (A):**\n    - Random: Win 1/3 of the time.\n    - Sticky: Win 100% of the time.\n    - Shifting: Win 0% of the time.\n    - Total Probability: $(1/3 \\times 1/3) + (1/3 \\times 1) + (1/3 \\times 0) = 1/9 + 3/9 + 0 = 4/9 \\approx 44.4\\%$\n\n- **If I Switch (B):**\n    - Random: Win 2/3 of the time.\n    - Sticky: Win 0% of the time.\n    - Shifting: Win 100% of the time.\n    - Total Probability: $(1/3 \\times 2/3) + (1/3 \\times 0) + (1/3 \\times 1) = 2/9 + 0 + 3/9 = 5/9 \\approx 55.6\\%$\n\nSince switching (B) has a higher expected win rate (5/9 vs 4/9), it is the optimal action.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.16666666666729166,
+      "delta_pre_sem": -15.031123161315918,
+      "delta_pre_by_mapping": [
+        -14.624776840209961,
+        -15.437469482421875
+      ],
+      "letter_bias": 0.40634632110595703,
+      "delta_post_sem": -22.475950434803963,
+      "delta_amp": -7.444827273488045,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 623,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "**1. What does the history tell you about each rule?**\nIn Round 1, the action was \"STAY\" and the result was \"WON\".\n- **Random**: This is consistent with the Random rule (the prize could be anywhere; staying wins 1/3 of the time).\n- **Sticky**: This is consistent with the Sticky rule (the prize is always behind the initial pick; staying wins 100% of the time).\n- **Shifting**: This is **impossible** under the Shifting rule. In the Shifting rule, the prize is always behind the remaining door, meaning staying always loses. Since the player stayed and won, the Shifting rule is ruled out.\n\n**2. What is your updated belief about which rule is in play?**\nWe started with three equally likely rules: Random (1/3), Sticky (1/3), and Shifting (1/3).\n- Probability of winning by staying given Random: $1/3$\n- Probability of winning by staying given Sticky: $1$\n- Probability of winning by staying given Shifting: $0$\n\nUsing Bayesian updating:\n- $P(\\text{Random} | \\text{Stay Win}) \\propto 1/3 \\times 1/3 = 1/9$\n- $P(\\text{Sticky} | \\text{Stay Win}) \\propto 1/3 \\times 1 = 1/3 = 3/9$\n- $P(\\text{Shifting} | \\text{Stay Win}) \\propto 1/3 \\times 0 = 0$\n\nThe normalized probabilities are:\n- $P(\\text{Random}) = (1/9) / (4/9) = 1/4$ (25%)\n- $P(\\text{Sticky}) = (3/9) / (4/9) = 3/4$ (75%)\n\n**3. What is the optimal action given that belief?**\nWe evaluate the probability of winning for each action:\n- **Action A (Stay)**:\n  - If Random: Win probability is $1/3$.\n  - If Sticky: Win probability is $1$.\n  - Total: $(1/4 \\times 1/3) + (3/4 \\times 1) = 1/12 + 9/12 = 10/12 \\approx 83.3\\%$\n- **Action B (Switch)**:\n  - If Random: Win probability is $2/3$.\n  - If Sticky: Win probability is $0$.\n  - Total: $(1/4 \\times 2/3) + (3/4 \\times 0) = 2/12 \\approx 16.7\\%$\n\nStaying is significantly more likely to result in a win.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.06666666666666668,
+      "delta_pre_sem": -14.656219482421875,
+      "delta_pre_by_mapping": [
+        -13.99996566772461,
+        -15.31247329711914
+      ],
+      "letter_bias": 0.6562538146972656,
+      "delta_post_sem": -22.07017159461975,
+      "delta_amp": -7.413952112197876,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 416,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 1,
+        "switch_door": 3
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, the prize is placed randomly. The outcomes of the first two rounds (Stay/Won, Switch/Lost) are entirely possible.\n*   **Sticky:** In this rule, the prize is always behind the initial pick. Staying always wins; switching always loses. The history (Stay/Won, Switch/Lost) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Switching always wins; staying always loses. The history (Stay/Won, Switch/Lost) is **impossible** under this rule, as staying won and switching lost.\n\n**2. What is your updated belief about which rule is in play?**\n*   The \"Shifting\" rule is eliminated.\n*   We are left with \"Random\" and \"Sticky\".\n*   Under \"Sticky\", the probability of the observed history is $1 \\times 1 = 100\\%$.\n*   Under \"Random\", the probability of the observed history is $1/3$ (Stay wins) $\\times 2/3$ (Switch loses) $= 2/9 \\approx 22.2\\%$.\n*   Since the history is much more likely under the \"Sticky\" rule than the \"Random\" rule, the probability heavily favors \"Sticky\".\n\n**3. What is the optimal action given that belief?**\n*   If the rule is **Sticky**, staying (A) wins 100% of the time.\n*   If the rule is **Random**, switching (B) wins 66.6% of the time.\n*   Given the strong evidence for \"Sticky\" (where staying is the only way to win), the expected value of staying is significantly higher than the expected value of switching.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.023809523809523815,
+      "delta_pre_sem": -16.905982971191406,
+      "delta_pre_by_mapping": [
+        -16.686988830566406,
+        -17.124977111816406
+      ],
+      "letter_bias": 0.218994140625,
+      "delta_post_sem": -22.02333915233612,
+      "delta_amp": -5.117356181144714,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 444,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 1,
+        "switch_door": 3
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The history (STAY: WON, SWITCH: LOST, SWITCH: LOST) is possible under this rule.\n*   **Sticky:** In this rule, the prize is always behind your initial pick. Therefore, STAY always wins and SWITCH always loses. The history (STAY: WON, SWITCH: LOST, SWITCH: LOST) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The history contains a STAY win and two SWITCH losses, which is **impossible** under the Shifting rule.\n\n**2. What is your updated belief about which rule is in play?**\n*   The **Shifting** rule is eliminated (Probability = 0).\n*   The **Sticky** rule is highly likely because the observed outcomes match its predictions perfectly (100% success for STAY, 100% failure for SWITCH).\n*   The **Random** rule is possible, but less likely than Sticky given the data. Specifically, the probability of seeing these results under Random is $(1/3) \\times (1/3) \\times (1/3) = 1/27$, whereas under Sticky it is $1 \\times 1 \\times 1 = 1$.\n*   Therefore, the belief is heavily weighted toward the **Sticky** rule.\n\n**3. What is the optimal action given that belief?**\n*   If the rule is **Sticky**, staying (A) wins 100% of the time.\n*   If the rule is **Random**, switching (B) wins 66.6% of the time.\n*   Given the strong evidence for the Sticky rule, the expected value of staying is significantly higher than the expected value of switching.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.00813008130081301,
+      "delta_pre_sem": -19.374109268188477,
+      "delta_pre_by_mapping": [
+        -18.46700382232666,
+        -20.281214714050293
+      ],
+      "letter_bias": 0.9071054458618164,
+      "delta_post_sem": -22.394397258758545,
+      "delta_amp": -3.0202879905700684,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 399,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The history (STAY: 2 wins, SWITCH: 2 losses) is possible under this rule, though slightly unlikely.\n*   **Sticky:** In this rule, the prize is always behind the initial pick. Therefore, STAY always wins and SWITCH always loses. The history (STAY: 2 wins, SWITCH: 2 losses) perfectly matches this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The history (STAY: 2 wins, SWITCH: 2 losses) is impossible under this rule.\n\n**2. What is your updated belief about which rule is in play?**\n*   The **Shifting** rule is eliminated (probability = 0).\n*   The **Sticky** rule is highly probable because the observed outcomes are exactly what is predicted by the rule.\n*   The **Random** rule is still possible, but the probability of getting 2 wins on STAY and 2 losses on SWITCH is significantly lower than the probability of this occurring under the Sticky rule.\n*   Therefore, the belief is heavily weighted toward the **Sticky** rule.\n\n**3. What is the optimal action given that belief?**\n*   If the rule is **Sticky**, staying (A) wins 100% of the time.\n*   If the rule is **Random**, switching (B) wins 66.6% of the time.\n*   Given the strong evidence for the Sticky rule, the expected value of staying is much higher than the expected value of switching.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.002732240437158473,
+      "delta_pre_sem": -20.123748540878296,
+      "delta_pre_by_mapping": [
+        -19.37252902984619,
+        -20.8749680519104
+      ],
+      "letter_bias": 0.7512195110321045,
+      "delta_post_sem": -21.757732152938843,
+      "delta_amp": -1.6339836120605469,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 381,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The observed history (STAY: 2 wins, SWITCH: 0 wins) is possible but unlikely, as it contradicts the expected probabilities.\n*   **Sticky:** In this rule, the prize is always behind the initial pick. Therefore, STAY always wins and SWITCH always loses. The history (STAY: 2 wins, SWITCH: 3 losses) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The history (STAY: 2 wins, SWITCH: 3 losses) is impossible under this rule.\n\n**2. What is your updated belief about which rule is in play?**\n*   The **Shifting** rule is eliminated (probability 0%).\n*   The **Sticky** rule is highly probable because every single outcome in the history aligns perfectly with its mechanics.\n*   The **Random** rule is mathematically possible, but the probability of seeing 0 wins in 3 switches and 2 wins in 2 stays is very low ($ (1/3)^3 \\times (1/3)^2 = 1/729 $ relative to the likelihood of the Sticky rule).\n*   Therefore, it is overwhelmingly likely that the **Sticky** rule is in play.\n\n**3. What is the optimal action given that belief?**\nUnder the **Sticky** rule, the prize is always behind your initial pick. To win, you must keep your original door.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.0009132420091324208,
+      "delta_pre_sem": -20.48228430747986,
+      "delta_pre_by_mapping": [
+        -19.902099609375,
+        -21.062469005584717
+      ],
+      "letter_bias": 0.5801846981048584,
+      "delta_post_sem": -22.515548944473267,
+      "delta_amp": -2.033264636993408,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 415,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The observed history (STAY: 3 wins, SWITCH: 0 wins) is unlikely but possible.\n*   **Sticky:** In this rule, the prize is always behind the initial pick. Therefore, STAY always wins and SWITCH always loses. The observed history (STAY: 3 wins, SWITCH: 0 wins) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The observed history (STAY: 3 wins, SWITCH: 0 wins) is impossible under this rule.\n\n**2. What is your updated belief about which rule is in play?**\n*   The **Shifting** rule is eliminated (probability = 0).\n*   The **Sticky** rule is highly probable because every single outcome in the history matches its prediction perfectly.\n*   The **Random** rule is still possible, but the probability of getting 3 wins on STAY and 0 wins on SWITCH by chance is low ($ (1/3)^3 \\times (2/3)^3 \\approx 0.013$).\n*   Given the evidence, it is overwhelmingly likely that the **Sticky** rule is in play.\n\n**3. What is the optimal action given that belief?**\n*   If the rule is **Sticky**, staying (Option A) wins 100% of the time.\n*   If the rule is **Random**, switching (Option B) wins 66.6% of the time.\n*   Since the evidence strongly points to the Sticky rule, the optimal strategy is to stay with the original pick.\n\n**4. Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.0003046922608165754,
+      "delta_pre_sem": -20.638331174850464,
+      "delta_pre_by_mapping": [
+        -19.99544668197632,
+        -21.28121566772461
+      ],
+      "letter_bias": 0.6428844928741455,
+      "delta_post_sem": -22.67369855940342,
+      "delta_amp": -2.0353673845529556,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 370,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The history shows 4 wins for STAY and 0 wins for SWITCH. While possible, this is statistically unlikely for a Random distribution over 7 rounds.\n*   **Sticky:** In this rule, the prize is always behind your initial pick. Therefore, STAY always wins and SWITCH always loses. The history (STAY: 4 wins, SWITCH: 3 losses) is perfectly consistent with the Sticky rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The history (STAY: 4 wins, SWITCH: 3 losses) completely contradicts the Shifting rule.\n\n**2. What is your updated belief about which rule is in play?**\nThe history is 100% consistent with the **Sticky** rule and 0% consistent with the **Shifting** rule. While the **Random** rule is technically possible, the probability of staying winning 4 times and switching winning 0 times in 7 trials is very low compared to the probability of the Sticky rule being in effect. I am highly confident that the rule is **Sticky**.\n\n**3. What is the optimal action given that belief?**\nUnder the Sticky rule, the prize is always placed behind the door you initially picked. Therefore, the optimal strategy is to always keep your original door.\n\n**4. Final Answer**\nSince the evidence strongly suggests the Sticky rule is in play, I will keep my original pick (Door 3).\n\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.00010159504216194259,
+      "delta_pre_sem": -20.42101216316223,
+      "delta_pre_by_mapping": [
+        -19.74830436706543,
+        -21.093719959259033
+      ],
+      "letter_bias": 0.6727077960968018,
+      "delta_post_sem": -22.478328600525856,
+      "delta_amp": -2.0573164373636246,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 344,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 2,
+        "switch_door": 3
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The history shows 4 wins for STAY and 0 wins for SWITCH. While possible, this is statistically unlikely (the probability of 4 STAY wins and 4 SWITCH losses in 8 rounds is very low).\n*   **Sticky:** In this rule, the prize is always behind your initial pick. Therefore, STAY always wins and SWITCH always loses. The history (STAY: 4/4, SWITCH: 0/4) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, SWITCH always wins and STAY always loses. The history is completely contradictory to this rule.\n\n**2. What is your updated belief about which rule is in play?**\nGiven that the history is perfectly aligned with the **Sticky** rule and completely contradicts the **Shifting** rule, the probability that the rule is \"Sticky\" is extremely high. The \"Random\" rule is technically possible but highly improbable given the streak of outcomes.\n\n**3. What is the optimal action given that belief?**\nUnder the **Sticky** rule, the prize is always behind the initial pick. Therefore, the optimal strategy is to keep the original door.\n\n**4. Final Answer**\nSince the evidence strongly suggests the \"Sticky\" rule is in effect, staying with the original pick (Door 1) is the best move.\n\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 3.3868454921086555e-05,
+      "delta_pre_sem": -20.358587741851807,
+      "delta_pre_by_mapping": [
+        -19.62345027923584,
+        -21.093725204467773
+      ],
+      "letter_bias": 0.7351374626159668,
+      "delta_post_sem": -22.156134009361267,
+      "delta_amp": -1.7975462675094604,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 334,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 3,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the history tell you about each rule?**\n*   **Random:** In this rule, switching wins 2/3 of the time and staying wins 1/3 of the time. The observed history (STAY: 4 wins, SWITCH: 0 wins) is highly improbable under this rule, though mathematically possible.\n*   **Sticky:** In this rule, the prize is always behind your initial pick. Therefore, staying always wins and switching always loses. The history (STAY: 4 wins, SWITCH: 0 wins) is perfectly consistent with this rule.\n*   **Shifting:** In this rule, the prize is always behind the remaining door. Therefore, switching always wins and staying always loses. The history (STAY: 4 wins, SWITCH: 0 wins) is impossible under this rule.\n\n**2. What is your updated belief about which rule is in play?**\nThe \"Shifting\" rule is eliminated. The \"Random\" rule is extremely unlikely given that we have seen 9 rounds where every single \"STAY\" resulted in a win and every single \"SWITCH\" resulted in a loss. The \"Sticky\" rule predicts this exact outcome with 100% certainty. Therefore, it is overwhelmingly likely that the **Sticky** rule is in play.\n\n**3. What is the optimal action given that belief?**\nUnder the Sticky rule, the prize is always placed behind your initial pick. To win, you must keep your original door.\n\n**4. Final Answer**\nAnswer: A"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+% =============================================================================
+% Result 3 -- chain of thought.  Drafted 2026-07-27.
+%
+% Every number regenerable via:  python3 analysis/cot_amplification.py
+% Answers are re-parsed from cot_text with the current last-match / \boxed{}
+% regex; stored post_valid flags are never trusted (DOCUMENTATION.txt, Bug 5).
+% Salvage and break are computed on the SAME steps as the steering rescue rate
+% (seeds 0-39), so the two interventions are directly comparable.
+% =============================================================================
+
+\paragraph{Result 3: Chain of Thought Amplifies the Mapping, It Does Not Build One.}
+
+Results~1 and~2 measured the decision before the model writes anything. We now
+let it reason. Probe~3 reads the answer the model commits to after generating
+its own chain of thought, on the same steps and the same histories as Probe~2,
+so the difference between them isolates the effect of reasoning.
+
+\textbf{\textit{The gain from reasoning tracks the mapping the model already
+had.}}
+In the game theoretic scenarios, the three models with the strongest pre-CoT
+mapping gain the most from reasoning: \model{Qwen-3.6} 27B improves by
+\(18.8\) points, \model{Gemma-4} 31B by \(11.6\), and \model{Llama-3.3} 70B by
+\(10.5\). The models with the weakest pre-CoT mapping gain nothing.
+\model{Llama-3.2} 3B loses \(0.8\) points and \model{Gemma-2} 2B loses
+\(9.0\). Across the seven non-reasoning models the improvement correlates with
+pre-CoT agreement at \(r=0.72\). Reasoning helps where a mapping already
+exists, and scale is not what sorts the models: \model{Qwen-3.5} 4B has the
+second-largest improvement among terminated responses and one of the smallest
+once its non-terminating steps are counted.
+
+\textbf{\textit{Where the mapping is weak, reasoning does not correct, it
+churns.}}
+To see what reasoning actually does to a decision, we condition on the pre-CoT
+answer. Among steps the model got wrong before reasoning, the \emph{salvage
+rate} is the fraction that reasoning turns correct; among steps it got right,
+the \emph{break rate} is the fraction it turns wrong. Where the mapping works,
+salvage far exceeds break: \model{Gemma-4} 31B salvages \(73.0\%\) and breaks
+\(2.0\%\), \model{Qwen-3.6} 27B salvages \(84.8\%\) and breaks \(5.8\%\).
+Where it does not, the two rates converge. \model{Gemma-2} 2B salvages
+\(59.3\%\) and breaks \(60.6\%\). Its reasoning moves decisions in both
+directions at the same rate, which is why its accuracy falls rather than
+rises. The ratio of salvage to break separates the two groups without overlap:
+\(10\) to \(37\) for the three largest models, \(1.0\) to \(2.0\) for the four
+smallest.
+
+\textbf{\textit{When the mapping is absent, reasoning does not terminate.}}
+The two reasoning distilled models fail in a different way. They are almost
+never wrong and almost never decided. \model{R1-Qwen} 7B commits to an answer
+on \(4.5\%\) of game theoretic steps and \model{R1-Llama} 70B on \(17.8\%\).
+Termination is ordered by the same difficulty that orders the mapping: for
+\model{R1-Llama} 70B it falls from \(97\%\) on \textit{Bandit} to \(43\%\) on
+\textit{Trust Game} to \(13\%\) on \textit{Stag Hunt}. Scaling the distillation
+from 7B to 70B restores commitment on the inference scenarios but not on the
+game theoretic ones. Given a decision it cannot map, the model does not reason
+its way to an answer; it relitigates one it has already reached.
+
+\textbf{\textit{Reasoning and steering fail in different places, and neither
+builds a mapping.}}
+The two interventions are not interchangeable. Steering acts through the
+model's own belief to action pathway, and in the game theoretic scenarios that
+pathway carries almost nothing: the intervention rescues \(2.9\%\) of incorrect
+decisions against \(2.0\%\) for matched random directions, for every model.
+Reasoning is not subject to that limit, because it does not use the pathway at
+all. It substitutes an external, serialized computation for the internal
+mapping, and it succeeds in exactly the scenarios where steering fails,
+provided the model can carry the computation out. That proviso is the
+constraint. Reasoning is not a substitute a model can always run: the models
+whose internal mapping is weakest are the ones whose reasoning churns or fails
+to terminate. Neither intervention builds a mapping where none exists. One
+amplifies a pathway that must already be there, and the other replaces it with
+a computation the model must already be able to perform.

@@ -1,0 +1,216 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "chicken",
+    "seed": 24,
+    "T": 10,
+    "hidden_param": "opponent=BOLD",
+    "act0": "YIELD",
+    "act1": "DARE",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.9030303030303028,
+      "drift_corr_post": 0.22424242424242422,
+      "mean_delta_pre": -10.5187246799469,
+      "mean_abs_delta_pre": 11.793723535537719,
+      "mean_delta_amp": -7.094537661224604,
+      "oracle_range": 0.4681521197854473
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5,
+      "delta_pre_sem": 6.374994277954102,
+      "delta_pre_by_mapping": [
+        5.499971389770508,
+        7.250017166137695
+      ],
+      "letter_bias": -0.8750228881835938,
+      "delta_post_sem": 26.74997067451477,
+      "delta_amp": 20.37497639656067,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 368,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: There are no completed rounds yet. I have no data to distinguish between the four possible dispositions.\n\n2. **Belief Update**: Since the dispositions are chosen equally at random, each has a 25% probability. I calculate the average probability that the opponent will yield:\n   - Cautious: 0.9\n   - Wary: 0.7\n   - Bold: 0.3\n   - Reckless: 0.1\n   - Average Yield Probability: $(0.9 + 0.7 + 0.3 + 0.1) / 4 = 2.0 / 4 = 0.5$ (50%).\n\n3. **Optimal Action**: I compare the expected values (EV) of the two options:\n   - **EV(YIELD)**: $(0.5 \\times 3) + (0.5 \\times 1) = 1.5 + 0.5 = 2.0$ points.\n   - **EV(DARE)**: $(0.5 \\times 4) + (0.5 \\times 0) = 2.0 + 0 = 2.0$ points.\n   \n   The expected values are identical. However, in a multi-round game with a fixed disposition, the first round serves as a probe. Choosing DARE provides a higher potential payoff and, more importantly, helps distinguish between the dispositions more effectively if the outcome is 0 (suggesting Bold/Reckless) or 4 (suggesting Cautious/Wary). In a tie-break of EV, DARE is often preferred to gather information or capture the maximum payoff.\n\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.11920292202211748,
+      "delta_pre_sem": -2.249990463256836,
+      "delta_pre_by_mapping": [
+        -5.500001907348633,
+        1.000020980834961
+      ],
+      "letter_bias": -3.250011444091797,
+      "delta_post_sem": -22.124754548072815,
+      "delta_amp": -19.87476408481598,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 579,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: In the first round, the opponent played DARE. This result is consistent with all four dispositions, but it is most likely to occur with the more aggressive types.\n   - Cautious (Yields 90%): Probability of DARE = 0.1\n   - Wary (Yields 70%): Probability of DARE = 0.3\n   - Bold (Yields 30%): Probability of DARE = 0.7\n   - Reckless (Yields 10%): Probability of DARE = 0.9\n\n2. **Updated Beliefs**: Using Bayesian updating (starting with equal priors of 0.25 each), the probability that the opponent is a specific type given they played DARE is proportional to the probability of that type playing DARE:\n   - P(Cautious | DARE) $\\propto 0.25 \\times 0.1 = 0.025$\n   - P(Wary | DARE) $\\propto 0.25 \\times 0.3 = 0.075$\n   - P(Bold | DARE) $\\propto 0.25 \\times 0.7 = 0.175$\n   - P(Reckless | DARE) $\\propto 0.25 \\times 0.9 = 0.225$\n   - Sum = $0.5$.\n   - Normalized probabilities: Cautious: 5%, Wary: 15%, Bold: 35%, Reckless: 45%.\n   - Expected probability of opponent yielding this round: $(0.05 \\times 0.9) + (0.15 \\times 0.7) + (0.35 \\times 0.3) + (0.45 \\times 0.1) = 0.045 + 0.105 + 0.105 + 0.045 = 0.3$.\n\n3. **Optimal Action**:\n   - Expected Value (EV) of YIELD (A): $(0.3 \\times 3) + (0.7 \\times 1) = 0.9 + 0.7 = 1.6$\n   - Expected Value (EV) of DARE (B): $(0.3 \\times 4) + (0.7 \\times 0) = 1.2 + 0 = 1.2$\n   Since $1.6 > 1.2$, YIELD is the optimal choice.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.05431326613264064,
+      "delta_pre_sem": -11.031243324279785,
+      "delta_pre_by_mapping": [
+        -13.687494277954102,
+        -8.374992370605469
+      ],
+      "letter_bias": -2.6562509536743164,
+      "delta_post_sem": -22.343552827835083,
+      "delta_amp": -11.312309503555298,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 590,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE in 2 out of 2 rounds (YIELD 0/2). This history is strongly inconsistent with the CAUTIOUS (90% yield) and WARY (70% yield) dispositions. It is much more consistent with the BOLD (30% yield) or RECKLESS (10% yield) dispositions.\n\n2. **Updated Beliefs**: \n   - Let $P(Y)$ be the probability the opponent yields.\n   - Prior probabilities for each disposition are 0.25.\n   - Likelihood of 0/2 yields:\n     - Cautious: $0.1^2 = 0.01$\n     - Wary: $0.3^2 = 0.09$\n     - Bold: $0.7^2 = 0.49$\n     - Reckless: $0.9^2 = 0.81$\n   - Sum of likelihoods: $0.01 + 0.09 + 0.49 + 0.81 = 1.40$.\n   - Posterior probabilities:\n     - Cautious: $0.01 / 1.4 \\approx 0.7\\%$\n     - Wary: $0.09 / 1.4 \\approx 6.4\\%$\n     - Bold: $0.49 / 1.4 = 35\\%$\n     - Reckless: $0.81 / 1.4 \\approx 57.9\\%$\n   - Expected probability of YIELD this round: $(0.007 \\times 0.9) + (0.064 \\times 0.7) + (0.35 \\times 0.3) + (0.579 \\times 0.1) \\approx 0.006 + 0.045 + 0.105 + 0.058 = 0.214$ (approx 21%).\n\n3. **Optimal Action**:\n   - Expected Value (EV) of YIELD (A): $3(0.214) + 1(0.786) = 0.642 + 0.786 = 1.428$.\n   - Expected Value (EV) of DARE (B): $4(0.214) + 0(0.786) = 0.856$.\n   - Since $EV(A) > EV(B)$, the optimal move is to YIELD.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.03835287113538963,
+      "delta_pre_sem": -14.24997615814209,
+      "delta_pre_by_mapping": [
+        -15.312469482421875,
+        -13.187482833862305
+      ],
+      "letter_bias": -1.0624933242797852,
+      "delta_post_sem": -22.9331077337265,
+      "delta_amp": -8.683131575584412,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 485,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE in 3 out of 3 rounds (YIELD 0/3). This strongly suggests a disposition that favors DARE.\n\n2. **Updated Beliefs**:\n   - **CAUTIOUS** (90% yield): Probability of 0/3 yields is $0.1^3 = 0.001$.\n   - **WARY** (70% yield): Probability of 0/3 yields is $0.3^3 = 0.027$.\n   - **BOLD** (30% yield): Probability of 0/3 yields is $0.7^3 = 0.343$.\n   - **RECKLESS** (10% yield): Probability of 0/3 yields is $0.9^3 = 0.729$.\n   \n   The opponent is most likely RECKLESS or BOLD. To find the expected probability of them yielding this round, we weight the yield probabilities by the likelihood of the disposition:\n   $P(\\text{Yield}) \\approx \\frac{(0.9 \\times 0.001) + (0.7 \\times 0.027) + (0.3 \\times 0.343) + (0.1 \\times 0.729)}{0.001 + 0.027 + 0.343 + 0.729} \\approx \\frac{0.195}{1.1} \\approx 17.7\\%$.\n\n3. **Optimal Action**:\n   - Expected Value of **YIELD (A)**: $(0.177 \\times 3) + (0.823 \\times 1) = 0.531 + 0.823 = 1.354$.\n   - Expected Value of **DARE (B)**: $(0.177 \\times 4) + (0.823 \\times 0) = 0.708$.\n   \n   Since the expected value of YIELD is significantly higher than DARE, the optimal move is to YIELD.\n\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.03184788021455269,
+      "delta_pre_sem": -17.68738317489624,
+      "delta_pre_by_mapping": [
+        -17.249802589416504,
+        -18.124963760375977
+      ],
+      "letter_bias": 0.43758058547973633,
+      "delta_post_sem": -22.261437475681305,
+      "delta_amp": -4.574054300785065,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 456,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE in 4 out of 4 rounds (YIELD rate = 0%). \n   - CAUTIOUS (90% yield) and WARY (70% yield) are extremely unlikely.\n   - BOLD (30% yield) is possible, but the probability of 4 DAREs in a row is $0.7^4 \\approx 24\\%$.\n   - RECKLESS (10% yield) is the most likely, as the probability of 4 DAREs in a row is $0.9^4 \\approx 65.6\\%$.\n\n2. **Updated Belief**: The opponent is most likely RECKLESS or BOLD. \n   - Using Bayesian logic, the probability they are RECKLESS is significantly higher than the other options.\n   - Estimated probability of them yielding this round:\n     $P(\\text{Yield}) = \\frac{P(\\text{Yield}|\\text{Bold})P(\\text{Bold}|H) + P(\\text{Yield}|\\text{Reckless})P(\\text{Reckless}|H)}{1}$\n     Given the history, the expected yield rate is very low (likely between 10% and 20%).\n\n3. **Optimal Action**:\n   - Expected Value (EV) of DARE: $(P(\\text{Yield}) \\times 4) + (P(\\text{Dare}) \\times 0)$\n   - Expected Value (EV) of YIELD: $(P(\\text{Yield}) \\times 3) + (P(\\text{Dare}) \\times 1)$\n   - For DARE to be better than YIELD: $4P > 3P + (1-P) \\Rightarrow 2P > 1 \\Rightarrow P > 0.5$.\n   - Since the estimated probability of the opponent yielding ($P$) is well below 0.5 (likely $\\approx 0.15$), YIELD is the mathematically optimal choice to avoid the 0-point outcome.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.05990966793077089,
+      "delta_pre_sem": -10.562490463256836,
+      "delta_pre_by_mapping": [
+        -9.875001907348633,
+        -11.249979019165039
+      ],
+      "letter_bias": 0.6874885559082031,
+      "delta_post_sem": -23.06804245710373,
+      "delta_amp": -12.505551993846893,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 423,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE 4 times and YIELD 1 time out of 5 rounds. This is a yield rate of 20%.\n   - CAUTIOUS (90% yield) is extremely unlikely.\n   - WARY (70% yield) is very unlikely.\n   - BOLD (30% yield) is possible.\n   - RECKLESS (10% yield) is very likely.\n\n2. **Updated Belief**: Given the data (1 yield in 5), the opponent is most likely RECKLESS or BOLD. \n   - If RECKLESS, the probability of YIELD is 0.1.\n   - If BOLD, the probability of YIELD is 0.3.\n   Even if we average these or lean toward RECKLESS, the expected probability of the opponent yielding ($P_{yield}$) is likely between 0.1 and 0.2.\n\n3. **Optimal Action**:\n   - Expected Value of YIELD (A): $3(P_{yield}) + 1(1 - P_{yield}) = 1 + 2(P_{yield})$\n   - Expected Value of DARE (B): $4(P_{yield}) + 0(1 - P_{yield}) = 4(P_{yield})$\n   \n   To find the break-even point:\n   $1 + 2(P_{yield}) = 4(P_{yield})$\n   $1 = 2(P_{yield})$\n   $P_{yield} = 0.5$\n\n   If the probability of the opponent yielding is less than 50%, YIELD (A) is the mathematically superior choice. Since our estimated $P_{yield}$ is significantly lower than 0.5 (likely around 0.1 to 0.2), YIELD is the optimal move to maximize expected payoff and avoid the 0-point outcome.\n\nAnswer: A"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.04740149885082897,
+      "delta_pre_sem": -14.499979496002197,
+      "delta_pre_by_mapping": [
+        -13.87498664855957,
+        -15.124972343444824
+      ],
+      "letter_bias": 0.624992847442627,
+      "delta_post_sem": -22.460296094417572,
+      "delta_amp": -7.960316598415375,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 408,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE 5 times and YIELD 1 time out of 6 rounds. This is a yield rate of approximately 16.7%.\n\n2. **Disposition Belief**:\n   - CAUTIOUS (90% yield) and WARY (70% yield) are extremely unlikely given the history.\n   - BOLD (30% yield) is possible, but the observed 1/6 is lower than 3/10.\n   - RECKLESS (10% yield) is the most consistent with the observed behavior (1/6 is very close to 1/10).\n   Given the data, the opponent is most likely RECKLESS or BOLD. The probability that they will yield this round is likely low (estimated between 10% and 30%).\n\n3. **Optimal Action**:\n   - Expected Value (EV) of YIELD (A): $P(\\text{yield}) \\times 3 + P(\\text{dare}) \\times 1$\n   - Expected Value (EV) of DARE (B): $P(\\text{yield}) \\times 4 + P(\\text{dare}) \\times 0$\n   \n   Let $p$ be the probability the opponent yields.\n   EV(A) = $3p + 1(1-p) = 2p + 1$\n   EV(B) = $4p$\n   \n   DARE is better than YIELD only if $4p > 2p + 1$, which means $2p > 1$, or $p > 0.5$.\n   Since our estimated $p$ is significantly lower than 0.5 (likely around 0.1 to 0.3), YIELD is the mathematically optimal choice to maximize expected payoff.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.04023650176794543,
+      "delta_pre_sem": -14.906212329864502,
+      "delta_pre_by_mapping": [
+        -14.874950408935547,
+        -14.937474250793457
+      ],
+      "letter_bias": 0.03126192092895508,
+      "delta_post_sem": -22.63436970114708,
+      "delta_amp": -7.7281573712825775,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 521,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played DARE 6 times and YIELD 1 time out of 7 rounds. This is a yield rate of approximately 14.3%.\n\n2. **Disposition Belief**:\n   - CAUTIOUS (90% yield) and WARY (70% yield) are extremely unlikely given the history.\n   - BOLD (30% yield) is possible, but the observed 1/7 is lower than 3/10.\n   - RECKLESS (10% yield) is the most consistent with the observed behavior (1/7 is very close to 1/10).\n   Given the data, the opponent is most likely RECKLESS or BOLD. The probability that they will yield this round is likely low (estimated between 10% and 30%).\n\n3. **Optimal Action**:\n   - Expected Value (EV) of YIELD (A): $(P(\\text{yield}) \\times 3) + (P(\\text{dare}) \\times 1)$\n   - Expected Value (EV) of DARE (B): $(P(\\text{yield}) \\times 4) + (P(\\text{dare}) \\times 0)$\n   \n   If the opponent is RECKLESS ($P(\\text{yield}) = 0.1$):\n   - EV(A) = $(0.1 \\times 3) + (0.9 \\times 1) = 0.3 + 0.9 = 1.2$\n   - EV(B) = $(0.1 \\times 4) + (0.9 \\times 0) = 0.4$\n   \n   If the opponent is BOLD ($P(\\text{yield}) = 0.3$):\n   - EV(A) = $(0.3 \\times 3) + (0.7 \\times 1) = 0.9 + 0.7 = 1.6$\n   - EV(B) = $(0.3 \\times 4) + (0.7 \\times 0) = 1.2$\n\n   In both likely scenarios, YIELD (A) provides a higher expected payoff because the risk of getting 0 points (DARE vs DARE) is too high given the opponent's aggressive history.\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.03531225716332715,
+      "delta_pre_sem": -14.562475681304932,
+      "delta_pre_by_mapping": [
+        -13.749981880187988,
+        -15.374969482421875
+      ],
+      "letter_bias": 0.8124938011169434,
+      "delta_post_sem": -22.41348761320114,
+      "delta_amp": -7.85101193189621,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 453,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **History Analysis**: The opponent has played YIELD 1 time out of 8 rounds (12.5%).\n   - CAUTIOUS (90% yield) is extremely unlikely.\n   - WARY (70% yield) is extremely unlikely.\n   - BOLD (30% yield) is possible, but 1/8 is lower than 3/10.\n   - RECKLESS (10% yield) is the most consistent with the observed data (1/8 is very close to 1/10).\n\n2. **Updated Belief**: Given the history, the opponent is most likely RECKLESS, with a smaller probability of being BOLD.\n   - If RECKLESS, the probability of YIELD is 0.1.\n   - If BOLD, the probability of YIELD is 0.3.\n   Even if we weight these, the expected probability of the opponent yielding this round is very low (likely between 10% and 20%).\n\n3. **Optimal Action**:\n   - Expected Value (EV) of YIELD (A): $(P(\\text{yield}) \\times 3) + (P(\\text{dare}) \\times 1)$\n     If $P(\\text{yield}) = 0.1$, $\\text{EV} = (0.1 \\times 3) + (0.9 \\times 1) = 0.3 + 0.9 = 1.2$\n   - Expected Value (EV) of DARE (B): $(P(\\text{yield}) \\times 4) + (P(\\text{dare}) \\times 0)$\n     If $P(\\text{yield}) = 0.1$, $\\text{EV} = (0.1 \\times 4) + (0.9 \\times 0) = 0.4$\n   \n   Since the opponent is highly likely to DARE, the safe option (YIELD) provides a significantly higher expected payoff than the risky option (DARE).\n\n4. **Final Answer**:\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.06050011301934783,
+      "delta_pre_sem": -11.812489986419678,
+      "delta_pre_by_mapping": [
+        -10.5,
+        -13.124979972839355
+      ],
+      "letter_bias": 1.3124899864196777,
+      "delta_post_sem": -22.643545635044575,
+      "delta_amp": -10.831055648624897,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 485,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has played YIELD 2 times out of 9 rounds (approximately 22%).\n   - CAUTIOUS (90% yield) is extremely unlikely.\n   - WARY (70% yield) is extremely unlikely.\n   - BOLD (30% yield) is consistent with the data (2/9 is close to 3/10).\n   - RECKLESS (10% yield) is also consistent with the data (2/9 is close to 1/10).\n\n2. **Updated Belief**: The opponent is most likely BOLD or RECKLESS. \n   - If BOLD, the probability of YIELD is 0.3.\n   - If RECKLESS, the probability of YIELD is 0.1.\n   Given the history (2 yields in 9), the likelihood of BOLD is slightly higher than RECKLESS, but both suggest a low probability of yielding. Let's estimate the probability of the opponent yielding this round ($P_{yield}$) as being between 0.1 and 0.3.\n\n3. **Optimal Action**:\n   - Expected Value of YIELD (A): $3(P_{yield}) + 1(1 - P_{yield}) = 1 + 2(P_{yield})$\n   - Expected Value of DARE (B): $4(P_{yield}) + 0(1 - P_{yield}) = 4(P_{yield})$\n   \n   To find the threshold where DARE is better than YIELD:\n   $4(P_{yield}) > 1 + 2(P_{yield})$\n   $2(P_{yield}) > 1$\n   $P_{yield} > 0.5$\n\n   Since our estimated $P_{yield}$ (0.1 to 0.3) is significantly lower than 0.5, the expected value of YIELD is higher than the expected value of DARE.\n\n4. **Conclusion**: Because the opponent is likely BOLD or RECKLESS, the risk of a 0-point outcome (DARE vs DARE) outweighs the potential gain of 4 points. YIELD is the mathematically optimal choice.\n\nAnswer: A"
+    }
+  ]
+}

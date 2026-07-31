@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "ipd",
+    "seed": 18,
+    "T": 10,
+    "hidden_param": "opponent=TIT_FOR_TAT",
+    "act0": "DEFECT",
+    "act1": "COOPERATE",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.309090909090909,
+      "drift_corr_post": 0.7454545454545454,
+      "mean_delta_pre": -1.3062488079071044,
+      "mean_abs_delta_pre": 5.643743181228638,
+      "mean_delta_amp": 7.343152570724487,
+      "oracle_range": 0.9452039659550575
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.9985719267115775,
+      "delta_pre_sem": 11.687479496002197,
+      "delta_pre_by_mapping": [
+        10.749963760375977,
+        12.624995231628418
+      ],
+      "letter_bias": -0.9375157356262207,
+      "delta_post_sem": 27.656193494796753,
+      "delta_amp": 15.968713998794556,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 441,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 9
+      },
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nThe history is currently empty. This is the first round, so there is no behavioral data to analyze.\n\n2. **What is your updated belief about their strategy?**\nSince the strategy was chosen equally at random, there is a 1/3 (33.3%) probability for each: ALWAYS_COOP, ALWAYS_DEF, and TIT_FOR_TAT.\n\n3. **Considering both this round's payoff and the 9 remaining rounds, what is the optimal action?**\n- If I play **DEFECT (A)**:\n    - Against ALWAYS_COOP: I get 5 points now and can continue to exploit them.\n    - Against ALWAYS_DEF: I get 1 point now and avoid being exploited.\n    - Against TIT_FOR_TAT: I get 5 points now, but they will defect in the next round. This triggers a cycle of mutual defection (1 point per round) unless I switch back to cooperation.\n- If I play **COOPERATE (B)**:\n    - Against ALWAYS_COOP: I get 3 points.\n    - Against ALWAYS_DEF: I get 0 points.\n    - Against TIT_FOR_TAT: I get 3 points now and maintain a cooperative relationship (3 points per round) for the remaining 9 rounds.\n\nThe key trade-off is between the immediate gain of defection and the long-term gain of cooperation with TIT_FOR_TAT. In a 10-round game, establishing cooperation with TIT_FOR_TAT (who starts by cooperating) is generally the most stable way to maximize points, as the penalty for \"betraying\" them early is the loss of 2 points per round for the rest of the game (3 vs 1). Since TIT_FOR_TAT and ALWAYS_COOP both cooperate in Round 1, COOPERATE is the safer opening move to test the waters and secure high long-term payoffs.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9998937914787018,
+      "delta_pre_sem": -3.812498092651367,
+      "delta_pre_by_mapping": [
+        -3.875001907348633,
+        -3.7499942779541016
+      ],
+      "letter_bias": -0.06250381469726562,
+      "delta_post_sem": 19.406227588653564,
+      "delta_amp": 23.21872568130493,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 472,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 8
+      },
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nIn Round 1, I played DEFECT and the opponent played COOPERATE. \n- This is consistent with ALWAYS_COOP (who always cooperates).\n- This is consistent with TIT_FOR_TAT (who starts by cooperating).\n- This is inconsistent with ALWAYS_DEF (who would have defected), unless they made a rare mistake (1 in 10 chance).\n\n2. **What is your updated belief about their strategy?**\nThe opponent is most likely either ALWAYS_COOP or TIT_FOR_TAT. There is a very low probability they are ALWAYS_DEF.\n\n3. **Considering both this round's payoff and the 8 remaining rounds, what is the optimal action?**\n- If the opponent is ALWAYS_COOP, DEFECTING every round is the optimal strategy to maximize points.\n- If the opponent is TIT_FOR_TAT, they will now mirror my previous move. Since I played DEFECT in Round 1, a TIT_FOR_TAT opponent will play DEFECT in Round 2. If I continue to DEFECT, we enter a cycle of mutual defection (1 point each). If I switch to COOPERATE now, a TIT_FOR_TAT opponent will return to COOPERATE in Round 3, allowing us to earn 3 points each for the remainder of the game.\n- Given the history, the opponent is likely not ALWAYS_DEF. The choice is between exploiting a \"sucker\" (ALWAYS_COOP) or repairing a relationship with a \"reciprocator\" (TIT_FOR_TAT). \n- In a 10-round game, the long-term gain of establishing cooperation with TIT_FOR_TAT (3 points $\\times$ 7 remaining rounds = 21) outweighs the short-term gain of defecting against them now (1 point) or the risk of losing a few points against ALWAYS_COOP. However, since I already defected in Round 1, the TIT_FOR_TAT opponent is guaranteed to defect this round. To \"reset\" them to cooperation, I must cooperate now.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.3186701250186565,
+      "delta_pre_sem": 2.9375,
+      "delta_pre_by_mapping": [
+        2.499998092651367,
+        3.375001907348633
+      ],
+      "letter_bias": -0.4375019073486328,
+      "delta_post_sem": -20.54684615135193,
+      "delta_amp": -23.48434615135193,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 390,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 7
+      },
+      "cot_text": "1. **What does the history tell you about the opponent's strategy?**\nIn Round 1, I played DEFECT and the opponent played COOPERATE. In Round 2, I played COOPERATE and the opponent played COOPERATE.\n- If the opponent were ALWAYS_DEF, they would have defected in both rounds (unless they made two mistakes in a row, which is unlikely).\n- If the opponent were TIT_FOR_TAT, they would have played COOPERATE in Round 1 (standard start) and then copied my Round 1 move (DEFECT) in Round 2. However, the opponent played COOPERATE in Round 2.\n- If the opponent were ALWAYS_COOP, they would have played COOPERATE in both rounds.\n\n2. **What is your updated belief about their strategy?**\nThe opponent has cooperated twice. The fact that they cooperated in Round 2 despite my defection in Round 1 strongly suggests they are not TIT_FOR_TAT. This leaves ALWAYS_COOP as the most likely strategy. While it is possible they are TIT_FOR_TAT and made a mistake in Round 2, the evidence currently points toward ALWAYS_COOP.\n\n3. **Considering both this round's payoff and the 7 remaining rounds, what is the optimal action?**\nIf the opponent is ALWAYS_COOP, the optimal strategy is to DEFECT every round to maximize points (5 per round instead of 3). If the opponent is TIT_FOR_TAT, cooperating is better for the long term. However, the history (specifically the Round 2 response) has significantly lowered the probability that the opponent is TIT_FOR_TAT. Against an ALWAYS_COOP opponent, DEFECTING now and in the future yields the highest total payoff.\n\n4. **Final Answer**\nAnswer: A"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.2698360500336067,
+      "delta_pre_sem": -0.8750009536743164,
+      "delta_pre_by_mapping": [
+        -0.7500019073486328,
+        -1.0
+      ],
+      "letter_bias": 0.1249990463256836,
+      "delta_post_sem": -21.710914134979248,
+      "delta_amp": -20.83591318130493,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 541,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 6
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE.\n*   Round 2: You COOPERATE, Opponent COOPERATE.\n*   Round 3: You DEFECT, Opponent DEFECT.\n\n2. **Evaluate strategies based on history:**\n*   **ALWAYS_COOP:** Possible. They cooperated in rounds 1 and 2, and the defection in round 3 would be their \"occasional mistake\" (1 in 10 chance).\n*   **ALWAYS_DEF:** Highly unlikely. They cooperated twice in three rounds.\n*   **TIT_FOR_TAT (TFT):** Very likely. In round 1, TFT starts with COOPERATE (Matches). In round 2, TFT copies your round 1 move (DEFECT), but the opponent played COOPERATE. This would be a mistake. In round 3, TFT copies your round 2 move (COOPERATE), but the opponent played DEFECT. This would be another mistake.\n*   **Wait, let's re-examine TFT:**\n    *   R1: You D, Opp C (TFT starts C - Match)\n    *   R2: You C, Opp C (TFT should have played D because you played D in R1 - Mistake)\n    *   R3: You D, Opp D (TFT should have played C because you played C in R2 - Mistake)\n    Two mistakes in three rounds is statistically unlikely for a 1/10 error rate.\n\n3. **Updated Belief:**\nThe opponent's behavior (C, C, D) most closely aligns with **ALWAYS_COOP** who made a mistake in round 3. If the opponent were TIT_FOR_TAT, they would have mirrored your DEFECT from round 1 in round 2, and your COOPERATE from round 2 in round 3. Instead, they cooperated in round 2 and defected in round 3.\n\n4. **Optimal Action:**\nIf the opponent is ALWAYS_COOP, the optimal strategy is to DEFECT every round to maximize points (5 vs 3). If the opponent is TIT_FOR_TAT, cooperation is better long-term. However, the evidence strongly suggests the opponent is not following your moves (TFT), but rather generally cooperating. Given the high probability of ALWAYS_COOP (or a very forgiving strategy), DEFECTING provides the highest immediate payoff and likely the highest total payoff.\n\nAnswer: A"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.9275735146384823,
+      "delta_pre_sem": -6.562492370605469,
+      "delta_pre_by_mapping": [
+        -6.75,
+        -6.3749847412109375
+      ],
+      "letter_bias": -0.18750762939453125,
+      "delta_post_sem": 23.59372329711914,
+      "delta_amp": 30.15621566772461,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 775,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 5
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE. (Consistent with ALWAYS_COOP or TIT_FOR_TAT).\n*   Round 2: You COOPERATE, Opponent COOPERATE. (Consistent with ALWAYS_COOP or TIT_FOR_TAT copying your R1 DEFECT? No, TIT_FOR_TAT would have defected here. However, the prompt mentions a 1/10 mistake rate).\n*   Round 3: You DEFECT, Opponent DEFECT. (Consistent with ALWAYS_DEF or TIT_FOR_TAT copying your R2 COOPERATE? No, TIT_FOR_TAT would have cooperated. This looks like a reaction to your R2 COOPERATE if they are ALWAYS_DEF, or a mistake).\n*   Round 4: You COOPERATE, Opponent DEFECT. (Consistent with ALWAYS_DEF or TIT_FOR_TAT copying your R3 DEFECT).\n\n2. **Updated Belief:**\n*   **ALWAYS_COOP:** Very unlikely. They have defected twice in the last two rounds.\n*   **ALWAYS_DEF:** Possible. They cooperated in R1 and R2, which would require two mistakes in a row (very unlikely).\n*   **TIT_FOR_TAT:** Most likely. \n    *   R1: They start COOP (Correct).\n    *   R2: You DEFECTED in R1 $\\rightarrow$ They should DEFECT. They COOPERATED (Mistake).\n    *   R3: You COOPERATED in R2 $\\rightarrow$ They should COOPERATE. They DEFECTED (Mistake).\n    *   R4: You DEFECTED in R3 $\\rightarrow$ They should DEFECT (Correct).\n\nWait, looking closer at the history:\nR1: You D, Opp C\nR2: You C, Opp C (TFT should have played D)\nR3: You D, Opp D (TFT should have played C)\nR4: You C, Opp D (TFT should have played D)\n\nActually, the opponent has played: C, C, D, D.\nYour plays were: D, C, D, C.\nIf the opponent is TIT_FOR_TAT:\nR2 should be D (you played D in R1). They played C. (Mistake)\nR3 should be C (you played C in R2). They played D. (Mistake)\nR4 should be D (you played D in R3). They played D. (Correct)\n\nIf the opponent is ALWAYS_DEF:\nR1 and R2 were mistakes. (Very unlikely)\n\nIf the opponent is ALWAYS_COOP:\nR3 and R4 were mistakes. (Unlikely)\n\nThe opponent's behavior (C, C, D, D) mirrors your behavior (D, C, D, C) shifted by one round, albeit with some noise. The most plausible strategy that reacts to your moves is TIT_FOR_TAT.\n\n3. **Optimal Action:**\nAgainst TIT_FOR_TAT, the long-term optimal strategy is to cooperate to build a streak of (3,3) payoffs. Since there are 5 rounds remaining, the benefit of establishing cooperation outweighs the one-time gain of defecting, especially since the opponent just defected in R4 (meaning they will likely defect in R5 if you don't signal cooperation or if they are strictly following TFT). However, to \"reset\" a TIT_FOR_TAT player who is defecting, you must cooperate.\n\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.9477161951618905,
+      "delta_pre_sem": 1.1874990463256836,
+      "delta_pre_by_mapping": [
+        -3.814697265625e-06,
+        2.375001907348633
+      ],
+      "letter_bias": -1.1875028610229492,
+      "delta_post_sem": 26.06245458126068,
+      "delta_amp": 24.874955534934998,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 693,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 4
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE.\n*   Round 2: You COOPERATE, Opponent COOPERATE.\n*   Round 3: You DEFECT, Opponent DEFECT.\n*   Round 4: You COOPERATE, Opponent DEFECT.\n*   Round 5: You COOPERATE, Opponent COOPERATE.\n\n2. **Evaluate strategies:**\n*   **ALWAYS_COOP:** Unlikely. The opponent defected in rounds 3 and 4. While mistakes happen (1/10), two defections in five rounds is statistically unlikely for this strategy.\n*   **ALWAYS_DEF:** Unlikely. The opponent cooperated in rounds 1, 2, and 5.\n*   **TIT_FOR_TAT (TFT):** Very likely. \n    *   Round 1: TFT starts with COOPERATE. (Matches)\n    *   Round 2: You played DEFECT in R1 $\\rightarrow$ TFT should play DEFECT. However, the opponent played COOPERATE. (Possible mistake).\n    *   Round 3: You played COOPERATE in R2 $\\rightarrow$ TFT should play COOPERATE. However, the opponent played DEFECT. (Possible mistake).\n    *   Round 4: You played DEFECT in R3 $\\rightarrow$ TFT should play DEFECT. (Matches).\n    *   Round 5: You played COOPERATE in R4 $\\rightarrow$ TFT should play COOPERATE. (Matches).\n\nWait, looking closer at the history:\nR1: You D, Opp C.\nR2: You C, Opp C. (TFT would have played D here because you played D in R1).\nR3: You D, Opp D. (TFT would have played C here because you played C in R2).\nR4: You C, Opp D. (TFT would have played D here because you played D in R3).\nR5: You C, Opp C. (TFT would have played C here because you played C in R4).\n\nThe opponent's moves were: C, C, D, D, C.\nYour moves were: D, C, D, C, C.\nTFT's expected moves based on your history: C, D, C, D, C.\nThe opponent matched TFT in rounds 1, 4, and 5. They deviated in rounds 2 and 3.\n\n3. **Optimal Action:**\nThe opponent is most likely TIT_FOR_TAT (despite some noise/mistakes) or a mix. If the opponent is ALWAYS_DEF, you should defect. If they are ALWAYS_COOP, you should defect. If they are TIT_FOR_TAT, cooperating now secures a stream of 3s for the remaining rounds, whereas defecting now triggers a defection from them in the next round. Given the opponent cooperated in the most recent round (R5), a TIT_FOR_TAT opponent will cooperate in R6. Cooperating now is the best way to maintain a cooperative cycle for the final 5 rounds (R6-R10).\n\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.8361360188317869,
+      "delta_pre_sem": 5.874993324279785,
+      "delta_pre_by_mapping": [
+        4.6249847412109375,
+        7.125001907348633
+      ],
+      "letter_bias": -1.2500085830688477,
+      "delta_post_sem": 25.92376697063446,
+      "delta_amp": 20.048773646354675,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 668,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 3
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE.\n*   Round 2: You COOPERATE, Opponent COOPERATE.\n*   Round 3: You DEFECT, Opponent DEFECT. (Opponent mirrored your Round 2 move? No, they mirrored your Round 2 COOPERATE with a COOPERATE in Round 2, but in Round 3 they DEFECTED after you DEFECTED in Round 1? No, Tit-for-Tat mirrors the *previous* round).\n*   Let's re-examine the sequence:\n    *   R1: You D $\\rightarrow$ Opponent C (TFT would C here)\n    *   R2: You C $\\rightarrow$ Opponent C (TFT would mirror your R1 D and play D. Opponent played C).\n    *   R3: You D $\\rightarrow$ Opponent D (TFT would mirror your R2 C and play C. Opponent played D).\n    *   R4: You C $\\rightarrow$ Opponent D (TFT would mirror your R3 D and play D. Opponent played D).\n    *   R5: You C $\\rightarrow$ Opponent C (TFT would mirror your R4 C and play C. Opponent played C).\n    *   R6: You C $\\rightarrow$ Opponent C (TFT would mirror your R5 C and play C. Opponent played C).\n\n2. **Updated belief:**\n*   **ALWAYS_DEF:** Ruled out. The opponent cooperated 4/6 times.\n*   **ALWAYS_COOP:** Unlikely. The opponent defected in R3 and R4.\n*   **TIT_FOR_TAT:** Let's check the mirroring again.\n    *   R2: Opponent played C (Your R1 was D). **Mismatch.**\n    *   R3: Opponent played D (Your R2 was C). **Mismatch.**\n    *   R4: Opponent played D (Your R3 was D). **Match.**\n    *   R5: Opponent played C (Your R4 was C). **Match.**\n    *   R6: Opponent played C (Your R5 was C). **Match.**\n    The opponent has mirrored your previous move perfectly for the last 3 rounds. The early mismatches could be the \"occasional mistakes\" mentioned in the prompt, or the opponent is simply Tit-for-Tat and the early rounds were noisy. Given the recent perfect mirroring, TIT_FOR_TAT is the most probable strategy.\n\n3. **Optimal action:**\nIf the opponent is TIT_FOR_TAT, cooperating now (Round 7) ensures they cooperate in Round 8. If you defect now, they will defect in Round 8. Since there are 3 rounds remaining after this one, the long-term benefit of maintaining a cooperation cycle (3 points per round) outweighs the one-time gain of defecting (5 points) followed by a cycle of mutual defection (1 point per round).\n\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.6788201645302087,
+      "delta_pre_sem": -3.2499990463256836,
+      "delta_pre_by_mapping": [
+        -3.500001907348633,
+        -2.9999961853027344
+      ],
+      "letter_bias": -0.2500028610229492,
+      "delta_post_sem": 24.39838480949402,
+      "delta_amp": 27.648383855819702,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 648,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 2
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE.\n*   Round 2: You COOPERATE, Opponent COOPERATE.\n*   Round 3: You DEFECT, Opponent DEFECT. (Opponent mirrored your Round 2 COOPERATE? No, they mirrored your Round 2 COOPERATE by cooperating in Round 2, but in Round 3 they played DEFECT. Wait, let's look closer: In Round 2 you played COOPERATE, and in Round 3 the opponent played DEFECT. This contradicts TIT_FOR_TAT unless a mistake occurred).\n*   Round 4: You COOPERATE, Opponent DEFECT. (Opponent mirrored your Round 3 DEFECT).\n*   Round 5: You COOPERATE, Opponent COOPERATE. (Opponent mirrored your Round 4 COOPERATE).\n*   Round 6: You COOPERATE, Opponent COOPERATE. (Opponent mirrored your Round 5 COOPERATE).\n*   Round 7: You DEFECT, Opponent COOPERATE. (Opponent mirrored your Round 6 COOPERATE).\n\n2. **Updated belief:**\n*   **ALWAYS_DEF:** Ruled out. The opponent has cooperated 5 out of 7 times.\n*   **ALWAYS_COOP:** Possible, but the opponent defected in Rounds 3 and 4. While mistakes happen (1/10), two defects in a row is unlikely for ALWAYS_COOP.\n*   **TIT_FOR_TAT:** Highly likely. Looking at the sequence:\n    *   R2: Opponent COOP (mirrors your R1 DEFECT? No, but TFT starts with COOP).\n    *   R3: Opponent DEFECT (mirrors your R2 COOP? No. This is a mistake or a mismatch).\n    *   R4: Opponent DEFECT (mirrors your R3 DEFECT).\n    *   R5: Opponent COOP (mirrors your R4 COOP).\n    *   R6: Opponent COOP (mirrors your R5 COOP).\n    *   R7: Opponent COOP (mirrors your R6 COOP).\n    The opponent's moves from Round 4 onwards perfectly mirror your previous move.\n\n3. **Optimal action:**\nThe opponent is almost certainly TIT_FOR_TAT. Against TIT_FOR_TAT, if you defect now (Round 8), they will defect in Round 9. If you cooperate now, they will cooperate in Round 9. Since there are 3 rounds remaining (8, 9, and 10), cooperating now and in the future yields $3+3+3 = 9$ points. Defecting now yields 5 points, but triggers a defection in Round 9. Even if you try to \"trick\" them, the most profitable long-term path against TFT is mutual cooperation.\n\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.4621103857412069,
+      "delta_pre_sem": -5.312495231628418,
+      "delta_pre_by_mapping": [
+        -5.0,
+        -5.624990463256836
+      ],
+      "letter_bias": 0.31249523162841797,
+      "delta_post_sem": -21.734349489212036,
+      "delta_amp": -16.421854257583618,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 621,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 1
+      },
+      "cot_text": "1. **Analyze the history:**\n*   Round 1: You DEFECT, Opponent COOPERATE.\n*   Round 2: You COOPERATE, Opponent COOPERATE. (TFT would have played DEFECT here because you played DEFECT in R1).\n*   Round 3: You DEFECT, Opponent DEFECT. (TFT would have played COOPERATE here because you played COOPERATE in R2).\n*   Round 4: You COOPERATE, Opponent DEFECT. (TFT would have played DEFECT here because you played DEFECT in R3).\n*   Round 5: You COOPERATE, Opponent COOPERATE. (TFT would have played COOPERATE here because you played COOPERATE in R4).\n*   Round 6: You COOPERATE, Opponent COOPERATE. (TFT would have played COOPERATE here because you played COOPERATE in R5).\n*   Round 7: You DEFECT, Opponent COOPERATE. (TFT would have played COOPERATE here because you played COOPERATE in R6).\n*   Round 8: You COOPERATE, Opponent DEFECT. (TFT would have played DEFECT here because you played DEFECT in R7).\n\n2. **Updated belief:**\n*   **TIT_FOR_TAT:** The opponent's moves in Round 2, 3, and 7 strongly contradict the TFT strategy. In R2, they cooperated despite your previous defection. In R3, they defected despite your previous cooperation. In R7, they cooperated despite your previous cooperation (which fits), but the overall pattern of mirroring is absent.\n*   **ALWAYS_DEF:** The opponent has cooperated 5 out of 8 times. This is far too high for an \"almost always defect\" strategy.\n*   **ALWAYS_COOP:** The opponent has defected twice (R4 and R8). Given the \"occasional mistake\" (1 in 10) rule, two mistakes in 8 rounds is slightly high but plausible. More importantly, the opponent's deflections in R4 and R8 occurred immediately after you played COOPERATE in R3 and R6 respectively, which doesn't align with TFT.\n\nThe most likely strategy is ALWAYS_COOP, as the opponent cooperates the majority of the time and does not mirror your moves.\n\n3. **Optimal action:**\nSince the opponent is likely ALWAYS_COOP, the optimal move for any single round is to DEFECT to maximize the payoff (5 vs 3). Even if there is a small chance they are TFT, the history has already shown they are not mirroring your moves reliably. With only two rounds remaining (this one and one more), and the opponent likely being a fixed cooperator, DEFECTING now and in the final round yields the highest expected value.\n\nAnswer: A"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.05468982552364427,
+      "delta_pre_sem": -14.937474250793457,
+      "delta_pre_by_mapping": [
+        -16.562466621398926,
+        -13.312481880187988
+      ],
+      "letter_bias": -1.6249923706054688,
+      "delta_post_sem": -22.679603338241577,
+      "delta_amp": -7.74212908744812,
+      "post_valid": true,
+      "decision_act1": false,
+      "parsed_letter": "A",
+      "n_gen_tokens": 596,
+      "lens_gaps": null,
+      "round_ctx": {
+        "rounds_left": 0
+      },
+      "cot_text": "1. **Analyze the history:**\n   - Round 1: You DEFECT, Opponent COOPERATE.\n   - Round 2: You COOPERATE, Opponent COOPERATE. (If TIT_FOR_TAT, they would have DEFECTED here because you DEFECTED in R1).\n   - Round 3: You DEFECT, Opponent DEFECT. (If TIT_FOR_TAT, they would have COOPERATED here because you COOPERATED in R2).\n   - Round 4: You COOPERATE, Opponent DEFECT. (If TIT_FOR_TAT, they would have DEFECTED here because you DEFECTED in R3).\n   - Round 5: You COOPERATE, Opponent COOPERATE. (If TIT_FOR_TAT, they would have COOPERATED here because you COOPERATED in R4).\n   - Round 6: You COOPERATE, Opponent COOPERATE. (If TIT_FOR_TAT, they would have COOPERATED here because you COOPERATED in R5).\n   - Round 7: You DEFECT, Opponent COOPERATE. (If TIT_FOR_TAT, they would have COOPERATED here because you COOPERATED in R6).\n   - Round 8: You COOPERATE, Opponent DEFECT. (If TIT_FOR_TAT, they would have DEFECTED here because you DEFECTED in R7).\n   - Round 9: You COOPERATE, Opponent COOPERATE. (If TIT_FOR_TAT, they would have COOPERATED here because you COOPERATED in R8).\n\n2. **Updated belief:**\n   - The opponent has cooperated 6/9 times. This rules out ALWAYS_DEF.\n   - The opponent failed to mirror your previous move in Round 2 and Round 3. While mistakes happen (1/10), two early failures to mirror make TIT_FOR_TAT unlikely.\n   - The opponent's behavior is most consistent with ALWAYS_COOP (with a few mistakes/defects in rounds 3, 4, and 8).\n\n3. **Optimal action:**\n   - This is the final round (Round 10/10). There are 0 rounds remaining after this one.\n   - In the final round of a Prisoner's Dilemma, regardless of the opponent's strategy (ALWAYS_COOP, ALWAYS_DEF, or TIT_FOR_TAT), DEFECTING is the dominant strategy because there is no future reciprocity to consider.\n   - If they cooperate, DEFECT gives 5 vs COOPERATE's 3.\n   - If they defect, DEFECT gives 1 vs COOPERATE's 0.\n\nAnswer: A"
+    }
+  ]
+}

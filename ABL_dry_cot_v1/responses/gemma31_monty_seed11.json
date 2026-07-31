@@ -1,0 +1,276 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "monty",
+    "seed": 11,
+    "T": 10,
+    "hidden_param": "rule=random",
+    "act0": "STAY",
+    "act1": "SWITCH",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 9,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.32121212121212117,
+      "drift_corr_post": -0.43030303030303024,
+      "mean_delta_pre": 17.71978054046631,
+      "mean_abs_delta_pre": 17.71978054046631,
+      "mean_delta_amp": 10.752055835723876,
+      "oracle_range": 0.3111111111105911
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.5555555555555556,
+      "delta_pre_sem": 16.59337282180786,
+      "delta_pre_by_mapping": [
+        15.874944686889648,
+        17.311800956726074
+      ],
+      "letter_bias": -0.7184281349182129,
+      "delta_post_sem": 28.5312180519104,
+      "delta_amp": 11.937845230102539,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 413,
+      "tail_gap_mean": 6.132943907380104,
+      "tail_gap_std": 4.801327136374782,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 1,
+        "host_opens": 2,
+        "switch_door": 3
+      },
+      "cot_text": "1. **What does the data tell you about each rule?**\nThere are no completed rounds yet. Therefore, there is no observed data to favor one rule over another.\n\n2. **What is your updated belief about which rule is in play?**\nSince the rule was chosen uniformly at random and no data has been collected, the prior probabilities remain unchanged. Each rule has a probability of $1/3$.\n- $P(\\text{Rule 1}) = 1/3$\n- $P(\\text{Rule 2}) = 1/3$\n- $P(\\text{Rule 3}) = 1/3$\n\n3. **What is the optimal action given that belief?**\nWe calculate the probability of winning for each action (Keep vs. Switch) by marginalizing over the three possible rules:\n- **Probability of winning if I keep (A):**\n  - Under Rule 1: $1/3$\n  - Under Rule 2: $1$\n  - Under Rule 3: $0$\n  - Total: $(1/3 \\times 1/3) + (1/3 \\times 1) + (1/3 \\times 0) = 1/9 + 3/9 + 0 = 4/9$\n\n- **Probability of winning if I switch (B):**\n  - Under Rule 1: $2/3$\n  - Under Rule 2: $0$\n  - Under Rule 3: $1$\n  - Total: $(1/3 \\times 2/3) + (1/3 \\times 0) + (1/3 \\times 1) = 2/9 + 0 + 3/9 = 5/9$\n\nSince $5/9 > 4/9$, switching is the mathematically optimal choice.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.8666666666661467,
+      "delta_pre_sem": 18.545879364013672,
+      "delta_pre_by_mapping": [
+        17.56247901916504,
+        19.529279708862305
+      ],
+      "letter_bias": -0.9834003448486328,
+      "delta_post_sem": 27.453097105026245,
+      "delta_amp": 8.907217741012573,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 719,
+      "tail_gap_mean": 5.003672709167003,
+      "tail_gap_std": 4.736868489641271,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have one observation from a previous round: the player chose to **STAY** and **LOST**.\n*   **Rule 1 (Random):** Under this rule, staying wins 1/3 of the time and loses 2/3 of the time. A \"LOST\" result is consistent with this rule.\n*   **Rule 2 (Always Initial):** Under this rule, staying always wins. Since the result was \"LOST\", Rule 2 is **impossible**.\n*   **Rule 3 (Always Remaining):** Under this rule, staying always loses (because the prize is always behind the door you would switch to). A \"LOST\" result is perfectly consistent with this rule.\n\n**2. What is your updated belief about which rule is in play?**\nPrior to the data, the rules were chosen uniformly (1/3 each).\n*   $P(\\text{Rule 1}) = 1/3$\n*   $P(\\text{Rule 2}) = 1/3$\n*   $P(\\text{Rule 3}) = 1/3$\n\nAfter observing a \"LOST\" result while staying:\n*   $P(\\text{LOST} | \\text{Rule 1}) = 2/3$\n*   $P(\\text{LOST} | \\text{Rule 2}) = 0$\n*   $P(\\text{LOST} | \\text{Rule 3}) = 1$\n\nUsing Bayesian updating:\n*   Relative likelihood for Rule 1: $1/3 \\times 2/3 = 2/9$\n*   Relative likelihood for Rule 2: $1/3 \\times 0 = 0$\n*   Relative likelihood for Rule 3: $1/3 \\times 1 = 3/9$\n\nNormalized probabilities:\n*   $P(\\text{Rule 1} | \\text{Data}) = (2/9) / (5/9) = 2/5 = 40\\%$\n*   $P(\\text{Rule 3} | \\text{Data}) = (3/9) / (5/9) = 3/5 = 60\\%$\n\n**3. What is the optimal action given that belief?**\nWe compare the probability of winning by staying (A) versus switching (B):\n*   **If we STAY (A):**\n    *   Win probability = $P(\\text{Rule 1}) \\times (1/3) + P(\\text{Rule 3}) \\times (0) = 0.4 \\times 0.333 + 0.6 \\times 0 = 0.133$\n*   **If we SWITCH (B):**\n    *   Win probability = $P(\\text{Rule 1}) \\times (2/3) + P(\\text{Rule 3}) \\times (1) = 0.4 \\times 0.666 + 0.6 \\times 1 = 0.266 + 0.6 = 0.866$\n\nSwitching is overwhelmingly more likely to yield the prize.\n\n**4. Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.6666666666651666,
+      "delta_pre_sem": 9.562508583068848,
+      "delta_pre_by_mapping": [
+        8.875024795532227,
+        10.249992370605469
+      ],
+      "letter_bias": -0.6874837875366211,
+      "delta_post_sem": 29.24995470046997,
+      "delta_amp": 19.687446117401123,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 315,
+      "tail_gap_mean": 3.261213966906071,
+      "tail_gap_std": 5.3407837541750185,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have two prior rounds where the action was \"STAY\".\n- Round 1: STAY $\\rightarrow$ LOST. This result is **impossible** under Rule 2 (where STAY always wins) and **possible** under Rule 1 and Rule 3.\n- Round 2: STAY $\\rightarrow$ WON. This result is **impossible** under Rule 3 (where STAY always loses) and **possible** under Rule 1 and Rule 2.\n\n**2. What is your updated belief about which rule is in play?**\n- **Rule 2** is eliminated because we observed a \"LOST\" result when staying.\n- **Rule 3** is eliminated because we observed a \"WON\" result when staying.\n- **Rule 1** is the only rule consistent with both observed outcomes (one win and one loss while staying).\n\nSince Rule 1 is the only remaining possibility, our belief is that the prize is placed uniformly at random each round.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1 (the standard Monty Hall problem), the probability of winning by staying is $1/3$, and the probability of winning by switching is $2/3$. Therefore, switching is the optimal strategy.\n\n**4. Final Answer**\nThe remaining closed door is Door 1. Moving to that door corresponds to Option B.\n\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.6666666666689167,
+      "delta_pre_sem": 17.311988353729248,
+      "delta_pre_by_mapping": [
+        15.999993324279785,
+        18.62398338317871
+      ],
+      "letter_bias": -1.311995029449463,
+      "delta_post_sem": 28.87495183944702,
+      "delta_amp": 11.562963485717773,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 365,
+      "tail_gap_mean": 4.305898017883301,
+      "tail_gap_std": 5.329323413051619,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 1,
+        "switch_door": 2
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 3 rounds where the action was \"STAY\". The results were: LOST, WON, LOST.\n*   **Rule 1 (Random):** Under this rule, staying wins $1/3$ of the time. The observed data (1 win, 2 losses) is perfectly consistent with the expected frequency of Rule 1.\n*   **Rule 2 (Always Initial):** Under this rule, staying wins $100\\%$ of the time. The observed data (2 losses) makes Rule 2 impossible.\n*   **Rule 3 (Always Remaining):** Under this rule, staying wins $0\\%$ of the time. The observed data (1 win) makes Rule 3 impossible.\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed outcomes (Rule 2 cannot produce a loss when staying; Rule 3 cannot produce a win when staying), the only remaining possibility is Rule 1.\n*   Belief: Rule 1 is in play with $100\\%$ probability.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1, the scenario is the classic Monty Hall Problem. The prize is placed uniformly at random.\n*   The probability of winning by staying is $1/3$.\n*   The probability of winning by switching is $2/3$.\nTherefore, the optimal action is to switch.\n\n**4. Final Answer**\nThe remaining closed door is Door 2. Moving to that door corresponds to Option B.\n\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.6666666666700416,
+      "delta_pre_sem": 17.99964427947998,
+      "delta_pre_by_mapping": [
+        16.74998188018799,
+        19.249306678771973
+      ],
+      "letter_bias": -1.2496623992919922,
+      "delta_post_sem": 27.421858549118042,
+      "delta_amp": 9.422214269638062,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 379,
+      "tail_gap_mean": 3.2800532710552215,
+      "tail_gap_std": 7.3754136984749055,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe have observed 4 rounds where the action was \"STAY\". The results were: 1 Win, 3 Losses.\n*   **Rule 1 (Random):** The probability of winning by staying is $1/3$. In 4 trials, seeing 1 win and 3 losses is a very likely outcome (this is the expected value).\n*   **Rule 2 (Always Initial):** The probability of winning by staying is $1$. If Rule 2 were in play, we should have seen 4 wins and 0 losses. The observed data (3 losses) makes Rule 2 impossible.\n*   **Rule 3 (Always Remaining):** The probability of winning by staying is $0$. If Rule 3 were in play, we should have seen 0 wins and 4 losses. The observed data (1 win) makes Rule 3 impossible.\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed data (Rule 2 requires no losses on STAY; Rule 3 requires no wins on STAY), the only remaining possibility is Rule 1.\n*   Belief: Rule 1 is in play with 100% certainty.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1, the scenario is the classic Monty Hall Problem. The prize is placed uniformly at random.\n*   Probability of winning by staying (Option A): $1/3$\n*   Probability of winning by switching (Option B): $2/3$\nThe optimal action is to switch.\n\n**4. Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.6666666666717292,
+      "delta_pre_sem": 19.608657836914062,
+      "delta_pre_by_mapping": [
+        19.124977111816406,
+        20.09233856201172
+      ],
+      "letter_bias": -0.48368072509765625,
+      "delta_post_sem": 28.531213760375977,
+      "delta_amp": 8.922555923461914,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 444,
+      "tail_gap_mean": 3.7397378736734392,
+      "tail_gap_std": 4.901339328561759,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe evaluate the observed data (STAY: 1 Win / 3 Loss; SWITCH: 1 Win / 0 Loss) against the three possible rules:\n*   **Rule 1 (Random):** This rule is consistent with any outcome. The probability of the observed sequence is $(1/3)^1 \\times (2/3)^3$ for the STAY actions and $(2/3)^1$ for the SWITCH action.\n*   **Rule 2 (Always Initial Selection):** This rule requires that every \"STAY\" action results in a \"WON\" and every \"SWITCH\" action results in a \"LOST\". Since we observed 3 \"LOST\" results for \"STAY\" and 1 \"WON\" for \"SWITCH\", **Rule 2 is impossible.**\n*   **Rule 3 (Always Remaining Door):** This rule requires that every \"STAY\" action results in a \"LOST\" and every \"SWITCH\" action results in a \"WON\". We observed 1 \"WON\" for \"STAY\", which contradicts this rule. Therefore, **Rule 3 is impossible.**\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed data (specifically, the \"STAY: WON\" result eliminates Rule 3, and the \"STAY: LOST\" results eliminate Rule 2), the only remaining possibility is Rule 1.\n*   Belief: Rule 1 is in play with 100% probability.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1, the prize is placed uniformly at random. This is the classic Monty Hall Problem scenario. In this scenario, the probability of winning by staying is $1/3$, and the probability of winning by switching is $2/3$. Therefore, switching is the optimal strategy.\n\n**4. Final Answer**\nThe optimal action is to move to the remaining closed door.\n\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.6666666666666666,
+      "delta_pre_sem": 18.765058755874634,
+      "delta_pre_by_mapping": [
+        17.999979972839355,
+        19.530137538909912
+      ],
+      "letter_bias": -0.7650787830352783,
+      "delta_post_sem": 28.31245756149292,
+      "delta_amp": 9.547398805618286,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 460,
+      "tail_gap_mean": 3.6761057882010935,
+      "tail_gap_std": 4.835246452274785,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe evaluate the likelihood of the observed data given each rule:\n*   **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time.\n    *   Stay results (1 Win, 3 Loss): Probability is $(1/3)^1 \\times (2/3)^3 = 8/243 \\approx 0.033$.\n    *   Switch results (1 Win, 1 Loss): Probability is $(2/3)^1 \\times (1/3)^1 = 2/9 \\approx 0.222$.\n    *   Combined likelihood: $\\approx 0.0073$.\n*   **Rule 2 (Always Initial):** Staying always wins; Switching always loses.\n    *   The data contains 3 \"STAY: LOST\" and 1 \"SWITCH: WON\". This rule is **impossible** given the data.\n*   **Rule 3 (Always Remaining):** Switching always wins; Staying always loses.\n    *   The data contains 1 \"STAY: WON\" and 1 \"SWITCH: LOST\". This rule is **impossible** given the data.\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed outcomes (Rule 2 is contradicted by any \"STAY: LOST\" or \"SWITCH: WON\"; Rule 3 is contradicted by any \"STAY: WON\" or \"SWITCH: LOST\"), the only rule consistent with the data is **Rule 1**.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1, the problem reverts to the standard Monty Hall Problem. In the standard Monty Hall scenario, the probability of winning by staying is $1/3$, and the probability of winning by switching is $2/3$. Therefore, switching is the mathematically optimal strategy.\n\n**4. Final Answer**\nThe optimal action is to move to the remaining closed door.\n\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.6666666666666666,
+      "delta_pre_sem": 20.03055191040039,
+      "delta_pre_by_mapping": [
+        19.593732357025146,
+        20.467371463775635
+      ],
+      "letter_bias": -0.43681955337524414,
+      "delta_post_sem": 28.718700408935547,
+      "delta_amp": 8.688148498535156,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 394,
+      "tail_gap_mean": 3.251401711627841,
+      "tail_gap_std": 4.900753148040242,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 2,
+        "host_opens": 3,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe evaluate the likelihood of the observed data given each rule:\n*   **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time. The data (Switch: 2W/1L, Stay: 1W/3L) is highly consistent with these probabilities.\n*   **Rule 2 (Always Initial):** Staying always wins; Switching always loses. The data contains 3 losses for \"STAY\" and 2 wins for \"SWITCH\". This rule is **impossible** given the data.\n*   **Rule 3 (Always Remaining):** Switching always wins; Staying always loses. The data contains 1 win for \"STAY\" and 1 loss for \"SWITCH\". This rule is **impossible** given the data.\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed outcomes (a \"STAY\" win contradicts Rule 3, and a \"SWITCH\" win contradicts Rule 2), the only remaining possibility is **Rule 1**. \n*   Probability(Rule 1) = 100%\n*   Probability(Rule 2) = 0%\n*   Probability(Rule 3) = 0%\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1, the scenario is the classic Monty Hall Problem. The initial selection has a 1/3 probability of being correct, while the remaining unopened door has a 2/3 probability of concealing the prize. Therefore, switching is the mathematically optimal strategy.\n\n**4. Final Answer**\nThe optimal action is to move to the remaining closed door.\n\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.6666666666666666,
+      "delta_pre_sem": 19.312012910842896,
+      "delta_pre_by_mapping": [
+        18.874980926513672,
+        19.74904489517212
+      ],
+      "letter_bias": -0.43703198432922363,
+      "delta_post_sem": 28.74995183944702,
+      "delta_amp": 9.437938928604126,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 370,
+      "tail_gap_mean": 3.619026601910591,
+      "tail_gap_std": 4.853071646066253,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe evaluate the observed data against the predictions of the three possible rules:\n*   **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time. The data (Switch: 2W/1L, Stay: 2W/3L) is consistent with this probabilistic outcome.\n*   **Rule 2 (Always Initial):** Staying always wins; Switching always loses. The data contains 3 losses while staying and 2 wins while switching. **Rule 2 is impossible.**\n*   **Rule 3 (Always Remaining):** Switching always wins; Staying always loses. The data contains 2 wins while staying and 1 loss while switching. **Rule 3 is impossible.**\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed outcomes (Rule 2 is contradicted by any \"STAY LOST\" or \"SWITCH WON\"; Rule 3 is contradicted by any \"STAY WON\" or \"SWITCH LOST\"), the only remaining possibility is Rule 1.\n*   Belief: Rule 1 is in play with 100% certainty.\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1 (the standard Monty Hall problem), the prize is placed uniformly at random. The probability of winning by staying is $1/3$, and the probability of winning by switching is $2/3$. Therefore, switching is the mathematically optimal strategy.\n\n**4. Final Answer**\nThe optimal action is to move to the remaining closed door.\n\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.6666666666666666,
+      "delta_pre_sem": 19.468130588531494,
+      "delta_pre_by_mapping": [
+        18.874978065490723,
+        20.061283111572266
+      ],
+      "letter_bias": -0.5931525230407715,
+      "delta_post_sem": 28.87495994567871,
+      "delta_amp": 9.406829357147217,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 409,
+      "tail_gap_mean": 3.7067567533254624,
+      "tail_gap_std": 4.877490253289999,
+      "lens_gaps": null,
+      "round_ctx": {
+        "initial_pick": 3,
+        "host_opens": 2,
+        "switch_door": 1
+      },
+      "cot_text": "### Reasoning Step-by-Step\n\n**1. What does the data tell you about each rule?**\nWe evaluate the observed data against the three possible rules:\n*   **Rule 1 (Random):** Switching wins 2/3 of the time; Staying wins 1/3 of the time. The data (Switch: 2W/1L, Stay: 2W/4L) is consistent with this probabilistic outcome.\n*   **Rule 2 (Always Initial):** Staying always wins; Switching always loses. The data contains 4 losses while staying and 2 wins while switching. This rule is **impossible** given the data.\n*   **Rule 3 (Always Remaining):** Switching always wins; Staying always loses. The data contains 2 wins while staying and 1 loss while switching. This rule is **impossible** given the data.\n\n**2. What is your updated belief about which rule is in play?**\nSince Rule 2 and Rule 3 are logically contradicted by the observed outcomes (Rule 2 is contradicted by any \"Stay-Lost\" or \"Switch-Won\" result; Rule 3 is contradicted by any \"Stay-Won\" or \"Switch-Lost\" result), the only remaining possibility is Rule 1.\n*   Probability(Rule 1) = 100%\n*   Probability(Rule 2) = 0%\n*   Probability(Rule 3) = 0%\n\n**3. What is the optimal action given that belief?**\nUnder Rule 1 (the standard Monty Hall scenario), the prize is placed uniformly at random. The probability of winning by staying with the initial selection is $1/3$, while the probability of winning by switching to the remaining unopened door is $2/3$. Therefore, switching is the mathematically optimal strategy.\n\n**4. Final Answer**\nThe optimal action is to move to the remaining closed door.\n\nAnswer: B"
+    }
+  ]
+}

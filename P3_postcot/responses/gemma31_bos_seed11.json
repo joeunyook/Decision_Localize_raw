@@ -1,0 +1,236 @@
+{
+  "session": {
+    "model": "google/gemma-4-31B-it",
+    "model_key": "gemma31",
+    "env": "bos",
+    "seed": 11,
+    "T": 10,
+    "hidden_param": "opponent=ALWAYS_BACH",
+    "act0": "STRAVINSKY",
+    "act1": "BACH",
+    "summary": {
+      "T": 10,
+      "Delta_T": 0.0,
+      "n_unambiguous": 10,
+      "format_rate": 1.0,
+      "drift_corr_pre": 0.3939393939393939,
+      "drift_corr_post": 0.13939393939393938,
+      "mean_delta_pre": 19.616306591033936,
+      "mean_abs_delta_pre": 19.616306591033936,
+      "mean_delta_amp": 8.464911937713623,
+      "oracle_range": 0.05153784515062432
+    }
+  },
+  "rounds": [
+    {
+      "t": 1,
+      "oracle_p_act1": 0.9975273768433653,
+      "delta_pre_sem": 16.779874324798584,
+      "delta_pre_by_mapping": [
+        16.499923706054688,
+        17.05982494354248
+      ],
+      "letter_bias": -0.2799506187438965,
+      "delta_post_sem": 27.781219959259033,
+      "delta_amp": 11.00134563446045,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 343,
+      "tail_gap_mean": 5.138841438889504,
+      "tail_gap_std": 4.719036655865478,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **What does the history tell you about the colleague's strategy?**\nThis is the first round. There is no history available to distinguish between the three possible strategies (ALWAYS_BACH, ALWAYS_STRAV, or TIT_FOR_TAT).\n\n2. **What is your updated belief about their strategy, and how likely are they to choose Bach this round?**\nSince the strategy was chosen equally at random, there is a 1/3 probability for each.\n- If ALWAYS_BACH: They will likely choose Bach.\n- If ALWAYS_STRAV: They will likely choose Stravinsky.\n- If TIT_FOR_TAT: They start by choosing Bach in round 1.\nTherefore, the probability they choose Bach is approximately (1/3 * 1) + (1/3 * 0) + (1/3 * 1) = 2/3.\n\n3. **What is the optimal action given that belief?**\n- Expected value of choosing Bach (B): $P(\\text{Bach}) \\times 2 + P(\\text{Strav}) \\times 0 = (2/3) \\times 2 = 4/3 \\approx 1.33$ points.\n- Expected value of choosing Stravinsky (A): $P(\\text{Bach}) \\times 0 + P(\\text{Strav}) \\times 1 = (1/3) \\times 1 = 1/3 \\approx 0.33$ points.\nChoosing Bach provides a significantly higher expected payoff.\n\n4. **Final Answer**\nAnswer: B"
+    },
+    {
+      "t": 2,
+      "oracle_p_act1": 0.9484501877005405,
+      "delta_pre_sem": 13.281158924102783,
+      "delta_pre_by_mapping": [
+        13.374977111816406,
+        13.18734073638916
+      ],
+      "letter_bias": 0.09381818771362305,
+      "delta_post_sem": 27.453095197677612,
+      "delta_amp": 14.171936273574829,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 371,
+      "tail_gap_mean": 4.838719253665768,
+      "tail_gap_std": 5.278525090957159,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: In Round 1, I chose STRAVINSKY and the opponent chose BACH.\n   - If the opponent is ALWAYS_BACH, this is consistent.\n   - If the opponent is ALWAYS_STRAV, this is a mistake (1/10 probability).\n   - If the opponent is TIT_FOR_TAT, they start by playing Bach in Round 1. This is consistent.\n\n2. **Updated Beliefs**:\n   - The opponent is definitely not likely to be ALWAYS_STRAV, as they played Bach.\n   - The opponent is either ALWAYS_BACH or TIT_FOR_TAT.\n   - If they are ALWAYS_BACH, they will play BACH this round.\n   - If they are TIT_FOR_TAT, they will copy my previous move (STRAVINSKY) and play STRAVINSKY this round.\n   - Since the strategy was chosen equally at random at the start, and both ALWAYS_BACH and TIT_FOR_TAT are consistent with the history, there is roughly a 50% chance they play BACH and a 50% chance they play STRAVINSKY.\n\n3. **Optimal Action**:\n   - Expected value of choosing BACH (B): $0.5 \\times 2 \\text{ (if ALWAYS\\_BACH)} + 0.5 \\times 0 \\text{ (if TFT)} = 1.0$\n   - Expected value of choosing STRAVINSKY (A): $0.5 \\times 0 \\text{ (if ALWAYS\\_BACH)} + 0.5 \\times 1 \\text{ (if TFT)} = 0.5$\n   - Choosing BACH offers a higher expected payoff.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 3,
+      "oracle_p_act1": 0.9999857324584902,
+      "delta_pre_sem": 20.399867296218872,
+      "delta_pre_by_mapping": [
+        20.562439918518066,
+        20.237294673919678
+      ],
+      "letter_bias": 0.16257262229919434,
+      "delta_post_sem": 28.390578985214233,
+      "delta_amp": 7.990711688995361,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 333,
+      "tail_gap_mean": 3.335178780555725,
+      "tail_gap_std": 6.3350613226678,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\n*   Round 1: You played STRAVINSKY, opponent played BACH.\n*   Round 2: You played BACH, opponent played BACH.\n*   The opponent has chosen BACH in 100% of the rounds so far.\n\n2. **Evaluating Strategies:**\n*   **ALWAYS_BACH:** Consistent with the history. They would play BACH in Round 3.\n*   **ALWAYS_STRAV:** Highly unlikely. They have played BACH twice, which would require two \"mistakes\" in a row (probability $\\approx 0.01$).\n*   **TIT_FOR_TAT:** Consistent with the history. In Round 1, they start with BACH. In Round 2, they copy your Round 1 move (STRAVINSKY). However, the opponent played BACH in Round 2. This means if they are TIT_FOR_TAT, they made a mistake in Round 2.\n\n3. **Updated Beliefs:**\n*   The opponent is most likely **ALWAYS_BACH**.\n*   If they are ALWAYS_BACH, they will play BACH.\n*   If they are TIT_FOR_TAT, they will copy your Round 2 move (BACH), so they will play BACH.\n*   In both likely scenarios, the opponent is expected to choose BACH this round.\n\n4. **Optimal Action:**\n*   Since the opponent is highly likely to choose BACH, choosing BACH (Option B) yields 2 points, whereas choosing STRAVINSKY (Option A) yields 0 points.\n\nAnswer: B"
+    },
+    {
+      "t": 4,
+      "oracle_p_act1": 0.9999877944135955,
+      "delta_pre_sem": 20.878328800201416,
+      "delta_pre_by_mapping": [
+        20.781193733215332,
+        20.9754638671875
+      ],
+      "letter_bias": -0.09713506698608398,
+      "delta_post_sem": 28.328089237213135,
+      "delta_amp": 7.449760437011719,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 403,
+      "tail_gap_mean": 3.0286830511689184,
+      "tail_gap_std": 6.144045792095948,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\n*   Round 1: You played STRAVINSKY, opponent played BACH.\n*   Round 2: You played BACH, opponent played BACH.\n*   Round 3: You played BACH, opponent played BACH.\nThe opponent has chosen BACH in 100% of the rounds so far.\n\n2. **Evaluating Strategies:**\n*   **ALWAYS_BACH:** Consistent with the history. They would choose BACH again.\n*   **ALWAYS_STRAV:** Highly unlikely. They have chosen BACH 3 times in a row, which would require 3 consecutive \"mistakes\" (probability $\\approx 0.1^3 = 0.001$).\n*   **TIT_FOR_TAT:** Consistent with the history. In Round 1, they start with BACH. In Round 2, they copy your Round 1 (STRAVINSKY), but they played BACH. This means they made a mistake in Round 2. In Round 3, they copy your Round 2 (BACH), and they played BACH. This is consistent. However, the probability of TIT_FOR_TAT playing BACH in Round 2 given you played STRAVINSKY in Round 1 is only 10%.\n\n3. **Updated Belief:**\nThe opponent is most likely following the **ALWAYS_BACH** strategy. Even if they are TIT_FOR_TAT, your previous move (Round 3) was BACH, meaning a TIT_FOR_TAT player would also choose BACH in Round 4. In both the most likely scenario (ALWAYS_BACH) and the second most likely scenario (TIT_FOR_TAT), the opponent is expected to choose BACH.\n\n4. **Optimal Action:**\nSince the opponent is highly likely to choose BACH, choosing BACH (Option B) yields 2 points, whereas choosing STRAVINSKY (Option A) would likely yield 0 points.\n\nAnswer: B"
+    },
+    {
+      "t": 5,
+      "oracle_p_act1": 0.9999406119592132,
+      "delta_pre_sem": 21.147353410720825,
+      "delta_pre_by_mapping": [
+        21.312439918518066,
+        20.982266902923584
+      ],
+      "letter_bias": 0.1650865077972412,
+      "delta_post_sem": 28.484349489212036,
+      "delta_amp": 7.336996078491211,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 385,
+      "tail_gap_mean": 3.959645283818245,
+      "tail_gap_std": 5.739181273301282,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History:**\nThe opponent has chosen BACH in 4 out of 4 rounds.\n- If the strategy were **ALWAYS_STRAV**, the probability of choosing BACH 4 times in a row (given a 10% error rate) is extremely low ($0.1^4 = 0.0001$).\n- If the strategy were **TIT_FOR_TAT**, the opponent would have mirrored my previous move. In Round 2, I played STRAVINSKY in Round 1, so a TIT_FOR_TAT opponent should have played STRAVINSKY. Instead, they played BACH. In Round 4, I played BACH in Round 3, so they should have played BACH (which they did). However, the failure to mirror in Round 2 makes TIT_FOR_TAT unlikely.\n- If the strategy were **ALWAYS_BACH**, the probability of choosing BACH 4 times in a row is very high ($0.9^4 \\approx 0.656$).\n\n2. **Updated Belief:**\nThe evidence strongly suggests the colleague is using the **ALWAYS_BACH** strategy. While there is a small chance they are TIT_FOR_TAT and made a mistake in Round 2, the consistency of BACH regardless of my moves (especially in Round 2) points toward ALWAYS_BACH. Therefore, it is highly likely (approx. 90% or more) that the opponent will choose BACH this round.\n\n3. **Optimal Action:**\n- If I choose BACH (B), and they choose BACH, I get 2 points.\n- If I choose STRAVINSKY (A), and they choose BACH, I get 0 points.\nGiven the high probability that the opponent will choose BACH, choosing BACH maximizes my expected payoff.\n\n4. **Final Answer:**\nAnswer: B"
+    },
+    {
+      "t": 6,
+      "oracle_p_act1": 0.9999880296482305,
+      "delta_pre_sem": 21.13327693939209,
+      "delta_pre_by_mapping": [
+        21.1249418258667,
+        21.14161205291748
+      ],
+      "letter_bias": -0.008335113525390625,
+      "delta_post_sem": 28.312462329864502,
+      "delta_amp": 7.179185390472412,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 375,
+      "tail_gap_mean": 6.087206306234002,
+      "tail_gap_std": 4.777990561083703,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has chosen BACH in 5 out of 5 rounds.\n   - If the strategy were **ALWAYS_STRAV**, the probability of choosing BACH 5 times in a row (given a 10% error rate) is extremely low ($0.1^5$).\n   - If the strategy were **TIT_FOR_TAT**, the opponent would have mirrored my previous move. In Round 4, I played STRAVINSKY; in Round 5, the opponent played BACH. This contradicts the TIT_FOR_TAT logic (unless a mistake occurred exactly then). However, in Round 1, I played STRAVINSKY, and the opponent played BACH. Since TIT_FOR_TAT starts with BACH in Round 1, that fits, but the subsequent failure to mirror my STRAVINSKY moves makes it unlikely.\n   - If the strategy were **ALWAYS_BACH**, the opponent would choose BACH almost every time. This perfectly matches the observed data.\n\n2. **Updated Belief**: The evidence strongly suggests the colleague is using the **ALWAYS_BACH** strategy. Even accounting for the occasional mistake (1 in 10), the probability that they will choose BACH in this round is very high (approximately 90%).\n\n3. **Optimal Action**: \n   - Choosing BACH (B) yields 2 points if the opponent chooses BACH.\n   - Choosing STRAVINSKY (A) yields 1 point if the opponent chooses STRAVINSKY.\n   Given the high probability that the opponent will choose BACH, the expected value of choosing BACH is significantly higher ($0.9 \\times 2 = 1.8$) than choosing STRAVINSKY ($0.1 \\times 1 = 0.1$).\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 7,
+      "oracle_p_act1": 0.999988032495759,
+      "delta_pre_sem": 21.035017013549805,
+      "delta_pre_by_mapping": [
+        20.968687057495117,
+        21.101346969604492
+      ],
+      "letter_bias": -0.0663299560546875,
+      "delta_post_sem": 28.40621781349182,
+      "delta_amp": 7.371200799942017,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 375,
+      "tail_gap_mean": 6.1169516412168745,
+      "tail_gap_std": 4.784187785716216,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has chosen BACH in 6 out of 6 rounds.\n   - If the strategy were **ALWAYS_STRAV**, the probability of choosing BACH 6 times in a row (given a 10% error rate) is extremely low ($0.1^6$).\n   - If the strategy were **TIT_FOR_TAT**, the opponent would have mirrored my previous move. In Round 4, I played STRAVINSKY; in Round 5, the opponent played BACH. This contradicts the TIT_FOR_TAT logic (unless a mistake occurred exactly then). However, in Round 1, I played STRAVINSKY, and the opponent played BACH. Since TIT_FOR_TAT starts with BACH in Round 1, that fits, but the subsequent failure to mirror my STRAVINSKY moves makes it unlikely.\n   - If the strategy were **ALWAYS_BACH**, the opponent would choose BACH almost every time. This perfectly matches the observed data.\n\n2. **Updated Belief**: The evidence strongly suggests the colleague is using the **ALWAYS_BACH** strategy. Even accounting for the occasional mistake (1 in 10), the probability that they will choose BACH in this round is very high (approximately 90%).\n\n3. **Optimal Action**: \n   - Choosing BACH (B) yields 2 points if the opponent chooses BACH.\n   - Choosing STRAVINSKY (A) yields 1 point if the opponent chooses STRAVINSKY.\n   Given the high probability that the opponent will choose BACH, the expected value of choosing BACH is significantly higher ($0.9 \\times 2 = 1.8$) than choosing STRAVINSKY ($0.1 \\times 1 = 0.1$).\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 8,
+      "oracle_p_act1": 0.9999880328121143,
+      "delta_pre_sem": 20.443628549575806,
+      "delta_pre_by_mapping": [
+        20.093696117401123,
+        20.79356098175049
+      ],
+      "letter_bias": -0.3499324321746826,
+      "delta_post_sem": 28.24997067451477,
+      "delta_amp": 7.806342124938965,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 368,
+      "tail_gap_mean": 4.984287166148424,
+      "tail_gap_std": 5.9088235722295614,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has chosen BACH in 7 out of 7 rounds. \n   - If the strategy were `ALWAYS_STRAV`, the probability of choosing BACH 7 times in a row is extremely low (roughly $0.1^7$).\n   - If the strategy were `TIT_FOR_TAT`, the opponent would have mirrored my move from the previous round. In round 4, I played STRAVINSKY; in round 5, the opponent played BACH. This contradicts the `TIT_FOR_TAT` logic (unless a mistake occurred exactly then), but more importantly, in round 1, I played STRAVINSKY and they played BACH. Since `TIT_FOR_TAT` starts with BACH on round 1, that fits, but the subsequent failure to mirror my STRAVINSKY moves in rounds 1 and 4 strongly suggests it is not `TIT_FOR_TAT`.\n   - If the strategy were `ALWAYS_BACH`, the opponent would choose BACH almost every time.\n\n2. **Updated Belief**: The evidence overwhelmingly points to `ALWAYS_BACH`. The opponent has been consistent regardless of my choices. Given the 1/10 error rate, there is a ~90% probability they will choose BACH this round.\n\n3. **Optimal Action**: \n   - Expected value of choosing BACH (B): $0.9 \\times 2 + 0.1 \\times 0 = 1.8$ points.\n   - Expected value of choosing STRAVINSKY (A): $0.9 \\times 0 + 0.1 \\times 1 = 0.1$ points.\n   Choosing BACH maximizes the expected payoff.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 9,
+      "oracle_p_act1": 0.9999854544516298,
+      "delta_pre_sem": 20.477070331573486,
+      "delta_pre_by_mapping": [
+        20.406193733215332,
+        20.54794692993164
+      ],
+      "letter_bias": -0.0708765983581543,
+      "delta_post_sem": 27.828097105026245,
+      "delta_amp": 7.351026773452759,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 342,
+      "tail_gap_mean": 6.349644347429275,
+      "tail_gap_std": 4.7976454285417205,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has chosen BACH in 8 out of 8 rounds. \n   - If the strategy were `ALWAYS_STRAV`, the probability of choosing BACH 8 times in a row (given a 10% error rate) is extremely low ($0.1^8$).\n   - If the strategy were `TIT_FOR_TAT`, the opponent would have mirrored my moves. In rounds 1, 4, and 8, I chose STRAVINSKY. A `TIT_FOR_TAT` player would have played STRAVINSKY in rounds 2, 5, and 9. However, the opponent played BACH in rounds 2 and 5.\n   - If the strategy were `ALWAYS_BACH`, the opponent would play BACH almost every time, which perfectly matches the observed data.\n\n2. **Updated Belief**: The evidence strongly points to `ALWAYS_BACH`. The probability that the opponent will choose BACH this round is very high (approximately 90%, accounting for the occasional mistake).\n\n3. **Optimal Action**: \n   - Choosing BACH (B) yields 2 points if the opponent chooses BACH and 0 otherwise. Expected value $\\approx 0.9 \\times 2 = 1.8$.\n   - Choosing STRAVINSKY (A) yields 1 point if the opponent chooses STRAVINSKY and 0 otherwise. Expected value $\\approx 0.1 \\times 1 = 0.1$.\n   - Since $1.8 > 0.1$, choosing BACH is the optimal move.\n\n4. **Final Answer**:\nAnswer: B"
+    },
+    {
+      "t": 10,
+      "oracle_p_act1": 0.9999880328511648,
+      "delta_pre_sem": 20.58749032020569,
+      "delta_pre_by_mapping": [
+        20.5624418258667,
+        20.612538814544678
+      ],
+      "letter_bias": -0.025048494338989258,
+      "delta_post_sem": 27.578104496002197,
+      "delta_amp": 6.990614175796509,
+      "post_valid": true,
+      "decision_act1": true,
+      "parsed_letter": "B",
+      "n_gen_tokens": 330,
+      "tail_gap_mean": 6.283467278899625,
+      "tail_gap_std": 4.750807693032417,
+      "lens_gaps": null,
+      "round_ctx": {},
+      "cot_text": "1. **Analysis of History**: The opponent has chosen BACH in 9 out of 9 rounds. \n   - If the strategy were `ALWAYS_STRAV`, the probability of choosing BACH 9 times in a row (given a 10% error rate) is extremely low ($0.1^9$).\n   - If the strategy were `TIT_FOR_TAT`, the opponent would have mirrored my previous move. In rounds 4 and 8, I played STRAVINSKY; if the opponent were playing TIT_FOR_TAT, they should have played STRAVINSKY in rounds 5 and 9. Instead, they played BACH.\n   - If the strategy were `ALWAYS_BACH`, the opponent would play BACH almost every time, which perfectly matches the observed data.\n\n2. **Updated Belief**: The evidence strongly points to `ALWAYS_BACH`. The probability that the opponent will choose BACH this round is very high (approximately 90%, accounting for the occasional mistake).\n\n3. **Optimal Action**: \n   - Choosing BACH (B) yields 2 points if the opponent chooses BACH and 0 otherwise. Expected value $\\approx 0.9 \\times 2 = 1.8$.\n   - Choosing STRAVINSKY (A) yields 1 point if the opponent chooses STRAVINSKY and 0 otherwise. Expected value $\\approx 0.1 \\times 1 = 0.1$.\n   - Since $1.8 > 0.1$, choosing BACH is the optimal move.\n\n4. **Final Answer**:\nAnswer: B"
+    }
+  ]
+}
