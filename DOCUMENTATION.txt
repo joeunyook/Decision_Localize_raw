@@ -5093,7 +5093,11 @@ SEPARATE, anonymized artifact built from scratch.
 
 ================================================================================
 SESSION LOG -- 2026-07-31 (part 2) -- *** STATUS BOARD: GITHUB MIGRATION DONE;
-RESIDUAL PRESERVATION RUNNING AS SLURM JOB 2956977 *** read this first on return
+RESIDUAL PRESERVATION DONE AND VERIFIED *** read this first on return
+NOTHING IS OUTSTANDING. Both the code (GitHub) and the 54 GB of residual
+activations (a0133 store) are durably preserved. Open item, unrelated to
+either and only relevant before the next GPU run: HF_HOME still points at the
+dead a0107 allocation -- see the end of this section.
 --------------------------------------------------------------------------------
 
 1. GITHUB MIGRATION -- COMPLETE, VERIFIED, NOTHING OUTSTANDING
@@ -5122,7 +5126,7 @@ clone (git tree SHA comparison, not just file counts).
       NOTE the repo URL still deanonymizes; ship the ZIP, not the link:
           zip -r supplementary_code.zip supplementary_code -x '*__pycache__*'
 
-2. RESIDUAL PRESERVATION -- IN PROGRESS AS SLURM JOB 2956977
+2. RESIDUAL PRESERVATION -- COMPLETE AND VERIFIED (job 2956977)
 --------------------------------------------------------------------------------
 WHY: /capstor/scratch purges files untouched for 30 days. Oldest access time
 under residuals/ was 2026-07-11, so that tree begins purging ~2026-08-10.
@@ -5133,6 +5137,7 @@ the trained outputs are committed to GitHub.
   script     ~/logit-probe/preserve_residuals.sbatch
   job id     2956977   submitted 2026-07-31T09:28:21+02:00   partition normal, 12h wall
   log        ~/logit-probe/preserve_residuals_2956977.log
+  ran        09:27:19 -> 09:40:43 (13m 24s), CPU-only rsync, both exit=0
 
   FROM  /capstor/scratch/cscs/joeunyook/logit-probe/{residuals,ABL_dry_v1}
   TO    /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved/
@@ -5143,26 +5148,41 @@ the trained outputs are committed to GitHub.
   the scratch source is not modified and nothing is deleted anywhere.
   Resume-safe: if it is killed or hits the wall, resubmit the same command.
 
-WHAT TO CHECK WHEN YOU RETURN
-  1. squeue -u $USER                  -- still running?
-  2. tail -40 ~/logit-probe/preserve_residuals_2956977.log
-     Look for the final block:
-        "RESULT: SUCCESS -- both trees preserved and verified."
-     The job verifies itself against MANIFESTS/*.manifest (the same manifests
-     committed to the GitHub repo) and prints, per tree:
-        files in manifest / files on scratch / files on store
-        "manifest vs store, differing lines: 0"
-        "STATUS: EXACT MATCH -- every file present at its recorded size"
-     Any nonzero diff count prints the first 10 offending paths, where
-        '<' = in manifest but MISSING from store
-        '>' = extra file on store
-  3. If it says "RESULT: INCOMPLETE", just resubmit; rsync copies only the gap.
-  4. du -sh /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved
-     should end near 54 GB.
+OUTCOME -- "RESULT: SUCCESS -- both trees preserved and verified."
+The job diffed every copied file against MANIFESTS/*.manifest (the same
+manifests committed to the GitHub repo), matching on path AND recorded size:
 
-  ONLY AFTER a SUCCESS line: the scratch copies may be left to purge. Do not
-  delete them manually -- there is no reason to, and scratch is not short of
-  space (247 GB used of 150 TB).
+                    manifest    scratch    store     bytes    differing lines
+    residuals         16262      16262     16262      41G           0
+    ABL_dry_v1         9720       9720      9720      13G           0
+  STATUS for both: EXACT MATCH -- every file present at its recorded size.
+  Store total 54 GB. Re-confirmed independently 2026-07-31 by du -sh and by
+  spot-reading real .npy/_labels.json payloads on the store copy.
+
+THE RESIDUALS NOW LIVE IN TWO PLACES. Do not be alarmed by their absence from
+git -- that is by design (41 GB cannot go in a repo; .gitignore line 19
+excludes **/residuals/, and `git ls-files` tracks ZERO of them). What IS
+committed is MANIFESTS/residuals.manifest, 16,266 lines recording every
+excluded file and its size. The bytes themselves are at:
+
+  1. /capstor/scratch/cscs/joeunyook/logit-probe/{residuals,ABL_dry_v1}
+     Original. Untouched. PURGES ~2026-08-10 -- expected and fine.
+  2. /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved/
+     The durable copy. a0133 = 10 TB at 1% used, NO PURGE POLICY, live
+     allocation, mode drwxrws--- owner joeunyook group a0133.
+     *** THIS IS THE ONE THAT MATTERS after ~2026-08-10. ***
+
+  ~/logit-probe/residuals is only a SYMLINK to (1), so it will appear to go
+  dead when scratch purges. That is not data loss; repoint it to (2):
+      ln -sfn /capstor/store/cscs/swissai/a0133/joeunyook/logit-probe-preserved/residuals \
+              ~/logit-probe/residuals
+  Same for ~/logit-probe/ABL_dry_v1. Do this before re-running any P1 probe
+  training or analysis/posterior_probe.py after the purge date.
+
+  The scratch copies may be left to purge on their own. Do NOT delete them
+  manually -- there is no reason to, and scratch is not short of space
+  (247 GB used of 150 TB). Leaving them keeps a second copy alive for free
+  until the purge takes it.
 
 3. SLURM GOTCHA THAT COST TWO FAILED SUBMISSIONS
 --------------------------------------------------------------------------------
